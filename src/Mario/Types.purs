@@ -36,4 +36,5 @@ type GameState =
   , keyLeft :: Boolean
   , keyRight :: Boolean
   , mario :: Model
+  , enemy :: Model
   }

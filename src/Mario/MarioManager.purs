@@ -1,4 +1,4 @@
-module Mario.GameManager where
+module Mario.MarioManager where
 
 import Prelude
 
@@ -8,8 +8,8 @@ import Ester as Ester
 import Mario.Types (Direction(..), Keys(..), Model(..))
 
 -- GAME LOGIC TO MOFICY GAME OBCECTS 
-step :: Number -> Keys -> Model -> Model
-step dt keys mario =
+step :: String -> Number -> Keys -> Model -> Model
+step name dt keys mario =
 		mario
 			# walk keys
 			# jump keys
@@ -28,7 +28,7 @@ step dt keys mario =
 					# gravity dt
 					# physics dt
 
-			objectName = Ester.SvgName "Mario"
+			objectName = Ester.SvgName name
 						
 gravity :: Number -> Model -> Model
 gravity dt (Model mario) =
@@ -61,7 +61,6 @@ fixCollision :: forall t128.
   }                
   -> Model -> Model
 fixCollision collider (Model mario) = do
-	let p22 = Ester.logAny collider	
 	Model { 
 		x : mario.x,
 		y : mario.y,
@@ -103,40 +102,3 @@ physics dt (Model mario) =
 	    , vy : mario.vy 
 	    , dir : mario.dir
 	    }
-
--- Update The Game UI here
-patchBoard:: forall t . Model -> Eff t Unit
-patchBoard (Model mario) = 
-	Ester.modifyGameObject (Ester.SvgName "Mario") (Ester.PropertyList propList) 
-		where
-			propList = [
-					    Ester.getProp "x" newX ,
-					    Ester.getProp "y" newY
-					  ]
-			newY = toString ( mario.y )
-			newX = toString ( mario.x )   					  
-
-
-
--- Helper Functions to Modify 
--- 1 Yes 2 Opp 3 Stop 
-startKeyConfig :: Direction -> Keys
-startKeyConfig direction = 
-	case direction of
-		Right 	-> Keys { x : 1.0, y : 0.0 }
-		Left 	-> Keys { x : 2.0 , y : 0.0 }
-		Top 	-> Keys { x : 0.0 , y : 1.0} 
-		Bottom 	-> Keys { x : 3.0 , y : 3.0}
-		_ -> Keys { x : 0.0 , y : 0.0}
-
-getJoyStickYDirection :: Int -> Direction
-getJoyStickYDirection key
-  | key == 38 || key == 75 || key == 87 = Top
-  | key == 40 || key == 74 || key == 83 = Bottom
-  | otherwise = Released
-
-getJoyStickXDirection :: Int -> Direction
-getJoyStickXDirection key
-  | key == 39 || key == 76 || key == 68 = Right
-  | key == 37 || key == 72 || key == 65 = Left
-  | otherwise = Released

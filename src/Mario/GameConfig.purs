@@ -28,11 +28,17 @@ marioHeight = 50.0
 marioWidth :: Number
 marioWidth = 50.0
 
+enemyHeight :: Number
+enemyHeight = 30.0
+
+enemyWidth :: Number
+enemyWidth = 30.0
+
 startX :: Number
 startX = 50.0
 
 startY :: Number
-startY = boardHeight - groundHeight - marioHeight
+startY = boardHeight - groundHeight - marioHeight - 25.0
 
 framesPerSercondInt :: Int
 framesPerSercondInt = 1000
@@ -64,6 +70,16 @@ baseMario =
 	    , vy : 0.0
 	    , dir : Right
 	    }
+
+baseEnemy :: Model
+baseEnemy =
+		Model { x : (startX + 150.0)
+	    , y : startY 
+	    , vx : 0.0
+	    , vy : 0.0
+	    , dir : Right
+	    }	    
+
 
 -- Initial KeyConfig 
 baseKeys :: Keys

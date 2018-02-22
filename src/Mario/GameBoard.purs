@@ -1,10 +1,11 @@
 module Mario.GameBoard where
 
-import Prelude
+import Prelude (Unit, bind, (*), (+), (-), (/))
 
 import Control.Monad.Eff (Eff)
 import Data.Number.Format (toString)
 import Ester as Ester
+import Mario.Types
 import Mario.GameConfig as GameConfig
 
 
@@ -71,4 +72,25 @@ addVerticalBarier barierCount barierType marioX groundY= Ester.addGameObject (Es
 	  Ester.getProp "y" (toString ( groundY - ( (barierCount/4.0) * 280.0 ) ) ) ,
 	  Ester.getProp "fill" "#00E676",
 	  Ester.getProp "path" "img/wall.png"
-	]}) 	
+	]})
+
+spawnEnemy :: forall t. String -> Eff t Unit
+spawnEnemy enemyName = Ester.addGameObject (Ester.SvgName "World") (Ester.Node { name : enemyName , nodeType : "Rectangle" , props : [ 
+	  Ester.getProp "height" (toString GameConfig.enemyHeight),
+	  Ester.getProp "width" (toString GameConfig.enemyWidth),
+	  Ester.getProp "x" "0",
+	  Ester.getProp "y" "0",
+	  Ester.getProp "fill" "#6600ff"
+	]}) 
+
+-- Update The Object based on id and model
+patchBoard:: forall t . String -> Model -> Eff t Unit
+patchBoard objectName (Model objectModel) = 
+	Ester.modifyGameObject (Ester.SvgName objectName) (Ester.PropertyList propList) 
+		where
+			propList = [
+					    Ester.getProp "x" newX ,
+					    Ester.getProp "y" newY
+					  ]
+			newY = toString ( objectModel.y )
+			newX = toString ( objectModel.x )   					  

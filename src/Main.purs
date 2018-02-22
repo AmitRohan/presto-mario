@@ -16,7 +16,8 @@ import Ester as Ester
 
 import Mario.Types (GameState, Keys(..))
 import Mario.GameUI as GameUI
-import Mario.GameManager as GameManager
+import Mario.MarioManager as MarioManager
+import Mario.EnemyManager as EnemyManager
 import Mario.GameBoard as GameBoard
 import Mario.GameConfig as GameConfig
 
@@ -41,8 +42,9 @@ widget state = linearLayout
               , width Match_Parent
               , orientation "vertical"
               ]
-              [ GameUI.getControlPane
+              [   GameUI.getTopPane
                 , GameUI.getGameBoardHolder
+                , GameUI.getBottomPane
               ]
 
 -- | The entry point of the game. Here we initialize the state, create the entities, and starts rendering the game
@@ -52,6 +54,7 @@ main = do
   U.initializeState
   --- Update State ----
   state <- U.updateState "mario" GameConfig.baseMario 
+  _ <- U.updateState "enemy" GameConfig.baseEnemy 
   ---- Render Widget ---
   U.render (widget state) listen
   pure unit
@@ -82,9 +85,11 @@ getDirection s = Keys { x : if s.keyRight && not s.keyLeft
 listen :: forall e. Eff (console :: CONSOLE, frp :: FRP | e) (Eff (frp :: FRP, console :: CONSOLE | e) Unit)
 listen = do
   _ <- GameBoard.initBoard
+  _ <- GameBoard.spawnEnemy "Enemy"
   resetGame <- U.signal "resetButton" "onClick" Nothing
   _ <- resetGame.event `subscribe` (\_ -> do
                                             let props = Ester.getGameObjectProps (Ester.SvgName "Mario")
+                                            _ <- U.updateState "enemy" GameConfig.baseEnemy
                                             U.updateState "mario" GameConfig.baseMario 
                                          )
 
@@ -104,8 +109,11 @@ eval :: forall e. Number -> Eff (console :: CONSOLE | e) GameState
 eval _ = do
   s <- U.getState
   let currDirection = getDirection s 
-  let newMario = GameManager.step GameConfig.tickInterval currDirection s.mario
-  _ <- GameManager.patchBoard newMario
-  newState <- U.updateState "mario" newMario    
-  pure newState
+  let newMario = MarioManager.step "Mario" GameConfig.tickInterval currDirection s.mario
+  _ <- GameBoard.patchBoard "Mario" newMario
+  let newEnemy = EnemyManager.updateEnemy "Enemy" GameConfig.tickInterval newMario s.enemy
+  _ <- GameBoard.patchBoard "Enemy" newEnemy
 
+  newState <- U.updateState "mario" newMario    
+  newState <- U.updateState "enemy" newEnemy    
+  pure newState
