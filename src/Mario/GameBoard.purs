@@ -18,6 +18,7 @@ initBoard = do
 	let marioX = GameConfig.startX
 	--give a jump to mario at init
 	let marioY = GameConfig.startY - 200.0  
+	
 	_ <- Ester.initGameBoard (Ester.GameBoard { id : "gameBoard", height : boardHeight , width : boardWidth })
 
 	_ <- Ester.addGameObject (Ester.SvgName "World") (Ester.Node { name : "Sky", nodeType : "Rectangle" , props : [ 
@@ -29,7 +30,6 @@ initBoard = do
 	]}) 
 
 	_ <- Ester.addGameObject (Ester.SvgName "World") (Ester.Node { name : "Obstacles", nodeType : "Group" , props : [ Ester.getProp "x" "0", Ester.getProp "y" "0" ]}) 
-
 	_ <- Ester.addGameObject (Ester.SvgName "Obstacles") (Ester.Node { name : "Ground", nodeType : "Rectangle" , props :[ 
 	  Ester.getProp "height" (toString groundHeight),
 	  Ester.getProp "width" (toString boardWidth),
@@ -38,12 +38,6 @@ initBoard = do
 	  Ester.getProp "fill" "#4E342E",
 	  Ester.getProp "path" "img/ground.png"
 	]}) 
-	_ <- addBarier 1.0 "Wall1" marioX groundY
-	_ <- addVerticalBarier 2.0 "Wall2" marioX groundY
-	_ <- addBarier 3.0 "Wall3" marioX groundY
-	_ <- addVerticalBarier 4.0 "Wall4" marioX groundY
-	_ <- addBarier 5.0 "Wall5" marioX groundY
-	_ <- addBarier 6.0 "Wall6" marioX groundY
 	Ester.addGameObject (Ester.SvgName "World") (Ester.Node { name : "Mario", nodeType : "Rectangle" , props : [ 
 	  Ester.getProp "height" (toString GameConfig.marioHeight),
 	  Ester.getProp "width" (toString GameConfig.marioWidth),
@@ -52,6 +46,21 @@ initBoard = do
 	  Ester.getProp "fill" "#ff0066",
 	  Ester.getProp "path" "img/box.png"
 	]}) 
+
+addWalls :: forall t. Number ->  Eff t Unit
+addWalls level = do
+	let boardWidth = GameConfig.boardWidth
+	let boardHeight = GameConfig.boardHeight
+	let groundHeight = GameConfig.groundHeight
+	let groundY = boardHeight - groundHeight
+	let marioX = GameConfig.startX
+
+	_ <- addBarier 1.0 "Wall1" marioX groundY
+	_ <- addVerticalBarier 2.0 "Wall2" marioX groundY
+	_ <- addBarier 3.0 "Wall3" marioX groundY
+	_ <- addVerticalBarier 4.0 "Wall4" marioX groundY
+	_ <- addBarier 5.0 "Wall5" marioX groundY
+	addBarier 6.0 "Wall6" marioX groundY
 
 
 addBarier ::  forall t. Number -> String -> Number -> Number -> Eff t Unit

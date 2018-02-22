@@ -4,17 +4,27 @@ import Prelude
 import Mario.GameConfig as GameConfig
 import Data.Number.Format (toString)
 import PrestoDOM.Core (Prop)
-import PrestoDOM.Elements (linearLayout, textView)
+import PrestoDOM.Elements (linearLayout, textView, relativeLayout)
 import PrestoDOM.Events (onClick)
-import PrestoDOM.Properties (background, color, fontStyle, gravity, height, id_, margin, name, orientation, padding, text, textSize, weight, width)
+import PrestoDOM.Properties (background, color, fontStyle, gravity, height, id_, margin, name, orientation, padding, text, textSize, weight, width, visibility)
 import PrestoDOM.Types (Length(..), VDom)
 
 import Mario.Types
 
 -- | The Primary Game Screen
-gameScreem :: forall r p. GameState -> VDom (Array (Prop p)) r
-gameScreem state = linearLayout
-              [ id_ "1"
+windowScreen :: forall r p. GameState -> VDom (Array (Prop p)) r
+windowScreen state = relativeLayout
+              [ id_ "windowScreen"
+              , height Match_Parent
+              , width Match_Parent
+              ]
+              [ gameScreen state,
+                popupWindow state
+              ]
+
+gameScreen :: forall r p. GameState -> VDom (Array (Prop p)) r
+gameScreen state = linearLayout
+              [ id_ "gameScreen"
               , height Match_Parent
               , width Match_Parent
               , orientation "vertical"
@@ -22,7 +32,58 @@ gameScreem state = linearLayout
               [   getTopPane state.gameTime
                 , getGameBoardHolder
                 , getBottomPane
+              ]              
+
+-- | The Primary Game Screen
+popupWindow :: forall r p. GameState -> VDom (Array (Prop p)) r
+popupWindow state = linearLayout
+              [ id_ "popupWindow"
+              , height Match_Parent
+              , width Match_Parent
+              , gravity "center_horizontal"
+              , background "#99000000"
+              , visibility (_isGameOver)
+              , orientation "vertical"
               ]
+              [   textView
+                  [ height (V 200) 
+                    , width (V 300) 
+                    , margin "0,30,0,0"
+                    , text ( "Can you survive "<> toString (GameConfig.gameTime / 100.0 )<> " seconds ?" )
+                    , textSize "26"
+                    , fontStyle "Source Sans Pro-Regular"
+                    , gravity "center_horizontal"
+                    , color "#FFFFFF"
+                    ]
+                  , 
+                  linearLayout
+                  [ height (V 0)
+                    , width Match_Parent
+                    , gravity "center"
+                    , weight "1"
+                  ]
+                  [
+                    textView
+                    [ height (V 20) 
+                      , width Match_Parent
+                      , text (_msgTxt)
+                      , fontStyle "Source Sans Pro-Regular"
+                      , gravity "center"
+                      , color "#FFFFFF"
+                    ]
+                  ]
+              ] where
+                _isGameOver = case state.gameStatus of
+                                    E_GameOver -> "visible"
+                                    E_Stop -> "visible"
+                                    E_Win -> "visible"
+                                    _ -> "gone"
+                
+                _msgTxt = case state.gameStatus of
+                                    E_GameOver -> ( "Game Over"<> "\n\nYou had to survive " <> toString ( state.gameTime / 100.0 ) <> "seconds more" <> "\n\nPress R To Retry" )
+                                    E_Stop -> "Press Space To Start "
+                                    E_Win -> "VICTORY"<>"\n\nPress Space To Play Again "
+                                    _ -> "BOX CHASER"                                    
 
 
 getButtonUI :: forall t18 t19 t38.             
@@ -75,7 +136,7 @@ getTopPane timeLeft = linearLayout
                               , gravity "center"
                               , color "#FFFFFF"
                              ]
-                          , linearLayout [ height (V 1), width (V 0), weight "1"] []   
+                          , linearLayout [ height Match_Parent, width (V 0), weight "1"] []   
                           , textView
                              [
                                 id_ "gameName2"
@@ -102,7 +163,7 @@ getBottomPane = linearLayout
                         , padding "20,20,20,20"
                         ]
                         [   
-                            linearLayout [ height (V 1), width (V 0), weight "1"] []
+                            linearLayout [ height Match_Parent, width (V 0), weight "1", gravity "center_vertical" ] [ textView [ height (V 40), width (V 350), text "Use arrow keys or W/A/D to move", fontStyle "Source Sans Pro-Regular", textSize "22", gravity "center", color "#FFFFFF", padding "50,0,0,0" ] ]
                             , getButtonUI { name : "playButton"   , text : "PLAY (P)"   , buttonColor : "#ff0066" }
                             , getButtonUI { name : "pauseButton"  , text : "PAUSE (P)"  , buttonColor : "#ff0066" }
                             , getButtonUI { name : "stopButton"  , text : "STOP (Q)"  , buttonColor : "#ff0066" }

@@ -5,7 +5,7 @@ import Mario.Types (Direction(..), GameInterval, GameTime, Keys(..), Model(..))
 
 
 gameTime :: Number
-gameTime = 10.0 * 100.0
+gameTime = 8.0 * 100.0
 
 boardWidth :: Number
 boardWidth = 1000.0
@@ -39,6 +39,9 @@ enemyWidth = 25.0
 
 startX :: Number
 startX = 50.0
+
+startLevel :: Number
+startLevel = 1.0
 
 startY :: Number
 startY = boardHeight - groundHeight - marioHeight - 25.0
