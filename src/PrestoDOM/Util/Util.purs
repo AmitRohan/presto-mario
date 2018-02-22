@@ -11,7 +11,7 @@ import DOM (DOM)
 import FRP as F
 import FRP.Behavior as B
 import FRP.Event as E
-import Halogen.VDom (Step(..), VDom, VDomMachine, VDomSpec(..), buildVDom, extract)
+import Halogen.VDom (Step(Step), VDom, VDomMachine, VDomSpec(VDomSpec), buildVDom)
 import Halogen.VDom.Machine (never, step, extract)
 import PrestoDOM.Core
 

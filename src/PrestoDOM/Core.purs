@@ -9,21 +9,22 @@ module PrestoDOM.Core
 
 import Prelude
 
-import Data.Foreign (Foreign)
-import Data.Maybe (Maybe(..))
-import Data.Tuple (Tuple)
+
+
+
 import Data.Generic (class Generic)
-import Data.Maybe (Maybe(..))
 
-import Data.Newtype (class Newtype, unwrap)
 
-import Halogen.VDom.DOM.Prop (ElemRef(..), Prop(..), PropValue, propFromBoolean, propFromInt, propFromNumber, propFromString)
+import Data.Newtype (class Newtype)
+
+import Halogen.VDom.DOM.Prop (PropValue, propFromBoolean, propFromInt, propFromNumber, propFromString)
 
 import Halogen.VDom.DOM.Prop (Prop(..), PropValue) as Exports
 
-import PrestoDOM.Types (Length(..), renderLength)
+import PrestoDOM.Types (Length, renderLength)
 
 foreign import click :: MEvent
+foreign import getId :: String
 
 data MEvent
 

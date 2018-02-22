@@ -1,9 +1,9 @@
 module PrestoDOM.Events where
 
 
-import Data.Tuple (Tuple(..))
+
 import Data.Maybe (Maybe(..))
-import DOM.Event.Types (EventType(..), Event) as DOM
+import DOM.Event.Types (EventType(EventType)) as DOM
 import PrestoDOM.Core (Prop(..))
 
 -- domName :: AttrValue -> Prop

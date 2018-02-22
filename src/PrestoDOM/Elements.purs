@@ -26,13 +26,13 @@ module PrestoDOM.Elements
 
 
 import Data.Maybe (Maybe(..))
-import Data.Array
+
 
 import Data.Tuple (Tuple)
 
 import PrestoDOM.Types (ElemName(..), ElemSpec(..), VDom(..))
 
-import PrestoDOM.Core
+import PrestoDOM.Core (Prop)
 
 type Node i p
    = Array i
