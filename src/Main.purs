@@ -33,7 +33,8 @@ import Control.Monad.Eff.Console (CONSOLE)
 foreign import openUrl :: forall eff  a. a -> Eff eff Unit
 
 
-widget :: forall i r p. i -> VDom (Array (Prop p)) r
+-- | The Primary Game Screen
+widget :: forall r p. GameState -> VDom (Array (Prop p)) r
 widget state = linearLayout
               [ id_ "1"
               , height Match_Parent
@@ -55,6 +56,7 @@ main = do
   U.render (widget state) listen
   pure unit
 
+-- | Here we update the Key Press status 
 updateKeyState ::  forall t . Boolean -> Int -> Eff t GameState
 updateKeyState mode key
   | key == 37 || key == 72 || key == 65 = U.updateState "keyLeft" mode

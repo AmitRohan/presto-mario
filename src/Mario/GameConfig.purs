@@ -5,10 +5,10 @@ import Mario.Types (Direction(..), GameInterval, GameTime, Keys(..), Model(..))
 
 
 boardWidth :: Number
-boardWidth = 1200.0
+boardWidth = 1000.0
 
 boardWidthInt :: Int
-boardWidthInt = 1200
+boardWidthInt = 1000
 
 boardHeight :: Number
 boardHeight = 500.0

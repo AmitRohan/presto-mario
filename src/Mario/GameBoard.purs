@@ -16,7 +16,7 @@ initBoard = do
 	let groundY = boardHeight - groundHeight
 	let marioX = GameConfig.startX
 	--give a jump to mario at init
-	let marioY = GameConfig.startY - 50.0  
+	let marioY = GameConfig.startY - 200.0  
 	_ <- Ester.initGameBoard (Ester.GameBoard { id : "gameBoard", height : boardHeight , width : boardWidth })
 
 	_ <- Ester.addGameObject (Ester.SvgName "World") (Ester.Node { name : "Sky", nodeType : "Rectangle" , props : [ 
@@ -24,7 +24,7 @@ initBoard = do
 	  Ester.getProp "width" (toString boardWidth),
 	  Ester.getProp "x" "0",
 	  Ester.getProp "y" "0",
-	  Ester.getProp "fill" "#0000ff"
+	  Ester.getProp "fill" "#90CAF9"
 	]}) 
 
 	_ <- Ester.addGameObject (Ester.SvgName "World") (Ester.Node { name : "Obstacles", nodeType : "Group" , props : [ Ester.getProp "x" "0", Ester.getProp "y" "0" ]}) 
@@ -34,7 +34,7 @@ initBoard = do
 	  Ester.getProp "width" (toString boardWidth),
 	  Ester.getProp "x" "0",
 	  Ester.getProp "y" (toString groundY),
-	  Ester.getProp "fill" "#ff0066",
+	  Ester.getProp "fill" "#4E342E",
 	  Ester.getProp "path" "img/ground.png"
 	]}) 
 	_ <- addBarier 1.0 "Wall1" marioX groundY
@@ -59,7 +59,7 @@ addBarier barierCount barierType marioX groundY= Ester.addGameObject (Ester.SvgN
 	  Ester.getProp "width" "50",
 	  Ester.getProp "x" (toString ( marioX + barierCount * 150.0) ),
 	  Ester.getProp "y" (toString (groundY-(barierCount/4.0 * 100.0)) ),
-	  Ester.getProp "fill" "#22ff22",
+	  Ester.getProp "fill" "#00E676",
 	  Ester.getProp "path" "img/wall.png"
 	]}) 	
 
@@ -69,6 +69,6 @@ addVerticalBarier barierCount barierType marioX groundY= Ester.addGameObject (Es
 	  Ester.getProp "width" "100",
 	  Ester.getProp "x" (toString ( marioX + barierCount * 150.0) ),
 	  Ester.getProp "y" (toString ( groundY - ( (barierCount/4.0) * 280.0 ) ) ) ,
-	  Ester.getProp "fill" "#22ff22",
+	  Ester.getProp "fill" "#00E676",
 	  Ester.getProp "path" "img/wall.png"
 	]}) 	

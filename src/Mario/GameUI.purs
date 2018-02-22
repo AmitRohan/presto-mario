@@ -46,7 +46,7 @@ getControlPane = linearLayout
                         [ id_ "8"
                         , height (V 100)
                         , width Match_Parent
-                        , background "#ffffff"
+                        , background "#000000"
                         ]
                         [ 
                             getApplyButtonUI { name : "resetButton" , text : "RESET" , buttonColor : "#ff0066"}

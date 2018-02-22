@@ -123,50 +123,21 @@ exports.removeGameObject = function(name) {
   }
 }
 
-
-// // { x, y , vx , vy } and Y axis is inversed
-// var collDet = function (r1,r2,obj) {
-//   // if ( (r1.y + r1.h > r2.y ) && (r1.x + r1.w > r2.x ) &&(r1.x < r2.x + r2.w ) && (r1.y < r2.y + r2.h) ) { 
-
-//   if (  (  r1.x  <  r2.x + r2.w  )  &&  ( r1.x + r1.w  >  r2.x  )  && (  r1.y  <  r2.y + r2.h  )  && (  r1.y + r1.h  >  r2.y  )  )
-//       {
-//           var dx = (r1.x + r1.w/2 ) + (r2.x + r2.w/2 )
-//           var dy = (r1.y + r1.h/2 ) + (r2.h + r2.h/2 )
-//           if( Math.max(dx,-dx) < Math.max(dy,-dy) ){
-//             if ( r1.vy >= 0.0 && r1.y + r1.h > r2.y)
-//               return "top"  
-//             if ( r1.vy <= 0.0 && r1.y > r2.y + r2.h )
-//               return "bottom"
-//           }else{
-//             if ( r1.vx >= 0.0 && r1.x + r1.w > r2.x )
-//               return "right"
-//             if ( r1.vx <= 0.0 && r1.x >  r2.x + r2.w)
-//               return "left"
-//           }
-//       }
-//       else {
-//         return "none"
-//       }
-// }
-
 // { x, y , vx , vy } and Y axis is inversed
 var collDet = function (obj,name,r1,r2) {
   if (  (  r1.x  <  r2.x + r2.w  )  &&  ( r1.x + r1.w  >  r2.x  )  && (  r1.y  <  r2.y + r2.h  )  && (  r1.y + r1.h  >  r2.y  )  )
       {   
-
-        
-
           if( r1.vy != 0.0 ){
-            if ( ( r1.y + r1.h ) >= r2.y && obj.yP === "None")
+            if ( ( r1.y + r1.h + 2 ) > r2.y && obj.yP === "None")
                 obj.yP  = name
-            if ( r1.y >= ( r2.y + r2.h ) && obj.yM === "None")
+            if ( ( r1.y + 2 ) > ( r2.y + r2.h ) && obj.yM === "None")
                 obj.yM  = name
           }
 
           if(r1.vx != 0.0 ){
-            if (  ( r1.x + r1.w ) >= r2.x && obj.xP === "None")
+            if (  ( r1.x + r1.w + 2 ) > r2.x && obj.xP === "None")
                 obj.xP  = name
-            if (  r1.x >= ( r2.x + r2.w ) && obj.xM === "None")
+            if (  ( r1.x + 2 ) > ( r2.x + r2.w ) && obj.xM === "None")
                 obj.xM  = name
           }
       }
