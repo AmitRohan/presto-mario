@@ -36,7 +36,8 @@ type GameState =
   , keyBottom :: Boolean
   , keyLeft :: Boolean
   , keyRight :: Boolean
-  , mario :: Model
+  , keyHelp :: Boolean
+  , player1 :: Model
   , enemy1 :: Model
   , enemy2 :: Model
   , enemy3 :: Model

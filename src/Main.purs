@@ -34,7 +34,7 @@ resetState = do
   _ <- U.updateState "enemy3" (GameConfig.enemyAt 3.0)
   _ <- U.updateState "gameTime" GameConfig.gameTime
   _ <- U.updateState "gameLevel" GameConfig.startLevel
-  U.updateState "mario" GameConfig.baseMario
+  U.updateState "player1" GameConfig.basePlayer
 
 -- | The entry point of the game. Here we initialize the state, create the entities, and starts rendering the game
 main :: forall t195. Eff ( dom :: DOM , console :: CONSOLE , frp :: FRP | t195 ) Unit
@@ -55,8 +55,9 @@ updateKeyPress key
   | key == 38 || key == 75 || key == 87 = U.updateState "keyTop" true
   | key == 39 || key == 76 || key == 68 = U.updateState "keyRight" true
   | key == 40 || key == 74 || key == 83 = U.updateState "keyBottom" true
-  | key == 82 = U.updateState "gameStatus" E_Restart -- R
+  | key == 72 = U.updateState "keyHelp" true -- H 
   | key == 81 = U.updateState "gameStatus" E_Stop -- Q
+  | key == 82 = U.updateState "gameStatus" E_Restart -- R
   | key == 32 || key == 80 = do  -- Space or P
                 t <- U.getState
                 case t.gameStatus of 
@@ -70,6 +71,7 @@ updateKeyRelease key
   | key == 38 || key == 75 || key == 87 = U.updateState "keyTop" false
   | key == 39 || key == 76 || key == 68 = U.updateState "keyRight" false
   | key == 40 || key == 74 || key == 83 = U.updateState "keyBottom" false
+  | key == 72 = U.updateState "keyHelp" false -- Help 
   | otherwise = U.getState
  
 getDirection :: GameState -> Keys
@@ -85,13 +87,18 @@ getDirection s = Keys { x : xVal , y : yVal } where
 listen :: forall e. Eff (console :: CONSOLE, frp :: FRP | e) (Eff (frp :: FRP, console :: CONSOLE | e) Unit)
 listen = do
   s <- U.getState
+  -- Add Init GameBaord
   _ <- GameBoard.initBoard
+  -- Add Walls in GameBaord
   _ <- GameBoard.addWalls s.gameLevel
-  _ <- GameBoard.spawnEnemy "Enemy1" s.enemy1 
-  _ <- GameBoard.spawnEnemy "Enemy2" s.enemy2
-  _ <- GameBoard.spawnEnemy "Enemy3" s.enemy3
+  -- Spawn Player && Enemy in GameBaord
+  _ <- GameBoard.spawnPlayer "Player1" s.mario 
+  _ <- GameBoard.spawnEnemy "Nick" s.enemy1 
+  _ <- GameBoard.spawnEnemy "Sam" s.enemy2
+  _ <- GameBoard.spawnEnemy "Harry" s.enemy3
   
   
+  -- Subscribe to click events to toggle states
   playGame <- U.signal "playButton" "onClick" Nothing
   _ <- playGame.event `subscribe` (\_ -> U.updateState "gameStatus" E_Play )
 
@@ -127,7 +134,6 @@ checkSquareTouch (Model mario) (Model enemy) range = not ( ( mario.x <= enemy.x 
 eval :: forall e. Number -> Eff (console :: CONSOLE | e) GameState
 eval _ = do
   s <- U.getState
-  let l = Ester.logAny s
   if s.gameTime > 0.0 
       then do
         ns <- updateUI s.gameStatus
@@ -146,14 +152,14 @@ updateUI gameStatus = case gameStatus of
     -- E_GameOver -> U.updateState "gameStatus" E_GameOver
     E_Play -> do
                   s <- U.getState
-                  if checkTouch s.mario s.enemy1 GameConfig.marioWidth GameConfig.marioHeight 
-                    && checkTouch s.mario s.enemy2 GameConfig.marioWidth GameConfig.marioHeight 
-                    && checkTouch s.mario s.enemy3 GameConfig.marioWidth GameConfig.marioHeight
+                  if checkTouch s.player1 s.enemy1 GameConfig.marioWidth GameConfig.marioHeight 
+                    && checkTouch s.player1 s.enemy2 GameConfig.marioWidth GameConfig.marioHeight 
+                    && checkTouch s.player1 s.enemy3 GameConfig.marioWidth GameConfig.marioHeight
                     then do
                       let timeLeft = s.gameTime - 1.0
                       let currDirection = getDirection s 
-                      let newMario = BoxManager.step "Mario" GameConfig.tickInterval currDirection s.mario
-                      _ <- GameBoard.patchBoard "Mario" newMario
+                      let newPlayer = BoxManager.updatePlayer "Player1" GameConfig.tickInterval currDirection s.player1
+                      _ <- GameBoard.patchBoard "Player1" newPlayer
                       let newEnemy1 = EnemyManager.updateEnemy "Enemy1" GameConfig.tickInterval newMario s.enemy1
                       let newEnemy2 = EnemyManager.updateEnemy "Enemy2" GameConfig.tickInterval newMario s.enemy2
                       let newEnemy3 = EnemyManager.updateEnemy "Enemy3" GameConfig.tickInterval newMario s.enemy3
@@ -164,12 +170,12 @@ updateUI gameStatus = case gameStatus of
                       _ <- U.updateState "enemy1" newEnemy1    
                       _ <- U.updateState "enemy2" newEnemy2    
                       _ <- U.updateState "enemy3" newEnemy3    
-                      U.updateState "mario" newMario
+                      U.updateState "mario" newPlayer
                     else
                       U.updateState "gameStatus" E_GameOver
     E_Stop -> do
         s <- resetState
-        _ <- GameBoard.patchBoard "Mario" s.mario
+        _ <- GameBoard.patchBoard "Player1" s.player1
         _ <- GameBoard.patchBoard "Enemy1" s.enemy1
         _ <- GameBoard.patchBoard "Enemy2" s.enemy2
         _ <- GameBoard.patchBoard "Enemy3" s.enemy3

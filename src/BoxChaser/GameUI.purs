@@ -1,6 +1,6 @@
 module BoxChaser.GameUI where
 
-import Prelude 
+import Prelude ((/), (<>))
 import BoxChaser.Types
 import BoxChaser.GameConfig as GameConfig
 import Data.Number.Format (toString)
@@ -18,7 +18,8 @@ windowScreen state = relativeLayout
               , width Match_Parent
               ]
               [ gameScreen state,
-                popupWindow state
+                popupWindow state,
+                helpWindow state
               ]
 
 gameScreen :: forall r p. GameState -> VDom (Array (Prop p)) r
@@ -82,8 +83,43 @@ popupWindow state = linearLayout
                                     E_GameOver -> ( "Game Over"<> "\n\nYou had to survive " <> toString ( state.gameTime / 100.0 ) <> "seconds more" <> "\n\nPress R To Retry" )
                                     E_Stop -> "Press Space To Start "
                                     E_Win -> "VICTORY"<>"\n\nPress Space To Play Again "
-                                    _ -> "BOX CHASER"                                    
+                                    _ -> "BOX CHASER" 
 
+-- | The Primary Game Screen
+helpWindow :: forall r p. GameState -> VDom (Array (Prop p)) r
+helpWindow state = linearLayout
+              [ id_ "helpWindow"
+              , height Match_Parent
+              , width Match_Parent
+              , gravity "center"
+              , visibility (_isHelpPressed)
+              ]
+              [    
+                  linearLayout
+                  [ height (V 500)
+                    , width (V 500)
+                    , gravity "center"
+                    , background "#AA000000"
+                    , weight "1"
+                  ]
+                  [
+                    textView
+                    [ height Match_Parent 
+                      , width Match_Parent
+                      , text (msgTxt)
+                      , fontStyle "Source Sans Pro-Regular"
+                      , gravity "center"
+                      , color "#FFFFFF"
+                    ]
+                  ]
+              ] where
+                _isHelpPressed = if state.keyHelp then "visible" else "gone"
+                
+                msgTxt = "LEFT : A or Left Arrow" 
+                  <> "\n RIGHT : D or Right Arrow" 
+                  <> "\n JUMP : W or Top Arrow to jump" 
+                  <> "\n\n" 
+                  <> "\n Try to outsmart the chasers" 
 
 getButtonUI :: forall t18 t19 t38.             
   { name :: String              

@@ -25,11 +25,11 @@ groundHeight = 62.0
 groundWidth :: Number
 groundWidth = boardWidth
 
-marioHeight :: Number
-marioHeight = 40.0
+boxHeight :: Number
+boxHeight = 40.0
 
-marioWidth :: Number
-marioWidth = 40.0
+boxWidth :: Number
+boxWidth = 40.0
 
 enemyHeight :: Number
 enemyHeight = 25.0
@@ -44,7 +44,7 @@ startLevel :: Number
 startLevel = 1.0
 
 startY :: Number
-startY = boardHeight - groundHeight - marioHeight - 25.0
+startY = boardHeight - groundHeight - boxHeight - 25.0
 
 framesPerSercondInt :: Int
 framesPerSercondInt = 1000
@@ -67,9 +67,9 @@ tickAt gameTime interval = gameTime + interval
 baseTick :: GameTime
 baseTick = 0.0
 
--- Initial MarioConfig
-baseMario :: Model
-baseMario =
+-- Initial Player Config
+basePlayer :: Model
+basePlayer =
 		Model { x : startX
 	    , y : startY 
 	    , vx : 0.0

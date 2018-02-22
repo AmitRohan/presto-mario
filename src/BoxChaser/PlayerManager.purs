@@ -6,8 +6,8 @@ import Ester as Ester
 import BoxChaser.Types (Direction(..), Keys(..), Model(..))
 
 -- GAME LOGIC TO MOFICY GAME OBCECTS 
-step :: String -> Number -> Keys -> Model -> Model
-step name dt keys mario =
+updatePlayer :: String -> Number -> Keys -> Model -> Model
+updatePlayer name dt keys mario =
 		mario
 			# walk keys
 			# jump keys

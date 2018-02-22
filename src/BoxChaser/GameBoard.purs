@@ -30,21 +30,13 @@ initBoard = do
 	]}) 
 
 	_ <- Ester.addGameObject (Ester.SvgName "World") (Ester.Node { name : "Obstacles", nodeType : "Group" , props : [ Ester.getProp "x" "0", Ester.getProp "y" "0" ]}) 
-	_ <- Ester.addGameObject (Ester.SvgName "Obstacles") (Ester.Node { name : "Ground", nodeType : "Rectangle" , props :[ 
+ 	Ester.addGameObject (Ester.SvgName "Obstacles") (Ester.Node { name : "Ground", nodeType : "Rectangle" , props :[ 
 	  Ester.getProp "height" (toString groundHeight),
 	  Ester.getProp "width" (toString boardWidth),
 	  Ester.getProp "x" "0",
 	  Ester.getProp "y" (toString groundY),
 	  Ester.getProp "fill" "#4E342E",
 	  Ester.getProp "path" "img/ground.png"
-	]}) 
-	Ester.addGameObject (Ester.SvgName "World") (Ester.Node { name : "Mario", nodeType : "Rectangle" , props : [ 
-	  Ester.getProp "height" (toString GameConfig.marioHeight),
-	  Ester.getProp "width" (toString GameConfig.marioWidth),
-	  Ester.getProp "x" (toString marioX),
-	  Ester.getProp "y" (toString marioY),
-	  Ester.getProp "fill" "#ff0066",
-	  Ester.getProp "path" "img/box.png"
 	]}) 
 
 addWalls :: forall t. Number ->  Eff t Unit
@@ -90,6 +82,16 @@ spawnEnemy enemyName (Model enemyObject) = Ester.addGameObject (Ester.SvgName "W
 	  Ester.getProp "x" (toString enemyObject.x),
 	  Ester.getProp "y" (toString enemyObject.y),
 	  Ester.getProp "fill" "#6600ff"
+	]}) 
+
+spawnPlayer ::  forall t. String -> Model -> Eff t Unit
+spawnPlayer playerName (Model player) = Ester.addGameObject (Ester.SvgName "World") (Ester.Node { name : playerName, nodeType : "Rectangle" , props : [ 
+	  Ester.getProp "height" (toString GameConfig.playerHeight),
+	  Ester.getProp "width" (toString GameConfig.playerWidth),
+	  Ester.getProp "x" (toString player.x),
+	  Ester.getProp "y" (toString player.y),
+	  Ester.getProp "fill" "#ff0066",
+	  Ester.getProp "path" "img/box.png"
 	]}) 
 
 -- Update The Object based on id and model
