@@ -1,66 +1,66 @@
 /******/ (function(modules) { // webpackBootstrap
-/******/    // The module cache
-/******/    var installedModules = {};
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
 /******/
-/******/    // The require function
-/******/    function __webpack_require__(moduleId) {
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
 /******/
-/******/        // Check if module is in cache
-/******/        if(installedModules[moduleId]) {
-/******/            return installedModules[moduleId].exports;
-/******/        }
-/******/        // Create a new module (and put it into the cache)
-/******/        var module = installedModules[moduleId] = {
-/******/            i: moduleId,
-/******/            l: false,
-/******/            exports: {}
-/******/        };
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
 /******/
-/******/        // Execute the module function
-/******/        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/
-/******/        // Flag the module as loaded
-/******/        module.l = true;
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
 /******/
-/******/        // Return the exports of the module
-/******/        return module.exports;
-/******/    }
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
 /******/
 /******/
-/******/    // expose the modules object (__webpack_modules__)
-/******/    __webpack_require__.m = modules;
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
 /******/
-/******/    // expose the module cache
-/******/    __webpack_require__.c = installedModules;
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/    // define getter function for harmony exports
-/******/    __webpack_require__.d = function(exports, name, getter) {
-/******/        if(!__webpack_require__.o(exports, name)) {
-/******/            Object.defineProperty(exports, name, {
-/******/                configurable: false,
-/******/                enumerable: true,
-/******/                get: getter
-/******/            });
-/******/        }
-/******/    };
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
 /******/
-/******/    // getDefaultExport function for compatibility with non-harmony modules
-/******/    __webpack_require__.n = function(module) {
-/******/        var getter = module && module.__esModule ?
-/******/            function getDefault() { return module['default']; } :
-/******/            function getModuleExports() { return module; };
-/******/        __webpack_require__.d(getter, 'a', getter);
-/******/        return getter;
-/******/    };
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
 /******/
-/******/    // Object.prototype.hasOwnProperty.call
-/******/    __webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
-/******/    // __webpack_public_path__
-/******/    __webpack_require__.p = "";
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
 /******/
-/******/    // Load entry module and return exports
-/******/    return __webpack_require__(__webpack_require__.s = 248);
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 248);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -31607,68 +31607,68 @@ module.exports=function(t){var e={};function n(r){if(e[r])return e[r].exports;va
 
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
-/******/    // The module cache
-/******/    var installedModules = {};
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
 /******/
-/******/    // The require function
-/******/    function __webpack_require__(moduleId) {
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
 /******/
-/******/        // Check if module is in cache
-/******/        if(installedModules[moduleId]) {
-/******/            return installedModules[moduleId].exports;
-/******/        }
-/******/        // Create a new module (and put it into the cache)
-/******/        var module = installedModules[moduleId] = {
-/******/            i: moduleId,
-/******/            l: false,
-/******/            exports: {}
-/******/        };
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
 /******/
-/******/        // Execute the module function
-/******/        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/
-/******/        // Flag the module as loaded
-/******/        module.l = true;
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
 /******/
-/******/        // Return the exports of the module
-/******/        return module.exports;
-/******/    }
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
 /******/
 /******/
-/******/    // expose the modules object (__webpack_modules__)
-/******/    __webpack_require__.m = modules;
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
 /******/
-/******/    // expose the module cache
-/******/    __webpack_require__.c = installedModules;
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/    // define getter function for harmony exports
-/******/    __webpack_require__.d = function(exports, name, getter) {
-/******/        if(!__webpack_require__.o(exports, name)) {
-/******/            Object.defineProperty(exports, name, {
-/******/                configurable: false,
-/******/                enumerable: true,
-/******/                get: getter
-/******/            });
-/******/        }
-/******/    };
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
 /******/
-/******/    // getDefaultExport function for compatibility with non-harmony modules
-/******/    __webpack_require__.n = function(module) {
-/******/        var getter = module && module.__esModule ?
-/******/            function getDefault() { return module['default']; } :
-/******/            function getModuleExports() { return module; };
-/******/        __webpack_require__.d(getter, 'a', getter);
-/******/        return getter;
-/******/    };
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
 /******/
-/******/    // Object.prototype.hasOwnProperty.call
-/******/    __webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
-/******/    // __webpack_public_path__
-/******/    __webpack_require__.p = "";
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
 /******/
-/******/    // Load entry module and return exports
-/******/    return __webpack_require__(__webpack_require__.s = 146);
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 146);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -37102,7 +37102,7 @@ module.exports = defaults;
 */
 
 module.exports = {
-    parseParams: __webpack_require__(73)
+	parseParams: __webpack_require__(73)
 };
 
 /***/ }),
@@ -37397,9 +37397,9 @@ module.exports = function (type, config, getSetType) {
 */
 
 module.exports = {
-    parseParams: __webpack_require__(75),
-    mapPrams: __webpack_require__(76),
-    callbackMapper: __webpack_require__(77)
+	parseParams: __webpack_require__(75),
+	mapPrams: __webpack_require__(76),
+	callbackMapper: __webpack_require__(77)
 };
 
 /***/ }),
@@ -41283,10 +41283,10 @@ module.exports = {
 */
 
 module.exports = {
-    android: __webpack_require__(74),
-    ios: __webpack_require__(350),
-    web: __webpack_require__(72),
-    common: __webpack_require__(354)
+	android: __webpack_require__(74),
+	ios: __webpack_require__(350),
+	web: __webpack_require__(72),
+	common: __webpack_require__(354)
 };
 
 /***/ }),
@@ -42444,13 +42444,13 @@ module.exports = Cancel;
 */
 
 module.exports = {
-    doms: __webpack_require__(5),
-    handler: __webpack_require__(134),
-    helpers: __webpack_require__(135),
-    views: __webpack_require__(355),
-    baseView: __webpack_require__(4),
-    init: __webpack_require__(372),
-    animations: __webpack_require__(138)
+	doms: __webpack_require__(5),
+	handler: __webpack_require__(134),
+	helpers: __webpack_require__(135),
+	views: __webpack_require__(355),
+	baseView: __webpack_require__(4),
+	init: __webpack_require__(372),
+	animations: __webpack_require__(138)
 };
 
 /***/ }),
@@ -50761,7 +50761,7 @@ var zipWith = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__internal_curry3__
 */
 
 module.exports = {
-    parseParams: __webpack_require__(48)
+	parseParams: __webpack_require__(48)
 };
 
 /***/ }),
@@ -50883,24 +50883,24 @@ module.exports = function flattenObject(ob) {
 */
 
 module.exports.map = function (fn) {
-    if (typeof window.__FN_INDEX !== 'undefined' && window.__FN_INDEX !== null) {
-        var proxyFnName = 'F' + window.__FN_INDEX;
-        window.__PROXY_FN[proxyFnName] = fn;
-        window.__FN_INDEX++;
-        return proxyFnName;
-    } else {
-        throw new Error("Please initialise window.__FN_INDEX = 0 in index.js of your project.");
-    }
+	if (typeof window.__FN_INDEX !== 'undefined' && window.__FN_INDEX !== null) {
+		var proxyFnName = 'F' + window.__FN_INDEX;
+		window.__PROXY_FN[proxyFnName] = fn;
+		window.__FN_INDEX++;
+		return proxyFnName;
+	} else {
+		throw new Error("Please initialise window.__FN_INDEX = 0 in index.js of your project.");
+	}
 };
 
 module.exports.callJSCallback = function () {
-    for (var _len = arguments.length, params = Array(_len), _key = 0; _key < _len; _key++) {
-        params[_key] = arguments[_key];
-    }
+	for (var _len = arguments.length, params = Array(_len), _key = 0; _key < _len; _key++) {
+		params[_key] = arguments[_key];
+	}
 
-    var fName = params[0];
-    var functionArgs = params.slice(1);
-    window.__PROXY_FN[fName].call(null, functionArgs);
+	var fName = params[0];
+	var functionArgs = params.slice(1);
+	window.__PROXY_FN[fName].call(null, functionArgs);
 };
 
 /***/ }),
@@ -51035,22 +51035,22 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var Button = function (_View) {
-    _inherits(Button, _View);
+	_inherits(Button, _View);
 
-    function Button(props, children) {
-        _classCallCheck(this, Button);
+	function Button(props, children) {
+		_classCallCheck(this, Button);
 
-        return _possibleConstructorReturn(this, (Button.__proto__ || Object.getPrototypeOf(Button)).call(this, props, children));
-    }
+		return _possibleConstructorReturn(this, (Button.__proto__ || Object.getPrototypeOf(Button)).call(this, props, children));
+	}
 
-    _createClass(Button, [{
-        key: 'render',
-        value: function render() {
-            return dom('button', this.props);
-        }
-    }]);
+	_createClass(Button, [{
+		key: 'render',
+		value: function render() {
+			return dom('button', this.props);
+		}
+	}]);
 
-    return Button;
+	return Button;
 }(View);
 
 module.exports = Button;
@@ -51099,22 +51099,22 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var Calendar = function (_View) {
-    _inherits(Calendar, _View);
+	_inherits(Calendar, _View);
 
-    function Calendar(props, children) {
-        _classCallCheck(this, Calendar);
+	function Calendar(props, children) {
+		_classCallCheck(this, Calendar);
 
-        return _possibleConstructorReturn(this, (Calendar.__proto__ || Object.getPrototypeOf(Calendar)).call(this, props, children));
-    }
+		return _possibleConstructorReturn(this, (Calendar.__proto__ || Object.getPrototypeOf(Calendar)).call(this, props, children));
+	}
 
-    _createClass(Calendar, [{
-        key: 'render',
-        value: function render() {
-            return dom('calendarView', this.props);
-        }
-    }]);
+	_createClass(Calendar, [{
+		key: 'render',
+		value: function render() {
+			return dom('calendarView', this.props);
+		}
+	}]);
 
-    return Calendar;
+	return Calendar;
 }(View);
 
 module.exports = Calendar;
@@ -51163,22 +51163,22 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var CheckBox = function (_View) {
-    _inherits(CheckBox, _View);
+	_inherits(CheckBox, _View);
 
-    function CheckBox(props, children) {
-        _classCallCheck(this, CheckBox);
+	function CheckBox(props, children) {
+		_classCallCheck(this, CheckBox);
 
-        return _possibleConstructorReturn(this, (CheckBox.__proto__ || Object.getPrototypeOf(CheckBox)).call(this, props, children));
-    }
+		return _possibleConstructorReturn(this, (CheckBox.__proto__ || Object.getPrototypeOf(CheckBox)).call(this, props, children));
+	}
 
-    _createClass(CheckBox, [{
-        key: 'render',
-        value: function render() {
-            return dom('checkBox', this.props);
-        }
-    }]);
+	_createClass(CheckBox, [{
+		key: 'render',
+		value: function render() {
+			return dom('checkBox', this.props);
+		}
+	}]);
 
-    return CheckBox;
+	return CheckBox;
 }(View);
 
 module.exports = CheckBox;
@@ -51291,27 +51291,27 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var FrameLayout = function (_View) {
-    _inherits(FrameLayout, _View);
+	_inherits(FrameLayout, _View);
 
-    function FrameLayout(props, children) {
-        _classCallCheck(this, FrameLayout);
+	function FrameLayout(props, children) {
+		_classCallCheck(this, FrameLayout);
 
-        return _possibleConstructorReturn(this, (FrameLayout.__proto__ || Object.getPrototypeOf(FrameLayout)).call(this, props, children));
-    }
+		return _possibleConstructorReturn(this, (FrameLayout.__proto__ || Object.getPrototypeOf(FrameLayout)).call(this, props, children));
+	}
 
-    _createClass(FrameLayout, [{
-        key: 'render',
-        value: function render() {
-            var children = this.resolveChildren();
-            return dom(
-                'frameLayout',
-                this.props,
-                children
-            );
-        }
-    }]);
+	_createClass(FrameLayout, [{
+		key: 'render',
+		value: function render() {
+			var children = this.resolveChildren();
+			return dom(
+				'frameLayout',
+				this.props,
+				children
+			);
+		}
+	}]);
 
-    return FrameLayout;
+	return FrameLayout;
 }(View);
 
 module.exports = FrameLayout;
@@ -51435,24 +51435,24 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var ImageView = function (_View) {
-    _inherits(ImageView, _View);
+	_inherits(ImageView, _View);
 
-    function ImageView(props, children) {
-        _classCallCheck(this, ImageView);
+	function ImageView(props, children) {
+		_classCallCheck(this, ImageView);
 
-        return _possibleConstructorReturn(this, (ImageView.__proto__ || Object.getPrototypeOf(ImageView)).call(this, props, children));
-    }
+		return _possibleConstructorReturn(this, (ImageView.__proto__ || Object.getPrototypeOf(ImageView)).call(this, props, children));
+	}
 
-    _createClass(ImageView, [{
-        key: 'render',
-        value: function render() {
-            var params = this.props;
+	_createClass(ImageView, [{
+		key: 'render',
+		value: function render() {
+			var params = this.props;
 
-            return dom('imageView', params);
-        }
-    }]);
+			return dom('imageView', params);
+		}
+	}]);
 
-    return ImageView;
+	return ImageView;
 }(View);
 
 module.exports = ImageView;
@@ -51596,23 +51596,23 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var ProgressBar = function (_View) {
-    _inherits(ProgressBar, _View);
+	_inherits(ProgressBar, _View);
 
-    function ProgressBar(props, children) {
-        _classCallCheck(this, ProgressBar);
+	function ProgressBar(props, children) {
+		_classCallCheck(this, ProgressBar);
 
-        return _possibleConstructorReturn(this, (ProgressBar.__proto__ || Object.getPrototypeOf(ProgressBar)).call(this, props, children));
-    }
+		return _possibleConstructorReturn(this, (ProgressBar.__proto__ || Object.getPrototypeOf(ProgressBar)).call(this, props, children));
+	}
 
-    _createClass(ProgressBar, [{
-        key: 'render',
-        value: function render() {
-            var params = this.props;
-            return dom('progressBar', params);
-        }
-    }]);
+	_createClass(ProgressBar, [{
+		key: 'render',
+		value: function render() {
+			var params = this.props;
+			return dom('progressBar', params);
+		}
+	}]);
 
-    return ProgressBar;
+	return ProgressBar;
 }(View);
 
 module.exports = ProgressBar;
@@ -51732,27 +51732,27 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var ShimmerFrameLayout = function (_View) {
-    _inherits(ShimmerFrameLayout, _View);
+	_inherits(ShimmerFrameLayout, _View);
 
-    function ShimmerFrameLayout(props, children) {
-        _classCallCheck(this, ShimmerFrameLayout);
+	function ShimmerFrameLayout(props, children) {
+		_classCallCheck(this, ShimmerFrameLayout);
 
-        return _possibleConstructorReturn(this, (ShimmerFrameLayout.__proto__ || Object.getPrototypeOf(ShimmerFrameLayout)).call(this, props, children));
-    }
+		return _possibleConstructorReturn(this, (ShimmerFrameLayout.__proto__ || Object.getPrototypeOf(ShimmerFrameLayout)).call(this, props, children));
+	}
 
-    _createClass(ShimmerFrameLayout, [{
-        key: 'render',
-        value: function render() {
-            var children = this.resolveChildren();
-            return dom(
-                'shimmerFrameLayout',
-                this.props,
-                children
-            );
-        }
-    }]);
+	_createClass(ShimmerFrameLayout, [{
+		key: 'render',
+		value: function render() {
+			var children = this.resolveChildren();
+			return dom(
+				'shimmerFrameLayout',
+				this.props,
+				children
+			);
+		}
+	}]);
 
-    return ShimmerFrameLayout;
+	return ShimmerFrameLayout;
 }(View);
 
 module.exports = ShimmerFrameLayout;
@@ -51801,22 +51801,22 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var Switch = function (_View) {
-    _inherits(Switch, _View);
+	_inherits(Switch, _View);
 
-    function Switch(props, children) {
-        _classCallCheck(this, Switch);
+	function Switch(props, children) {
+		_classCallCheck(this, Switch);
 
-        return _possibleConstructorReturn(this, (Switch.__proto__ || Object.getPrototypeOf(Switch)).call(this, props, children));
-    }
+		return _possibleConstructorReturn(this, (Switch.__proto__ || Object.getPrototypeOf(Switch)).call(this, props, children));
+	}
 
-    _createClass(Switch, [{
-        key: 'render',
-        value: function render() {
-            return dom('switch', this.props);
-        }
-    }]);
+	_createClass(Switch, [{
+		key: 'render',
+		value: function render() {
+			return dom('switch', this.props);
+		}
+	}]);
 
-    return Switch;
+	return Switch;
 }(View);
 
 module.exports = Switch;
@@ -51865,22 +51865,22 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var TabLayout = function (_View) {
-    _inherits(TabLayout, _View);
+	_inherits(TabLayout, _View);
 
-    function TabLayout(props, children) {
-        _classCallCheck(this, TabLayout);
+	function TabLayout(props, children) {
+		_classCallCheck(this, TabLayout);
 
-        return _possibleConstructorReturn(this, (TabLayout.__proto__ || Object.getPrototypeOf(TabLayout)).call(this, props, children));
-    }
+		return _possibleConstructorReturn(this, (TabLayout.__proto__ || Object.getPrototypeOf(TabLayout)).call(this, props, children));
+	}
 
-    _createClass(TabLayout, [{
-        key: 'render',
-        value: function render() {
-            return dom('tabLayout', this.props);
-        }
-    }]);
+	_createClass(TabLayout, [{
+		key: 'render',
+		value: function render() {
+			return dom('tabLayout', this.props);
+		}
+	}]);
 
-    return TabLayout;
+	return TabLayout;
 }(View);
 
 module.exports = TabLayout;
@@ -52089,22 +52089,22 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var WebView = function (_View) {
-    _inherits(WebView, _View);
+	_inherits(WebView, _View);
 
-    function WebView(props, children) {
-        _classCallCheck(this, WebView);
+	function WebView(props, children) {
+		_classCallCheck(this, WebView);
 
-        return _possibleConstructorReturn(this, (WebView.__proto__ || Object.getPrototypeOf(WebView)).call(this, props, children));
-    }
+		return _possibleConstructorReturn(this, (WebView.__proto__ || Object.getPrototypeOf(WebView)).call(this, props, children));
+	}
 
-    _createClass(WebView, [{
-        key: 'render',
-        value: function render() {
-            return dom('webView', this.props);
-        }
-    }]);
+	_createClass(WebView, [{
+		key: 'render',
+		value: function render() {
+			return dom('webView', this.props);
+		}
+	}]);
 
-    return WebView;
+	return WebView;
 }(View);
 
 module.exports = WebView;
