@@ -2,8 +2,6 @@ module Mario.MarioManager where
 
 import Prelude
 
-import Control.Monad.Eff (Eff)
-import Data.Number.Format (toString)
 import Ester as Ester
 import Mario.Types (Direction(..), Keys(..), Model(..))
 

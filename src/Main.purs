@@ -1,6 +1,6 @@
 module Main where
 
-import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (<$>), (==), (||))
+import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (<$>), (==), (||), (-))
 
 import Data.Maybe (Maybe(Nothing))
 import FRP.Event (subscribe)
@@ -21,6 +21,7 @@ import Mario.EnemyManager as EnemyManager
 import Mario.GameBoard as GameBoard
 import Mario.GameConfig as GameConfig
 
+import Mario.Types
 
 import PrestoDOM.Elements (linearLayout) 
 import PrestoDOM.Core
@@ -42,10 +43,18 @@ widget state = linearLayout
               , width Match_Parent
               , orientation "vertical"
               ]
-              [   GameUI.getTopPane
+              [   GameUI.getTopPane state.gameTime
                 , GameUI.getGameBoardHolder
                 , GameUI.getBottomPane
               ]
+
+resetState = do
+  _ <- U.updateState "enemy1" (GameConfig.enemyAt 1.0)
+  _ <- U.updateState "enemy2" (GameConfig.enemyAt 2.0)
+  _ <- U.updateState "enemy3" (GameConfig.enemyAt 3.0)
+  _ <- U.updateState "gameTime" GameConfig.gameTime
+  _ <- U.updateState "gameStatus" E_Stop
+  U.updateState "mario" GameConfig.baseMario
 
 -- | The entry point of the game. Here we initialize the state, create the entities, and starts rendering the game
 main :: forall t195. Eff ( dom :: DOM , console :: CONSOLE , frp :: FRP | t195 ) Unit
@@ -53,9 +62,9 @@ main = do
   --- Init State {} empty record--
   U.initializeState
   --- Update State ----
-  state <- U.updateState "mario" GameConfig.baseMario 
-  _ <- U.updateState "enemy" GameConfig.baseEnemy 
+  state <- resetState
   ---- Render Widget ---
+  let p = Ester.logAny state
   U.render (widget state) listen
   pure unit
 
@@ -84,14 +93,23 @@ getDirection s = Keys { x : if s.keyRight && not s.keyLeft
 -- This function sets up the events to the game and the behaviors. Once that is done, we start patching the dom
 listen :: forall e. Eff (console :: CONSOLE, frp :: FRP | e) (Eff (frp :: FRP, console :: CONSOLE | e) Unit)
 listen = do
+  s <- U.getState
+
   _ <- GameBoard.initBoard
-  _ <- GameBoard.spawnEnemy "Enemy"
+  _ <- GameBoard.spawnEnemy "Enemy1" s.enemy1
+  _ <- GameBoard.spawnEnemy "Enemy2" s.enemy2
+  _ <- GameBoard.spawnEnemy "Enemy3" s.enemy3
+  
   resetGame <- U.signal "resetButton" "onClick" Nothing
   _ <- resetGame.event `subscribe` (\_ -> do
                                             let props = Ester.getGameObjectProps (Ester.SvgName "Mario")
-                                            _ <- U.updateState "enemy" GameConfig.baseEnemy
-                                            U.updateState "mario" GameConfig.baseMario 
+                                            resetState 
                                          )
+  playGame <- U.signal "playButton" "onClick" Nothing
+  _ <- playGame.event `subscribe` (\_ -> U.updateState "gameStatus" E_Play )
+
+  pauseGame <- U.signal "pauseButton" "onClick" Nothing
+  _ <- pauseGame.event `subscribe` (\_ -> U.updateState "gameStatus" E_Pause )
 
   -- Setup keydown events
   _ <- down `subscribe` (\key -> void $ updateKeyState true key)
@@ -108,12 +126,33 @@ listen = do
 eval :: forall e. Number -> Eff (console :: CONSOLE | e) GameState
 eval _ = do
   s <- U.getState
-  let currDirection = getDirection s 
-  let newMario = MarioManager.step "Mario" GameConfig.tickInterval currDirection s.mario
-  _ <- GameBoard.patchBoard "Mario" newMario
-  let newEnemy = EnemyManager.updateEnemy "Enemy" GameConfig.tickInterval newMario s.enemy
-  _ <- GameBoard.patchBoard "Enemy" newEnemy
-
-  newState <- U.updateState "mario" newMario    
-  newState <- U.updateState "enemy" newEnemy    
+  newState <- updateUI s.gameStatus
   pure newState
+
+updateUI:: GameStatus -> Eff _ GameState
+updateUI gameStatus = case gameStatus of
+    E_Play -> do
+                  s <- U.getState
+                  let timeLeft = s.gameTime - 1.0
+                  let currDirection = getDirection s 
+                  let newMario = MarioManager.step "Mario" GameConfig.tickInterval currDirection s.mario
+                  _ <- GameBoard.patchBoard "Mario" newMario
+                  let newEnemy1 = EnemyManager.updateEnemy "Enemy1" GameConfig.tickInterval newMario s.enemy1
+                  let newEnemy2 = EnemyManager.updateEnemy "Enemy2" GameConfig.tickInterval newMario s.enemy2
+                  let newEnemy3 = EnemyManager.updateEnemy "Enemy3" GameConfig.tickInterval newMario s.enemy3
+                  _ <- GameBoard.patchBoard "Enemy1" newEnemy1
+                  _ <- GameBoard.patchBoard "Enemy2" newEnemy2
+                  _ <- GameBoard.patchBoard "Enemy3" newEnemy3
+                  _ <- U.updateState "gameTime" timeLeft
+                  _ <- U.updateState "enemy1" newEnemy1    
+                  _ <- U.updateState "enemy2" newEnemy2    
+                  _ <- U.updateState "enemy3" newEnemy3    
+                  U.updateState "mario" newMario
+    E_Stop -> do
+        s <- resetState
+        _ <- GameBoard.patchBoard "Mario" s.mario
+        _ <- GameBoard.patchBoard "Enemy1" s.enemy1
+        _ <- GameBoard.patchBoard "Enemy2" s.enemy2
+        _ <- GameBoard.patchBoard "Enemy3" s.enemy3
+        U.getState
+    _ -> U.getState

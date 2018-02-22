@@ -1,8 +1,11 @@
 module Mario.GameConfig where
 -- Frame Rate and Tick Interval
-import Prelude ((+), (-), (/))
+import Prelude ((+), (-), (/), (*))
 import Mario.Types (Direction(..), GameInterval, GameTime, Keys(..), Model(..))
 
+
+gameTime :: Number
+gameTime = 10.0 * 100.0
 
 boardWidth :: Number
 boardWidth = 1000.0
@@ -78,9 +81,17 @@ baseEnemy =
 	    , vx : 0.0
 	    , vy : 0.0
 	    , dir : Right
-	    }	    
+	    }	
 
-
+enemyAt :: Number -> Model
+enemyAt index =
+		Model { x : ( startX +  ( 150.0 * index ) )
+	    , y : startY 
+	    , vx : 0.0
+	    , vy : 0.0
+	    , dir : Right
+	    }
+    
 -- Initial KeyConfig 
 baseKeys :: Keys
 baseKeys =

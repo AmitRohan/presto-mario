@@ -74,12 +74,12 @@ addVerticalBarier barierCount barierType marioX groundY= Ester.addGameObject (Es
 	  Ester.getProp "path" "img/wall.png"
 	]})
 
-spawnEnemy :: forall t. String -> Eff t Unit
-spawnEnemy enemyName = Ester.addGameObject (Ester.SvgName "World") (Ester.Node { name : enemyName , nodeType : "Rectangle" , props : [ 
+spawnEnemy ::  forall t. String -> Model -> Eff t Unit
+spawnEnemy enemyName (Model enemyObject) = Ester.addGameObject (Ester.SvgName "World") (Ester.Node { name : enemyName , nodeType : "Rectangle" , props : [ 
 	  Ester.getProp "height" (toString GameConfig.enemyHeight),
 	  Ester.getProp "width" (toString GameConfig.enemyWidth),
-	  Ester.getProp "x" "0",
-	  Ester.getProp "y" "0",
+	  Ester.getProp "x" (toString enemyObject.x),
+	  Ester.getProp "y" (toString enemyObject.y),
 	  Ester.getProp "fill" "#6600ff"
 	]}) 
 

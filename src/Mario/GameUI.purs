@@ -1,8 +1,8 @@
 module Mario.GameUI where
 
-
-import DOM.HTML.HTMLTextAreaElement (cols)
+import Prelude 
 import Mario.GameConfig as GameConfig
+import Data.Number.Format (toString)
 import PrestoDOM.Core (Prop)
 import PrestoDOM.Elements (linearLayout, textView)
 import PrestoDOM.Events (onClick)
@@ -20,7 +20,8 @@ getButtonUI state = linearLayout
                             [
                               name (state.name)
                             , height (V 40)
-                            , width (V 250)
+                            , width (V 150)
+                            , margin "20,0,0,0"
                             , background (state.buttonColor)
                             , gravity "center"
                             , color "#fff000"
@@ -29,8 +30,7 @@ getButtonUI state = linearLayout
                             [
                              textView
                              [
-                                id_ "7"
-                              , height (V 20)
+                                height (V 20)
                               , width Match_Parent
                               , text (state.text)
                               , fontStyle "Source Sans Pro-Regular"
@@ -38,8 +38,8 @@ getButtonUI state = linearLayout
                              ]
                             ]
 
-getTopPane :: forall t37 t38. VDom (Array (Prop t38)) t37
-getTopPane = linearLayout
+getTopPane::forall t2 t3. Number -> VDom (Array (Prop t3)) t2
+getTopPane timeLeft = linearLayout
                         [ id_ "topPane"
                         , height (V 100)
                         , width Match_Parent
@@ -48,7 +48,7 @@ getTopPane = linearLayout
                         , padding "20,20,20,20"
                         ]
                         [ 
-                            textView
+                          textView
                              [
                                 id_ "gameName"
                               , height (V 30)
@@ -59,7 +59,21 @@ getTopPane = linearLayout
                               , gravity "center"
                               , color "#FFFFFF"
                              ]
-                        ]
+                          , linearLayout [ height (V 1), width (V 0), weight "1"] []   
+                          , textView
+                             [
+                                id_ "gameName2"
+                              , height (V 30)
+                              , width (V 300)
+                              , text _timeLeft
+                              , fontStyle "Source Sans Pro-Regular"
+                              , textSize "22"
+                              , gravity "center"
+                              , color "#FFFFFF"
+                             ]  
+                        ] where 
+                            _timeLeft = "Time Left : " <> toString ( timeLeft / 100.0 )
+
 
 getBottomPane :: forall t37 t38. VDom (Array (Prop t38)) t37
 getBottomPane = linearLayout
@@ -73,7 +87,9 @@ getBottomPane = linearLayout
                         ]
                         [   
                             linearLayout [ height (V 1), width (V 0), weight "1"] []
-                            , getButtonUI { name : "resetButton" , text : "RESET" , buttonColor : "#ff0066"}
+                            , getButtonUI { name : "playButton"   , text : "PLAY"   , buttonColor : "#ff0066" }
+                            , getButtonUI { name : "pauseButton"  , text : "PAUSE"  , buttonColor : "#ff0066" }
+                            , getButtonUI { name : "resetButton"  , text : "RESET"  , buttonColor : "#ff0066" }
                         ]                        
 
 -- getGameBoardHolder state { id_ : "svgContainer" , height : "300" , width : "300" , cubeState : state },

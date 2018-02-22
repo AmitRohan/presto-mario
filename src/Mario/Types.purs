@@ -28,6 +28,7 @@ data Keys = Keys { x :: Number , y :: Number }
 type GameTime = Number
 type GameInterval = Number
 
+data GameStatus = E_Pause | E_Play | E_Stop | E_Over
 
 -- | A type for the game state. Consists all the data in the game
 type GameState =
@@ -36,5 +37,9 @@ type GameState =
   , keyLeft :: Boolean
   , keyRight :: Boolean
   , mario :: Model
-  , enemy :: Model
+  , enemy1 :: Model
+  , enemy2 :: Model
+  , enemy3 :: Model
+  , gameTime :: Number
+  , gameStatus :: GameStatus
   }
