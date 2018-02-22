@@ -47,11 +47,11 @@ rotateEnemy (Model mario) (Model enemy) =
 		    , vy : newVY
 		    , dir : mario.dir
 	    } where
-	    	newVY 	| mario.y > enemy.y = 3.0
-	    			| otherwise = -3.0
+	    	newVY 	| mario.y > enemy.y = 2.0
+	    			| otherwise = -2.0
 
-	    	newVX 	| mario.x > enemy.x = 3.0
-	    			| otherwise = -3.0
+	    	newVX 	| mario.x > enemy.x = 2.0
+	    			| otherwise = -2.0
 
 
 

@@ -1,6 +1,6 @@
 module Main where
 
-import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (<$>), (==), (||), (-), (>))
+import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (<$>), (==), (||), (-), (>=), (>), (+), (<=) )
 
 import Data.Maybe (Maybe(Nothing))
 import FRP.Event (subscribe)
@@ -50,7 +50,6 @@ main = do
   _ <- U.updateState "gameStatus" E_Stop
   state <- resetState
   ---- Render Widget ---
-  let p = Ester.logAny state
   U.render (GameUI.gameScreem state) listen
   pure unit
 
@@ -79,17 +78,13 @@ updateKeyRelease key
   | otherwise = U.getState
  
 getDirection :: GameState -> Keys
-getDirection s = Keys { x : if s.keyRight && not s.keyLeft 
-                        then 1.0 
-                        else if not s.keyRight && s.keyLeft
-                          then 2.0
-                            else 3.0 ,
-                      y : if s.keyTop && not s.keyBottom 
-                        then 1.0 
-                        else if not s.keyTop && s.keyBottom
-                          then 2.0
-                            else 3.0          
-                      }
+getDirection s = Keys { x : xVal , y : yVal } where
+                        xVal| s.keyRight && not s.keyLeft = 1.0 
+                            | not s.keyRight && s.keyLeft = 2.0
+                            | otherwise = 3.0
+                        yVal| s.keyTop && not s.keyBottom = 1.0 
+                            | not s.keyTop && s.keyBottom = 2.0
+                            | otherwise = 3.0    
 
 -- This function sets up the events to the game and the behaviors. Once that is done, we start patching the dom
 listen :: forall e. Eff (console :: CONSOLE, frp :: FRP | e) (Eff (frp :: FRP, console :: CONSOLE | e) Unit)
@@ -123,9 +118,13 @@ listen = do
   let events = (animationFrame)
   U.patch GameUI.gameScreem behavior events
 
--- | Small Check for x y touch
-checkTouch :: Model -> Model -> Boolean
-checkTouch (Model mario) (Model enemy) = not ( ( mario.x == enemy.x ) && ( mario.y == enemy.y) )
+-- | Small Check for x y touch with height and width range
+checkTouch :: Model -> Model -> Number -> Number -> Boolean
+checkTouch (Model mario) (Model enemy) rangeX rangeY = not ( ( mario.x <= enemy.x ) && ( enemy.x <= mario.x + rangeX ) && ( mario.y <= enemy.y) && ( enemy.y <= mario.y + rangeY ) )
+-- | Small Check for x y touch with same range
+checkSquareTouch :: Model -> Model -> Number -> Boolean
+checkSquareTouch (Model mario) (Model enemy) range = not ( ( mario.x <= enemy.x ) && ( enemy.x <= mario.x + range ) && ( mario.y <= enemy.y) && ( enemy.y <= mario.y + range ) )
+
 
 -- | The eval function is the function that gets called whenever a UI event occurred. In our case, the only event we
 -- | are calling this is with is the animationFrame event which repeatedly occurs when in browser animation frame is
@@ -133,17 +132,24 @@ checkTouch (Model mario) (Model enemy) = not ( ( mario.x == enemy.x ) && ( mario
 eval :: forall e. Number -> Eff (console :: CONSOLE | e) GameState
 eval _ = do
   s <- U.getState
+  let l = Ester.logAny s
   if s.gameTime > 0.0 
-    && checkTouch s.mario s.enemy1
-    && checkTouch s.mario s.enemy2
-    && checkTouch s.mario s.enemy3
       then do
-        newState <- updateUI s.gameStatus
-        pure newState
+        if checkTouch s.mario s.enemy1 GameConfig.marioWidth GameConfig.marioHeight 
+          && checkTouch s.mario s.enemy2 GameConfig.marioWidth GameConfig.marioHeight 
+          && checkTouch s.mario s.enemy3 GameConfig.marioWidth GameConfig.marioHeight
+          then do
+            ns <- updateUI s.gameStatus
+            pure ns
+          else do
+            ns <- updateUI E_GameOver
+            pure ns
+        
       else do
-        newState <- U.updateState "gameStatus" E_GameOver
-        pure newState
+        ns <- U.updateState "gameStatus" E_GameOver
+        pure ns
 
+-- | The updateUI function is the function that gets called whenever a the game is running. 
 updateUI:: GameStatus -> Eff _ GameState
 updateUI gameStatus = case gameStatus of
     E_Restart -> do 

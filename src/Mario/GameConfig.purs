@@ -26,16 +26,16 @@ groundWidth :: Number
 groundWidth = boardWidth
 
 marioHeight :: Number
-marioHeight = 50.0
+marioHeight = 40.0
 
 marioWidth :: Number
-marioWidth = 50.0
+marioWidth = 40.0
 
 enemyHeight :: Number
-enemyHeight = 30.0
+enemyHeight = 25.0
 
 enemyWidth :: Number
-enemyWidth = 30.0
+enemyWidth = 25.0
 
 startX :: Number
 startX = 50.0
@@ -85,7 +85,7 @@ baseEnemy =
 
 enemyAt :: Number -> Model
 enemyAt index =
-		Model { x : ( startX +  ( 150.0 * index ) )
+		Model { x : ( startX +  ( 200.0 * index ) )
 	    , y : startY 
 	    , vx : 0.0
 	    , vy : 0.0
