@@ -1,6 +1,6 @@
 module Main where
 
-import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (<$>), (==), (||), (-))
+import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (<$>), (==), (||), (-), (>))
 
 import Data.Maybe (Maybe(Nothing))
 import FRP.Event (subscribe)
@@ -34,26 +34,11 @@ import Control.Monad.Eff.Console (CONSOLE)
 
 foreign import openUrl :: forall eff  a. a -> Eff eff Unit
 
-
--- | The Primary Game Screen
-widget :: forall r p. GameState -> VDom (Array (Prop p)) r
-widget state = linearLayout
-              [ id_ "1"
-              , height Match_Parent
-              , width Match_Parent
-              , orientation "vertical"
-              ]
-              [   GameUI.getTopPane state.gameTime
-                , GameUI.getGameBoardHolder
-                , GameUI.getBottomPane
-              ]
-
 resetState = do
   _ <- U.updateState "enemy1" (GameConfig.enemyAt 1.0)
   _ <- U.updateState "enemy2" (GameConfig.enemyAt 2.0)
   _ <- U.updateState "enemy3" (GameConfig.enemyAt 3.0)
   _ <- U.updateState "gameTime" GameConfig.gameTime
-  _ <- U.updateState "gameStatus" E_Stop
   U.updateState "mario" GameConfig.baseMario
 
 -- | The entry point of the game. Here we initialize the state, create the entities, and starts rendering the game
@@ -62,19 +47,35 @@ main = do
   --- Init State {} empty record--
   U.initializeState
   --- Update State ----
+  _ <- U.updateState "gameStatus" E_Stop
   state <- resetState
   ---- Render Widget ---
   let p = Ester.logAny state
-  U.render (widget state) listen
+  U.render (GameUI.gameScreem state) listen
   pure unit
 
 -- | Here we update the Key Press status 
-updateKeyState ::  forall t . Boolean -> Int -> Eff t GameState
-updateKeyState mode key
-  | key == 37 || key == 72 || key == 65 = U.updateState "keyLeft" mode
-  | key == 38 || key == 75 || key == 87 = U.updateState "keyTop" mode
-  | key == 39 || key == 76 || key == 68 = U.updateState "keyRight" mode
-  | key == 40 || key == 74 || key == 83 = U.updateState "keyBottom" mode
+updateKeyPress ::  forall t . Int -> Eff t GameState
+updateKeyPress key
+  | key == 37 || key == 72 || key == 65 = U.updateState "keyLeft" true
+  | key == 38 || key == 75 || key == 87 = U.updateState "keyTop" true
+  | key == 39 || key == 76 || key == 68 = U.updateState "keyRight" true
+  | key == 40 || key == 74 || key == 83 = U.updateState "keyBottom" true
+  | key == 82 = U.updateState "gameStatus" E_Restart -- R
+  | key == 81 = U.updateState "gameStatus" E_Stop -- Q
+  | key == 32 || key == 80 = do  -- Space or P
+                t <- U.getState
+                case t.gameStatus of 
+                  E_Play -> U.updateState "gameStatus" E_Pause 
+                  _ -> U.updateState "gameStatus" E_Play 
+  | otherwise = U.getState
+
+updateKeyRelease ::  forall t . Int -> Eff t GameState
+updateKeyRelease key
+  | key == 37 || key == 72 || key == 65 = U.updateState "keyLeft" false
+  | key == 38 || key == 75 || key == 87 = U.updateState "keyTop" false
+  | key == 39 || key == 76 || key == 68 = U.updateState "keyRight" false
+  | key == 40 || key == 74 || key == 83 = U.updateState "keyBottom" false
   | otherwise = U.getState
  
 getDirection :: GameState -> Keys
@@ -100,25 +101,31 @@ listen = do
   _ <- GameBoard.spawnEnemy "Enemy2" s.enemy2
   _ <- GameBoard.spawnEnemy "Enemy3" s.enemy3
   
-  resetGame <- U.signal "resetButton" "onClick" Nothing
-  _ <- resetGame.event `subscribe` (\_ -> do
-                                            let props = Ester.getGameObjectProps (Ester.SvgName "Mario")
-                                            resetState 
-                                         )
+  
   playGame <- U.signal "playButton" "onClick" Nothing
   _ <- playGame.event `subscribe` (\_ -> U.updateState "gameStatus" E_Play )
 
   pauseGame <- U.signal "pauseButton" "onClick" Nothing
   _ <- pauseGame.event `subscribe` (\_ -> U.updateState "gameStatus" E_Pause )
 
+  stopGame <- U.signal "stopButton" "onClick" Nothing
+  _ <- stopGame.event `subscribe` (\_ -> U.updateState "gameStatus" E_Stop )
+  
+  restartGame <- U.signal "restartButton" "onClick" Nothing
+  _ <- restartGame.event `subscribe` (\_ -> U.updateState "gameStatus" E_Restart )
+
   -- Setup keydown events
-  _ <- down `subscribe` (\key -> void $ updateKeyState true key)
+  _ <- down `subscribe` (\key -> void $ updateKeyPress key)
   -- Setup keyup events
-  _ <- up `subscribe` (\key -> void $ updateKeyState false key)                                      
+  _ <- up `subscribe` (\key -> void $ updateKeyRelease key)                                      
 
   let behavior = eval <$> millisSinceEpoch
   let events = (animationFrame)
-  U.patch widget behavior events
+  U.patch GameUI.gameScreem behavior events
+
+-- | Small Check for x y touch
+checkTouch :: Model -> Model -> Boolean
+checkTouch (Model mario) (Model enemy) = not ( ( mario.x == enemy.x ) && ( mario.y == enemy.y) )
 
 -- | The eval function is the function that gets called whenever a UI event occurred. In our case, the only event we
 -- | are calling this is with is the animationFrame event which repeatedly occurs when in browser animation frame is
@@ -126,11 +133,25 @@ listen = do
 eval :: forall e. Number -> Eff (console :: CONSOLE | e) GameState
 eval _ = do
   s <- U.getState
-  newState <- updateUI s.gameStatus
-  pure newState
+  if s.gameTime > 0.0 
+    && checkTouch s.mario s.enemy1
+    && checkTouch s.mario s.enemy2
+    && checkTouch s.mario s.enemy3
+      then do
+        newState <- updateUI s.gameStatus
+        pure newState
+      else do
+        newState <- U.updateState "gameStatus" E_GameOver
+        pure newState
 
 updateUI:: GameStatus -> Eff _ GameState
 updateUI gameStatus = case gameStatus of
+    E_Restart -> do 
+      _ <- resetState
+      U.updateState "gameStatus" E_Play
+    E_GameOver -> do 
+      _ <- resetState
+      U.updateState "gameStatus" E_Stop
     E_Play -> do
                   s <- U.getState
                   let timeLeft = s.gameTime - 1.0

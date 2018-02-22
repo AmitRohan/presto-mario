@@ -9,6 +9,22 @@ import PrestoDOM.Events (onClick)
 import PrestoDOM.Properties (background, color, fontStyle, gravity, height, id_, margin, name, orientation, padding, text, textSize, weight, width)
 import PrestoDOM.Types (Length(..), VDom)
 
+import Mario.Types
+
+-- | The Primary Game Screen
+gameScreem :: forall r p. GameState -> VDom (Array (Prop p)) r
+gameScreem state = linearLayout
+              [ id_ "1"
+              , height Match_Parent
+              , width Match_Parent
+              , orientation "vertical"
+              ]
+              [   getTopPane state.gameTime
+                , getGameBoardHolder
+                , getBottomPane
+              ]
+
+
 getButtonUI :: forall t18 t19 t38.             
   { name :: String              
   , buttonColor :: String       
@@ -87,9 +103,10 @@ getBottomPane = linearLayout
                         ]
                         [   
                             linearLayout [ height (V 1), width (V 0), weight "1"] []
-                            , getButtonUI { name : "playButton"   , text : "PLAY"   , buttonColor : "#ff0066" }
-                            , getButtonUI { name : "pauseButton"  , text : "PAUSE"  , buttonColor : "#ff0066" }
-                            , getButtonUI { name : "resetButton"  , text : "RESET"  , buttonColor : "#ff0066" }
+                            , getButtonUI { name : "playButton"   , text : "PLAY (P)"   , buttonColor : "#ff0066" }
+                            , getButtonUI { name : "pauseButton"  , text : "PAUSE (P)"  , buttonColor : "#ff0066" }
+                            , getButtonUI { name : "stopButton"  , text : "STOP (Q)"  , buttonColor : "#ff0066" }
+                            , getButtonUI { name : "restartButton"  , text : "RESTART (R)"  , buttonColor : "#ff0066" }
                         ]                        
 
 -- getGameBoardHolder state { id_ : "svgContainer" , height : "300" , width : "300" , cubeState : state },
