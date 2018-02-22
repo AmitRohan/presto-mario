@@ -1,12 +1,12 @@
-module Mario.GameBoard where
+module BoxChaser.GameBoard where
 
 import Prelude (Unit, bind, (*), (+), (-), (/))
 
 import Control.Monad.Eff (Eff)
 import Data.Number.Format (toString)
 import Ester as Ester
-import Mario.Types
-import Mario.GameConfig as GameConfig
+import BoxChaser.Types
+import BoxChaser.GameConfig as GameConfig
 
 
 initBoard :: forall t. Eff t Unit

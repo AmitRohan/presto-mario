@@ -1,9 +1,9 @@
-module Mario.MarioManager where
+module BoxChaser.PlayerManager where
 
 import Prelude
 
 import Ester as Ester
-import Mario.Types (Direction(..), Keys(..), Model(..))
+import BoxChaser.Types (Direction(..), Keys(..), Model(..))
 
 -- GAME LOGIC TO MOFICY GAME OBCECTS 
 step :: String -> Number -> Keys -> Model -> Model

@@ -1,7 +1,7 @@
-module Mario.GameConfig where
+module BoxChaser.GameConfig where
 -- Frame Rate and Tick Interval
 import Prelude ((+), (-), (/), (*))
-import Mario.Types (Direction(..), GameInterval, GameTime, Keys(..), Model(..))
+import BoxChaser.Types (Direction(..), GameInterval, GameTime, Keys(..), Model(..))
 
 
 gameTime :: Number

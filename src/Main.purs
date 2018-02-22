@@ -1,6 +1,6 @@
 module Main where
 
-import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (<$>), (==), (||), (-), (>=), (>), (+), (<=) )
+import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (+), (-), (<$>), (<=), (==), (>), (||))
 
 import Data.Maybe (Maybe(Nothing))
 import FRP.Event (subscribe)
@@ -14,19 +14,13 @@ import FRP (FRP)
 
 import Ester as Ester
 
-import Mario.Types (GameState, Keys(..))
-import Mario.GameUI as GameUI
-import Mario.MarioManager as MarioManager
-import Mario.EnemyManager as EnemyManager
-import Mario.GameBoard as GameBoard
-import Mario.GameConfig as GameConfig
+import BoxChaser.Types 
+import BoxChaser.GameUI as GameUI
+import BoxChaser.PlayerManager as BoxManager
+import BoxChaser.EnemyManager as EnemyManager
+import BoxChaser.GameBoard as GameBoard
+import BoxChaser.GameConfig as GameConfig
 
-import Mario.Types
-
-import PrestoDOM.Elements (linearLayout) 
-import PrestoDOM.Core
-import PrestoDOM.Properties (height, id_, orientation, width)
-import PrestoDOM.Types (Length(..), VDom) 
 import PrestoDOM.Util as U
 
 import Control.Monad.Eff (Eff)
@@ -158,7 +152,7 @@ updateUI gameStatus = case gameStatus of
                     then do
                       let timeLeft = s.gameTime - 1.0
                       let currDirection = getDirection s 
-                      let newMario = MarioManager.step "Mario" GameConfig.tickInterval currDirection s.mario
+                      let newMario = BoxManager.step "Mario" GameConfig.tickInterval currDirection s.mario
                       _ <- GameBoard.patchBoard "Mario" newMario
                       let newEnemy1 = EnemyManager.updateEnemy "Enemy1" GameConfig.tickInterval newMario s.enemy1
                       let newEnemy2 = EnemyManager.updateEnemy "Enemy2" GameConfig.tickInterval newMario s.enemy2

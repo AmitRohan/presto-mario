@@ -1,4 +1,4 @@
-module Mario.Types where
+module BoxChaser.Types where
 
 import Prelude
 

@@ -1,3 +1,5 @@
+#BoxChaser
+
 #Setup
 
 `npm i`
@@ -10,10 +12,11 @@
 
 #About	
 	
-	Mario
+	BoxChaser
 		GameUI -> Presto Dom for User InterFace							
 		GameBoard -> Functions to add game objects to game board  	
 		GameConfig -> Constants for the Game 					   		
-		GameManager -> Helper functions to modify game objects			
+		EnemyManager -> Helper functions to modify Enemy objects			
+		PlayerManager -> Helper functions to modify Player objects			
 		Types -> Contains Types declared needed for the Game 			
 

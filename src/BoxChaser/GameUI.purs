@@ -1,15 +1,14 @@
-module Mario.GameUI where
+module BoxChaser.GameUI where
 
 import Prelude 
-import Mario.GameConfig as GameConfig
+import BoxChaser.Types
+import BoxChaser.GameConfig as GameConfig
 import Data.Number.Format (toString)
 import PrestoDOM.Core (Prop)
 import PrestoDOM.Elements (linearLayout, textView, relativeLayout)
 import PrestoDOM.Events (onClick)
 import PrestoDOM.Properties (background, color, fontStyle, gravity, height, id_, margin, name, orientation, padding, text, textSize, weight, width, visibility)
 import PrestoDOM.Types (Length(..), VDom)
-
-import Mario.Types
 
 -- | The Primary Game Screen
 windowScreen :: forall r p. GameState -> VDom (Array (Prop p)) r
@@ -97,7 +96,7 @@ getButtonUI state = linearLayout
                             [
                               name (state.name)
                             , height (V 40)
-                            , width (V 150)
+                            , width (V 140)
                             , margin "20,0,0,0"
                             , background (state.buttonColor)
                             , gravity "center"
@@ -118,7 +117,7 @@ getButtonUI state = linearLayout
 getTopPane::forall t2 t3. Number -> VDom (Array (Prop t3)) t2
 getTopPane timeLeft = linearLayout
                         [ id_ "topPane"
-                        , height (V 100)
+                        , height (V 70)
                         , width Match_Parent
                         , background "#000000"
                         , gravity "center_vertical"
@@ -155,7 +154,7 @@ getTopPane timeLeft = linearLayout
 getBottomPane :: forall t37 t38. VDom (Array (Prop t38)) t37
 getBottomPane = linearLayout
                         [ id_ "bottomPane"
-                        , height (V 100)
+                        , height (V 90)
                         , width Match_Parent
                         , background "#000000"
                         , orientation "horizontal"
@@ -163,7 +162,23 @@ getBottomPane = linearLayout
                         , padding "20,20,20,20"
                         ]
                         [   
-                            linearLayout [ height Match_Parent, width (V 0), weight "1", gravity "center_vertical" ] [ textView [ height (V 40), width (V 350), text "Use arrow keys or W/A/D to move", fontStyle "Source Sans Pro-Regular", textSize "22", gravity "center", color "#FFFFFF", padding "50,0,0,0" ] ]
+                            linearLayout 
+                              [ height Match_Parent
+                              , width (V 0), weight "1"
+                              , gravity "center_vertical" 
+                              ] 
+                              [ 
+                                textView 
+                                [ height (V 40)
+                                , width (V 350)
+                                , text "Use arrow keys or A/W/D to move"
+                                , fontStyle "Source Sans Pro-Regular"
+                                , textSize "22"
+                                , gravity "center"
+                                , color "#FFFFFF"
+                                , padding "50,0,0,0" 
+                                ] 
+                              ]
                             , getButtonUI { name : "playButton"   , text : "PLAY (P)"   , buttonColor : "#ff0066" }
                             , getButtonUI { name : "pauseButton"  , text : "PAUSE (P)"  , buttonColor : "#ff0066" }
                             , getButtonUI { name : "stopButton"  , text : "STOP (Q)"  , buttonColor : "#ff0066" }

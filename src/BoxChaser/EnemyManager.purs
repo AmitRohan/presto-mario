@@ -1,11 +1,11 @@
-module Mario.EnemyManager where
+module BoxChaser.EnemyManager where
 
 import Prelude
 
 import Control.Monad.Eff (Eff)
 import Data.Number.Format (toString)
 import Ester as Ester
-import Mario.Types (Direction(..), Keys(..), Model(..))
+import BoxChaser.Types (Direction(..), Keys(..), Model(..))
 
 -- GAME LOGIC TO MOFICY Enemy OBCECTS 
 updateEnemy :: String -> Number -> Model -> Model -> Model
@@ -17,8 +17,7 @@ updateEnemy name dt mario enemy =
 			# physics dt
 			  
 		where	
-
-			-- newSpeed = getSpeed dt keys mario
+			
 			collision = Ester.detectCollision newEnemy objectName
 
 			newEnemy = enemy
