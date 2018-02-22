@@ -207,6 +207,8 @@ exports.detectCollision = function(newObj) {
                 collision = collDet(collision,gameObject.name,selProps,objProps) 
             }
           })
+
+          // COLLIDABLE_PRP
         }
         console.log(collision)
         return collision;
@@ -238,7 +240,6 @@ var deNormalisePureProps = function mapFromSvg(svgProps) {
 }
 
 var drawGameObject = function (svg,node) {
-  console.log(svg)
   var type = node.nodeType;
   var props = normalisePureProps(node.props)
   var elem = null;
@@ -253,7 +254,18 @@ var drawGameObject = function (svg,node) {
   } else if(type == "Oval") {
     elem = svg.ellipse().attr(props)
   } else if(type == "Image") {
-    elem = svg.image(props.path).attr(props);
+    elem = svg.image(props.path).loaded(function(loader) {
+            var newProp = {}
+            var sX = props.width / loader.width
+            var sY = props.height / loader.height
+            newProp.x = ( elem.attr('x') ||  props.x )/ sX
+            newProp.y = ( elem.attr('y') || props.y ) / sY
+            newProp.width= loader.width
+            newProp.height= loader.height
+            newProp.transform ="scale("+sX+","+sY+")" 
+            elem.attr(newProp);
+        })
+    elem.attr(props);      
   } else if(type == "Group") {
     elem = svg.group().attr(props);
   } else {
