@@ -1,66 +1,66 @@
 /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
+/******/    // The module cache
+/******/    var installedModules = {};
 /******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
+/******/    // The require function
+/******/    function __webpack_require__(moduleId) {
 /******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
+/******/        // Check if module is in cache
+/******/        if(installedModules[moduleId]) {
+/******/            return installedModules[moduleId].exports;
+/******/        }
+/******/        // Create a new module (and put it into the cache)
+/******/        var module = installedModules[moduleId] = {
+/******/            i: moduleId,
+/******/            l: false,
+/******/            exports: {}
+/******/        };
 /******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/        // Execute the module function
+/******/        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
+/******/        // Flag the module as loaded
+/******/        module.l = true;
 /******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
+/******/        // Return the exports of the module
+/******/        return module.exports;
+/******/    }
 /******/
 /******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
+/******/    // expose the modules object (__webpack_modules__)
+/******/    __webpack_require__.m = modules;
 /******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
+/******/    // expose the module cache
+/******/    __webpack_require__.c = installedModules;
 /******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
-/******/ 	};
+/******/    // define getter function for harmony exports
+/******/    __webpack_require__.d = function(exports, name, getter) {
+/******/        if(!__webpack_require__.o(exports, name)) {
+/******/            Object.defineProperty(exports, name, {
+/******/                configurable: false,
+/******/                enumerable: true,
+/******/                get: getter
+/******/            });
+/******/        }
+/******/    };
 /******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
+/******/    // getDefaultExport function for compatibility with non-harmony modules
+/******/    __webpack_require__.n = function(module) {
+/******/        var getter = module && module.__esModule ?
+/******/            function getDefault() { return module['default']; } :
+/******/            function getModuleExports() { return module; };
+/******/        __webpack_require__.d(getter, 'a', getter);
+/******/        return getter;
+/******/    };
 /******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/    // Object.prototype.hasOwnProperty.call
+/******/    __webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/    // __webpack_public_path__
+/******/    __webpack_require__.p = "";
 /******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 248);
+/******/    // Load entry module and return exports
+/******/    return __webpack_require__(__webpack_require__.s = 248);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -8311,6 +8311,11 @@ var E_GameOver = function () {
     E_GameOver.value = new E_GameOver();
     return E_GameOver;
 }();
+var E_Win = function () {
+    function E_Win() {};
+    E_Win.value = new E_Win();
+    return E_Win;
+}();
 var Left = function () {
     function Left() {};
     Left.value = new Left();
@@ -8377,6 +8382,7 @@ module.exports = {
     E_Over: E_Over,
     E_Restart: E_Restart,
     E_GameOver: E_GameOver,
+    E_Win: E_Win,
     directionShow: directionShow
 };
 
@@ -15942,10 +15948,11 @@ var tickAt = function (gameTime1) {
     };
 };
 var startX = 50.0;
+var startLevel = 1.0;
 var marioWidth = 40.0;
 var marioHeight = 40.0;
 var groundHeight = 62.0;
-var gameTime = 10.0 * 100.0;
+var gameTime = 8.0 * 100.0;
 var framesPerSercondInt = 1000;
 var tickIntervalInt = 1000 / framesPerSercondInt | 0;
 var framesPerSercond = 1000.0;
@@ -16002,6 +16009,7 @@ module.exports = {
     enemyHeight: enemyHeight,
     enemyWidth: enemyWidth,
     startX: startX,
+    startLevel: startLevel,
     startY: startY,
     framesPerSercondInt: framesPerSercondInt,
     framesPerSercond: framesPerSercond,
@@ -17117,6 +17125,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+// Generated by purs version 0.11.7
 
 
 var Data_Show = __webpack_require__(15);
@@ -24185,7 +24194,7 @@ var updateKeyRelease = function (key) {
     if (Data_Boolean.otherwise) {
         return PrestoDOM_Util.getState;
     };
-    throw new Error("Failed pattern match at Main line 72, column 1 - line 72, column 55: " + [key.constructor.name]);
+    throw new Error("Failed pattern match at Main line 73, column 1 - line 73, column 55: " + [key.constructor.name]);
 };
 var updateKeyPress = function (key) {
     if (key === 37 || key === 72 || key === 65) {
@@ -24218,13 +24227,14 @@ var updateKeyPress = function (key) {
     if (Data_Boolean.otherwise) {
         return PrestoDOM_Util.getState;
     };
-    throw new Error("Failed pattern match at Main line 57, column 1 - line 57, column 53: " + [key.constructor.name]);
+    throw new Error("Failed pattern match at Main line 58, column 1 - line 58, column 53: " + [key.constructor.name]);
 };
 var resetState = function __do() {
     var v = PrestoDOM_Util.updateState("enemy1")(Mario_GameConfig.enemyAt(1.0))();
     var v1 = PrestoDOM_Util.updateState("enemy2")(Mario_GameConfig.enemyAt(2.0))();
     var v2 = PrestoDOM_Util.updateState("enemy3")(Mario_GameConfig.enemyAt(3.0))();
     var v3 = PrestoDOM_Util.updateState("gameTime")(Mario_GameConfig.gameTime)();
+    var v4 = PrestoDOM_Util.updateState("gameLevel")(Mario_GameConfig.startLevel)();
     return PrestoDOM_Util.updateState("mario")(Mario_GameConfig.baseMario)();
 };
 var getDirection = function (s) {
@@ -24238,7 +24248,7 @@ var getDirection = function (s) {
         if (Data_Boolean.otherwise) {
             return 3.0;
         };
-        throw new Error("Failed pattern match at Main line 85, column 25 - line 89, column 1: " + []);
+        throw new Error("Failed pattern match at Main line 86, column 25 - line 90, column 1: " + []);
     }();
     var xVal = function () {
         if (s.keyRight && !s.keyLeft) {
@@ -24250,12 +24260,21 @@ var getDirection = function (s) {
         if (Data_Boolean.otherwise) {
             return 3.0;
         };
-        throw new Error("Failed pattern match at Main line 82, column 25 - line 85, column 25: " + []);
+        throw new Error("Failed pattern match at Main line 83, column 25 - line 86, column 25: " + []);
     }();
     return new Mario_Types.Keys({
         x: xVal,
         y: yVal
     });
+};
+var checkTouch = function (v) {
+    return function (v1) {
+        return function (rangeX) {
+            return function (rangeY) {
+                return !(v.value0.x <= v1.value0.x && v1.value0.x <= v.value0.x + rangeX && v.value0.y <= v1.value0.y && v1.value0.y <= v.value0.y + rangeY);
+            };
+        };
+    };
 };
 var updateUI = function (gameStatus) {
     if (gameStatus instanceof Mario_Types.E_Restart) {
@@ -24264,30 +24283,28 @@ var updateUI = function (gameStatus) {
             return PrestoDOM_Util.updateState("gameStatus")(Mario_Types.E_Play.value)();
         };
     };
-    if (gameStatus instanceof Mario_Types.E_GameOver) {
-        return function __do() {
-            var v = resetState();
-            return PrestoDOM_Util.updateState("gameStatus")(Mario_Types.E_Stop.value)();
-        };
-    };
     if (gameStatus instanceof Mario_Types.E_Play) {
         return function __do() {
             var v = PrestoDOM_Util.getState();
-            var timeLeft = v.gameTime - 1.0;
-            var currDirection = getDirection(v);
-            var newMario = Mario_MarioManager.step("Mario")(Mario_GameConfig.tickInterval)(currDirection)(v.mario);
-            var v1 = Mario_GameBoard.patchBoard("Mario")(newMario)();
-            var newEnemy1 = Mario_EnemyManager.updateEnemy("Enemy1")(Mario_GameConfig.tickInterval)(newMario)(v.enemy1);
-            var newEnemy2 = Mario_EnemyManager.updateEnemy("Enemy2")(Mario_GameConfig.tickInterval)(newMario)(v.enemy2);
-            var newEnemy3 = Mario_EnemyManager.updateEnemy("Enemy3")(Mario_GameConfig.tickInterval)(newMario)(v.enemy3);
-            var v2 = Mario_GameBoard.patchBoard("Enemy1")(newEnemy1)();
-            var v3 = Mario_GameBoard.patchBoard("Enemy2")(newEnemy2)();
-            var v4 = Mario_GameBoard.patchBoard("Enemy3")(newEnemy3)();
-            var v5 = PrestoDOM_Util.updateState("gameTime")(timeLeft)();
-            var v6 = PrestoDOM_Util.updateState("enemy1")(newEnemy1)();
-            var v7 = PrestoDOM_Util.updateState("enemy2")(newEnemy2)();
-            var v8 = PrestoDOM_Util.updateState("enemy3")(newEnemy3)();
-            return PrestoDOM_Util.updateState("mario")(newMario)();
+            var $63 = checkTouch(v.mario)(v.enemy1)(Mario_GameConfig.marioWidth)(Mario_GameConfig.marioHeight) && checkTouch(v.mario)(v.enemy2)(Mario_GameConfig.marioWidth)(Mario_GameConfig.marioHeight) && checkTouch(v.mario)(v.enemy3)(Mario_GameConfig.marioWidth)(Mario_GameConfig.marioHeight);
+            if ($63) {
+                var timeLeft = v.gameTime - 1.0;
+                var currDirection = getDirection(v);
+                var newMario = Mario_MarioManager.step("Mario")(Mario_GameConfig.tickInterval)(currDirection)(v.mario);
+                var v1 = Mario_GameBoard.patchBoard("Mario")(newMario)();
+                var newEnemy1 = Mario_EnemyManager.updateEnemy("Enemy1")(Mario_GameConfig.tickInterval)(newMario)(v.enemy1);
+                var newEnemy2 = Mario_EnemyManager.updateEnemy("Enemy2")(Mario_GameConfig.tickInterval)(newMario)(v.enemy2);
+                var newEnemy3 = Mario_EnemyManager.updateEnemy("Enemy3")(Mario_GameConfig.tickInterval)(newMario)(v.enemy3);
+                var v2 = Mario_GameBoard.patchBoard("Enemy1")(newEnemy1)();
+                var v3 = Mario_GameBoard.patchBoard("Enemy2")(newEnemy2)();
+                var v4 = Mario_GameBoard.patchBoard("Enemy3")(newEnemy3)();
+                var v5 = PrestoDOM_Util.updateState("gameTime")(timeLeft)();
+                var v6 = PrestoDOM_Util.updateState("enemy1")(newEnemy1)();
+                var v7 = PrestoDOM_Util.updateState("enemy2")(newEnemy2)();
+                var v8 = PrestoDOM_Util.updateState("enemy3")(newEnemy3)();
+                return PrestoDOM_Util.updateState("mario")(newMario)();
+            };
+            return PrestoDOM_Util.updateState("gameStatus")(Mario_Types.E_GameOver.value)();
         };
     };
     if (gameStatus instanceof Mario_Types.E_Stop) {
@@ -24302,69 +24319,56 @@ var updateUI = function (gameStatus) {
     };
     return PrestoDOM_Util.getState;
 };
-var checkTouch = function (v) {
-    return function (v1) {
-        return function (rangeX) {
-            return function (rangeY) {
-                return !(v.value0.x <= v1.value0.x && v1.value0.x <= v.value0.x + rangeX && v.value0.y <= v1.value0.y && v1.value0.y <= v.value0.y + rangeY);
-            };
-        };
-    };
-};
 var $$eval = function (v) {
     return function __do() {
         var v1 = PrestoDOM_Util.getState();
         var l = Ester.logAny(v1);
-        var $65 = v1.gameTime > 0.0;
-        if ($65) {
-            var $66 = checkTouch(v1.mario)(v1.enemy1)(Mario_GameConfig.marioWidth)(Mario_GameConfig.marioHeight) && checkTouch(v1.mario)(v1.enemy2)(Mario_GameConfig.marioWidth)(Mario_GameConfig.marioHeight) && checkTouch(v1.mario)(v1.enemy3)(Mario_GameConfig.marioWidth)(Mario_GameConfig.marioHeight);
-            if ($66) {
-                var v2 = updateUI(v1.gameStatus)();
-                return v2;
-            };
-            var v2 = updateUI(Mario_Types.E_GameOver.value)();
+        var $66 = v1.gameTime > 0.0;
+        if ($66) {
+            var v2 = updateUI(v1.gameStatus)();
             return v2;
         };
-        var v2 = PrestoDOM_Util.updateState("gameStatus")(Mario_Types.E_GameOver.value)();
+        var v2 = PrestoDOM_Util.updateState("gameStatus")(Mario_Types.E_Win.value)();
         return v2;
     };
 };
 var listen = function __do() {
     var v = PrestoDOM_Util.getState();
     var v1 = Mario_GameBoard.initBoard();
-    var v2 = Mario_GameBoard.spawnEnemy("Enemy1")(v.enemy1)();
-    var v3 = Mario_GameBoard.spawnEnemy("Enemy2")(v.enemy2)();
-    var v4 = Mario_GameBoard.spawnEnemy("Enemy3")(v.enemy3)();
-    var v5 = PrestoDOM_Util.signal("playButton")("onClick")(Data_Maybe.Nothing.value)();
-    var v6 = FRP_Event.subscribe(v5.event)(function (v6) {
+    var v2 = Mario_GameBoard.addWalls(v.gameLevel)();
+    var v3 = Mario_GameBoard.spawnEnemy("Enemy1")(v.enemy1)();
+    var v4 = Mario_GameBoard.spawnEnemy("Enemy2")(v.enemy2)();
+    var v5 = Mario_GameBoard.spawnEnemy("Enemy3")(v.enemy3)();
+    var v6 = PrestoDOM_Util.signal("playButton")("onClick")(Data_Maybe.Nothing.value)();
+    var v7 = FRP_Event.subscribe(v6.event)(function (v7) {
         return PrestoDOM_Util.updateState("gameStatus")(Mario_Types.E_Play.value);
     })();
-    var v7 = PrestoDOM_Util.signal("pauseButton")("onClick")(Data_Maybe.Nothing.value)();
-    var v8 = FRP_Event.subscribe(v7.event)(function (v8) {
+    var v8 = PrestoDOM_Util.signal("pauseButton")("onClick")(Data_Maybe.Nothing.value)();
+    var v9 = FRP_Event.subscribe(v8.event)(function (v9) {
         return PrestoDOM_Util.updateState("gameStatus")(Mario_Types.E_Pause.value);
     })();
-    var v9 = PrestoDOM_Util.signal("stopButton")("onClick")(Data_Maybe.Nothing.value)();
-    var v10 = FRP_Event.subscribe(v9.event)(function (v10) {
+    var v10 = PrestoDOM_Util.signal("stopButton")("onClick")(Data_Maybe.Nothing.value)();
+    var v11 = FRP_Event.subscribe(v10.event)(function (v11) {
         return PrestoDOM_Util.updateState("gameStatus")(Mario_Types.E_Stop.value);
     })();
-    var v11 = PrestoDOM_Util.signal("restartButton")("onClick")(Data_Maybe.Nothing.value)();
-    var v12 = FRP_Event.subscribe(v11.event)(function (v12) {
+    var v12 = PrestoDOM_Util.signal("restartButton")("onClick")(Data_Maybe.Nothing.value)();
+    var v13 = FRP_Event.subscribe(v12.event)(function (v13) {
         return PrestoDOM_Util.updateState("gameStatus")(Mario_Types.E_Restart.value);
     })();
-    var v13 = FRP_Event.subscribe(FRP_Event_Keyboard.down)(function (key) {
+    var v14 = FRP_Event.subscribe(FRP_Event_Keyboard.down)(function (key) {
         return Data_Functor["void"](Control_Monad_Eff.functorEff)(updateKeyPress(key));
     })();
-    var v14 = FRP_Event.subscribe(FRP_Event_Keyboard.up)(function (key) {
+    var v15 = FRP_Event.subscribe(FRP_Event_Keyboard.up)(function (key) {
         return Data_Functor["void"](Control_Monad_Eff.functorEff)(updateKeyRelease(key));
     })();
     var behavior = Data_Functor.map(FRP_Behavior.functorABehavior(FRP_Event.functorEvent))($$eval)(FRP_Behavior_Time.millisSinceEpoch);
-    return PrestoDOM_Util.patch(Mario_GameUI.gameScreem)(behavior)(FRP_Event_Time.animationFrame)();
+    return PrestoDOM_Util.patch(Mario_GameUI.windowScreen)(behavior)(FRP_Event_Time.animationFrame)();
 };
 var main = function __do() {
     PrestoDOM_Util.initializeState();
     var v = PrestoDOM_Util.updateState("gameStatus")(Mario_Types.E_Stop.value)();
     var v1 = resetState();
-    PrestoDOM_Util.render(Mario_GameUI.gameScreem(v1))(listen)();
+    PrestoDOM_Util.render(Mario_GameUI.windowScreen(v1))(listen)();
     return Data_Unit.unit;
 };
 var checkSquareTouch = function (v) {
@@ -31139,6 +31143,37 @@ var patchBoard = function (objectName) {
         return Ester.modifyGameObject(new Ester.SvgName(objectName))(new Ester.PropertyList(propList));
     };
 };
+var initBoard = function () {
+    var groundY = Mario_GameConfig.boardHeight - Mario_GameConfig.groundHeight;
+    var marioY = Mario_GameConfig.startY - 200.0;
+    return function __do() {
+        var v = Ester.initGameBoard(new Ester.GameBoard({
+            id: "gameBoard",
+            height: Mario_GameConfig.boardHeight,
+            width: Mario_GameConfig.boardWidth
+        }))();
+        var v1 = Ester.addGameObject(new Ester.SvgName("World"))(new Ester.Node({
+            name: "Sky",
+            nodeType: "Rectangle",
+            props: [Ester.getProp("height")(Data_Number_Format.toString(Mario_GameConfig.boardHeight)), Ester.getProp("width")(Data_Number_Format.toString(Mario_GameConfig.boardWidth)), Ester.getProp("x")("0"), Ester.getProp("y")("0"), Ester.getProp("fill")("#90CAF9")]
+        }))();
+        var v2 = Ester.addGameObject(new Ester.SvgName("World"))(new Ester.Node({
+            name: "Obstacles",
+            nodeType: "Group",
+            props: [Ester.getProp("x")("0"), Ester.getProp("y")("0")]
+        }))();
+        var v3 = Ester.addGameObject(new Ester.SvgName("Obstacles"))(new Ester.Node({
+            name: "Ground",
+            nodeType: "Rectangle",
+            props: [Ester.getProp("height")(Data_Number_Format.toString(Mario_GameConfig.groundHeight)), Ester.getProp("width")(Data_Number_Format.toString(Mario_GameConfig.boardWidth)), Ester.getProp("x")("0"), Ester.getProp("y")(Data_Number_Format.toString(groundY)), Ester.getProp("fill")("#4E342E"), Ester.getProp("path")("img/ground.png")]
+        }))();
+        return Ester.addGameObject(new Ester.SvgName("World"))(new Ester.Node({
+            name: "Mario",
+            nodeType: "Rectangle",
+            props: [Ester.getProp("height")(Data_Number_Format.toString(Mario_GameConfig.marioHeight)), Ester.getProp("width")(Data_Number_Format.toString(Mario_GameConfig.marioWidth)), Ester.getProp("x")(Data_Number_Format.toString(Mario_GameConfig.startX)), Ester.getProp("y")(Data_Number_Format.toString(marioY)), Ester.getProp("fill")("#ff0066"), Ester.getProp("path")("img/box.png")]
+        }))();
+    };
+}();
 var addVerticalBarier = function (barierCount) {
     return function (barierType) {
         return function (marioX) {
@@ -31165,45 +31200,20 @@ var addBarier = function (barierCount) {
         };
     };
 };
-var initBoard = function () {
+var addWalls = function (level) {
     var groundY = Mario_GameConfig.boardHeight - Mario_GameConfig.groundHeight;
-    var marioY = Mario_GameConfig.startY - 200.0;
     return function __do() {
-        var v = Ester.initGameBoard(new Ester.GameBoard({
-            id: "gameBoard",
-            height: Mario_GameConfig.boardHeight,
-            width: Mario_GameConfig.boardWidth
-        }))();
-        var v1 = Ester.addGameObject(new Ester.SvgName("World"))(new Ester.Node({
-            name: "Sky",
-            nodeType: "Rectangle",
-            props: [Ester.getProp("height")(Data_Number_Format.toString(Mario_GameConfig.boardHeight)), Ester.getProp("width")(Data_Number_Format.toString(Mario_GameConfig.boardWidth)), Ester.getProp("x")("0"), Ester.getProp("y")("0"), Ester.getProp("fill")("#90CAF9")]
-        }))();
-        var v2 = Ester.addGameObject(new Ester.SvgName("World"))(new Ester.Node({
-            name: "Obstacles",
-            nodeType: "Group",
-            props: [Ester.getProp("x")("0"), Ester.getProp("y")("0")]
-        }))();
-        var v3 = Ester.addGameObject(new Ester.SvgName("Obstacles"))(new Ester.Node({
-            name: "Ground",
-            nodeType: "Rectangle",
-            props: [Ester.getProp("height")(Data_Number_Format.toString(Mario_GameConfig.groundHeight)), Ester.getProp("width")(Data_Number_Format.toString(Mario_GameConfig.boardWidth)), Ester.getProp("x")("0"), Ester.getProp("y")(Data_Number_Format.toString(groundY)), Ester.getProp("fill")("#4E342E"), Ester.getProp("path")("img/ground.png")]
-        }))();
-        var v4 = addBarier(1.0)("Wall1")(Mario_GameConfig.startX)(groundY)();
-        var v5 = addVerticalBarier(2.0)("Wall2")(Mario_GameConfig.startX)(groundY)();
-        var v6 = addBarier(3.0)("Wall3")(Mario_GameConfig.startX)(groundY)();
-        var v7 = addVerticalBarier(4.0)("Wall4")(Mario_GameConfig.startX)(groundY)();
-        var v8 = addBarier(5.0)("Wall5")(Mario_GameConfig.startX)(groundY)();
-        var v9 = addBarier(6.0)("Wall6")(Mario_GameConfig.startX)(groundY)();
-        return Ester.addGameObject(new Ester.SvgName("World"))(new Ester.Node({
-            name: "Mario",
-            nodeType: "Rectangle",
-            props: [Ester.getProp("height")(Data_Number_Format.toString(Mario_GameConfig.marioHeight)), Ester.getProp("width")(Data_Number_Format.toString(Mario_GameConfig.marioWidth)), Ester.getProp("x")(Data_Number_Format.toString(Mario_GameConfig.startX)), Ester.getProp("y")(Data_Number_Format.toString(marioY)), Ester.getProp("fill")("#ff0066"), Ester.getProp("path")("img/box.png")]
-        }))();
+        var v = addBarier(1.0)("Wall1")(Mario_GameConfig.startX)(groundY)();
+        var v1 = addVerticalBarier(2.0)("Wall2")(Mario_GameConfig.startX)(groundY)();
+        var v2 = addBarier(3.0)("Wall3")(Mario_GameConfig.startX)(groundY)();
+        var v3 = addVerticalBarier(4.0)("Wall4")(Mario_GameConfig.startX)(groundY)();
+        var v4 = addBarier(5.0)("Wall5")(Mario_GameConfig.startX)(groundY)();
+        return addBarier(6.0)("Wall6")(Mario_GameConfig.startX)(groundY)();
     };
-}();
+};
 module.exports = {
     initBoard: initBoard,
+    addWalls: addWalls,
     addBarier: addBarier,
     addVerticalBarier: addVerticalBarier,
     spawnEnemy: spawnEnemy,
@@ -31230,15 +31240,42 @@ var PrestoDOM_Events = __webpack_require__(545);
 var PrestoDOM_Properties = __webpack_require__(247);
 var PrestoDOM_Types = __webpack_require__(66);
 var PrestoDOM_Types_DomAttributes = __webpack_require__(162);
+var popupWindow = function (state) {
+    var _msgTxt = function () {
+        if (state.gameStatus instanceof Mario_Types.E_GameOver) {
+            return "Game Over" + ("\x0a\x0aYou had to survive " + (Data_Number_Format.toString(state.gameTime / 100.0) + ("seconds more" + "\x0a\x0aPress R To Retry")));
+        };
+        if (state.gameStatus instanceof Mario_Types.E_Stop) {
+            return "Press Space To Start ";
+        };
+        if (state.gameStatus instanceof Mario_Types.E_Win) {
+            return "VICTORY" + "\x0a\x0aPress Space To Play Again ";
+        };
+        return "BOX CHASER";
+    }();
+    var _isGameOver = function () {
+        if (state.gameStatus instanceof Mario_Types.E_GameOver) {
+            return "visible";
+        };
+        if (state.gameStatus instanceof Mario_Types.E_Stop) {
+            return "visible";
+        };
+        if (state.gameStatus instanceof Mario_Types.E_Win) {
+            return "visible";
+        };
+        return "gone";
+    }();
+    return PrestoDOM_Elements.linearLayout([PrestoDOM_Properties.id_("popupWindow"), PrestoDOM_Properties.height(PrestoDOM_Types_DomAttributes.Match_Parent.value), PrestoDOM_Properties.width(PrestoDOM_Types_DomAttributes.Match_Parent.value), PrestoDOM_Properties.gravity("center_horizontal"), PrestoDOM_Properties.background("#99000000"), PrestoDOM_Properties.visibility(_isGameOver), PrestoDOM_Properties.orientation("vertical")])([PrestoDOM_Elements.textView([PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(200)), PrestoDOM_Properties.width(new PrestoDOM_Types_DomAttributes.V(300)), PrestoDOM_Properties.margin("0,30,0,0"), PrestoDOM_Properties.text("Can you survive " + (Data_Number_Format.toString(Mario_GameConfig.gameTime / 100.0) + " seconds ?")), PrestoDOM_Properties.textSize("26"), PrestoDOM_Properties.fontStyle("Source Sans Pro-Regular"), PrestoDOM_Properties.gravity("center_horizontal"), PrestoDOM_Properties.color("#FFFFFF")]), PrestoDOM_Elements.linearLayout([PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(0)), PrestoDOM_Properties.width(PrestoDOM_Types_DomAttributes.Match_Parent.value), PrestoDOM_Properties.gravity("center"), PrestoDOM_Properties.weight("1")])([PrestoDOM_Elements.textView([PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(20)), PrestoDOM_Properties.width(PrestoDOM_Types_DomAttributes.Match_Parent.value), PrestoDOM_Properties.text(_msgTxt), PrestoDOM_Properties.fontStyle("Source Sans Pro-Regular"), PrestoDOM_Properties.gravity("center"), PrestoDOM_Properties.color("#FFFFFF")])])]);
+};
 var getTopPane = function (timeLeft) {
     var _timeLeft = "Time Left : " + Data_Number_Format.toString(timeLeft / 100.0);
-    return PrestoDOM_Elements.linearLayout([PrestoDOM_Properties.id_("topPane"), PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(100)), PrestoDOM_Properties.width(PrestoDOM_Types_DomAttributes.Match_Parent.value), PrestoDOM_Properties.background("#000000"), PrestoDOM_Properties.gravity("center_vertical"), PrestoDOM_Properties.padding("20,20,20,20")])([PrestoDOM_Elements.textView([PrestoDOM_Properties.id_("gameName"), PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(30)), PrestoDOM_Properties.width(new PrestoDOM_Types_DomAttributes.V(200)), PrestoDOM_Properties.text("Box Chaser"), PrestoDOM_Properties.fontStyle("Source Sans Pro-Regular"), PrestoDOM_Properties.textSize("25"), PrestoDOM_Properties.gravity("center"), PrestoDOM_Properties.color("#FFFFFF")]), PrestoDOM_Elements.linearLayout([PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(1)), PrestoDOM_Properties.width(new PrestoDOM_Types_DomAttributes.V(0)), PrestoDOM_Properties.weight("1")])([]), PrestoDOM_Elements.textView([PrestoDOM_Properties.id_("gameName2"), PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(30)), PrestoDOM_Properties.width(new PrestoDOM_Types_DomAttributes.V(300)), PrestoDOM_Properties.text(_timeLeft), PrestoDOM_Properties.fontStyle("Source Sans Pro-Regular"), PrestoDOM_Properties.textSize("22"), PrestoDOM_Properties.gravity("center"), PrestoDOM_Properties.color("#FFFFFF")])]);
+    return PrestoDOM_Elements.linearLayout([PrestoDOM_Properties.id_("topPane"), PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(100)), PrestoDOM_Properties.width(PrestoDOM_Types_DomAttributes.Match_Parent.value), PrestoDOM_Properties.background("#000000"), PrestoDOM_Properties.gravity("center_vertical"), PrestoDOM_Properties.padding("20,20,20,20")])([PrestoDOM_Elements.textView([PrestoDOM_Properties.id_("gameName"), PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(30)), PrestoDOM_Properties.width(new PrestoDOM_Types_DomAttributes.V(200)), PrestoDOM_Properties.text("Box Chaser"), PrestoDOM_Properties.fontStyle("Source Sans Pro-Regular"), PrestoDOM_Properties.textSize("25"), PrestoDOM_Properties.gravity("center"), PrestoDOM_Properties.color("#FFFFFF")]), PrestoDOM_Elements.linearLayout([PrestoDOM_Properties.height(PrestoDOM_Types_DomAttributes.Match_Parent.value), PrestoDOM_Properties.width(new PrestoDOM_Types_DomAttributes.V(0)), PrestoDOM_Properties.weight("1")])([]), PrestoDOM_Elements.textView([PrestoDOM_Properties.id_("gameName2"), PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(30)), PrestoDOM_Properties.width(new PrestoDOM_Types_DomAttributes.V(300)), PrestoDOM_Properties.text(_timeLeft), PrestoDOM_Properties.fontStyle("Source Sans Pro-Regular"), PrestoDOM_Properties.textSize("22"), PrestoDOM_Properties.gravity("center"), PrestoDOM_Properties.color("#FFFFFF")])]);
 };
 var getGameBoardHolder = PrestoDOM_Elements.linearLayout([PrestoDOM_Properties.id_("gameBoardParent"), PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(0)), PrestoDOM_Properties.weight("1"), PrestoDOM_Properties.width(PrestoDOM_Types_DomAttributes.Match_Parent.value), PrestoDOM_Properties.gravity("center"), PrestoDOM_Properties.background("#ff1744")])([PrestoDOM_Elements.linearLayout([PrestoDOM_Properties.id_("gameBoard"), PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(Mario_GameConfig.boardHeightInt)), PrestoDOM_Properties.width(new PrestoDOM_Types_DomAttributes.V(Mario_GameConfig.boardWidthInt)), PrestoDOM_Properties.margin("20,20,20,20"), PrestoDOM_Properties.background("#FFFFFF")])([])]);
 var getButtonUI = function (state) {
     return PrestoDOM_Elements.linearLayout([PrestoDOM_Properties.name(state.name), PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(40)), PrestoDOM_Properties.width(new PrestoDOM_Types_DomAttributes.V(150)), PrestoDOM_Properties.margin("20,0,0,0"), PrestoDOM_Properties.background(state.buttonColor), PrestoDOM_Properties.gravity("center"), PrestoDOM_Properties.color("#fff000"), PrestoDOM_Events.onClick("do")])([PrestoDOM_Elements.textView([PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(20)), PrestoDOM_Properties.width(PrestoDOM_Types_DomAttributes.Match_Parent.value), PrestoDOM_Properties.text(state.text), PrestoDOM_Properties.fontStyle("Source Sans Pro-Regular"), PrestoDOM_Properties.gravity("center")])]);
 };
-var getBottomPane = PrestoDOM_Elements.linearLayout([PrestoDOM_Properties.id_("bottomPane"), PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(100)), PrestoDOM_Properties.width(PrestoDOM_Types_DomAttributes.Match_Parent.value), PrestoDOM_Properties.background("#000000"), PrestoDOM_Properties.orientation("horizontal"), PrestoDOM_Properties.gravity("center_vertical"), PrestoDOM_Properties.padding("20,20,20,20")])([PrestoDOM_Elements.linearLayout([PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(1)), PrestoDOM_Properties.width(new PrestoDOM_Types_DomAttributes.V(0)), PrestoDOM_Properties.weight("1")])([]), getButtonUI({
+var getBottomPane = PrestoDOM_Elements.linearLayout([PrestoDOM_Properties.id_("bottomPane"), PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(100)), PrestoDOM_Properties.width(PrestoDOM_Types_DomAttributes.Match_Parent.value), PrestoDOM_Properties.background("#000000"), PrestoDOM_Properties.orientation("horizontal"), PrestoDOM_Properties.gravity("center_vertical"), PrestoDOM_Properties.padding("20,20,20,20")])([PrestoDOM_Elements.linearLayout([PrestoDOM_Properties.height(PrestoDOM_Types_DomAttributes.Match_Parent.value), PrestoDOM_Properties.width(new PrestoDOM_Types_DomAttributes.V(0)), PrestoDOM_Properties.weight("1"), PrestoDOM_Properties.gravity("center_vertical")])([PrestoDOM_Elements.textView([PrestoDOM_Properties.height(new PrestoDOM_Types_DomAttributes.V(40)), PrestoDOM_Properties.width(new PrestoDOM_Types_DomAttributes.V(350)), PrestoDOM_Properties.text("Use arrow keys or W/A/D to move"), PrestoDOM_Properties.fontStyle("Source Sans Pro-Regular"), PrestoDOM_Properties.textSize("22"), PrestoDOM_Properties.gravity("center"), PrestoDOM_Properties.color("#FFFFFF"), PrestoDOM_Properties.padding("50,0,0,0")])]), getButtonUI({
     name: "playButton",
     text: "PLAY (P)",
     buttonColor: "#ff0066"
@@ -31255,11 +31292,16 @@ var getBottomPane = PrestoDOM_Elements.linearLayout([PrestoDOM_Properties.id_("b
     text: "RESTART (R)",
     buttonColor: "#ff0066"
 })]);
-var gameScreem = function (state) {
-    return PrestoDOM_Elements.linearLayout([PrestoDOM_Properties.id_("1"), PrestoDOM_Properties.height(PrestoDOM_Types_DomAttributes.Match_Parent.value), PrestoDOM_Properties.width(PrestoDOM_Types_DomAttributes.Match_Parent.value), PrestoDOM_Properties.orientation("vertical")])([getTopPane(state.gameTime), getGameBoardHolder, getBottomPane]);
+var gameScreen = function (state) {
+    return PrestoDOM_Elements.linearLayout([PrestoDOM_Properties.id_("gameScreen"), PrestoDOM_Properties.height(PrestoDOM_Types_DomAttributes.Match_Parent.value), PrestoDOM_Properties.width(PrestoDOM_Types_DomAttributes.Match_Parent.value), PrestoDOM_Properties.orientation("vertical")])([getTopPane(state.gameTime), getGameBoardHolder, getBottomPane]);
+};
+var windowScreen = function (state) {
+    return PrestoDOM_Elements.relativeLayout([PrestoDOM_Properties.id_("windowScreen"), PrestoDOM_Properties.height(PrestoDOM_Types_DomAttributes.Match_Parent.value), PrestoDOM_Properties.width(PrestoDOM_Types_DomAttributes.Match_Parent.value)])([gameScreen(state), popupWindow(state)]);
 };
 module.exports = {
-    gameScreem: gameScreem,
+    windowScreen: windowScreen,
+    gameScreen: gameScreen,
+    popupWindow: popupWindow,
     getButtonUI: getButtonUI,
     getTopPane: getTopPane,
     getBottomPane: getBottomPane,
@@ -31565,68 +31607,68 @@ module.exports=function(t){var e={};function n(r){if(e[r])return e[r].exports;va
 
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
+/******/    // The module cache
+/******/    var installedModules = {};
 /******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
+/******/    // The require function
+/******/    function __webpack_require__(moduleId) {
 /******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
+/******/        // Check if module is in cache
+/******/        if(installedModules[moduleId]) {
+/******/            return installedModules[moduleId].exports;
+/******/        }
+/******/        // Create a new module (and put it into the cache)
+/******/        var module = installedModules[moduleId] = {
+/******/            i: moduleId,
+/******/            l: false,
+/******/            exports: {}
+/******/        };
 /******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/        // Execute the module function
+/******/        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
+/******/        // Flag the module as loaded
+/******/        module.l = true;
 /******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
+/******/        // Return the exports of the module
+/******/        return module.exports;
+/******/    }
 /******/
 /******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
+/******/    // expose the modules object (__webpack_modules__)
+/******/    __webpack_require__.m = modules;
 /******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
+/******/    // expose the module cache
+/******/    __webpack_require__.c = installedModules;
 /******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
-/******/ 	};
+/******/    // define getter function for harmony exports
+/******/    __webpack_require__.d = function(exports, name, getter) {
+/******/        if(!__webpack_require__.o(exports, name)) {
+/******/            Object.defineProperty(exports, name, {
+/******/                configurable: false,
+/******/                enumerable: true,
+/******/                get: getter
+/******/            });
+/******/        }
+/******/    };
 /******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
+/******/    // getDefaultExport function for compatibility with non-harmony modules
+/******/    __webpack_require__.n = function(module) {
+/******/        var getter = module && module.__esModule ?
+/******/            function getDefault() { return module['default']; } :
+/******/            function getModuleExports() { return module; };
+/******/        __webpack_require__.d(getter, 'a', getter);
+/******/        return getter;
+/******/    };
 /******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/    // Object.prototype.hasOwnProperty.call
+/******/    __webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/    // __webpack_public_path__
+/******/    __webpack_require__.p = "";
 /******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 146);
+/******/    // Load entry module and return exports
+/******/    return __webpack_require__(__webpack_require__.s = 146);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -37060,7 +37102,7 @@ module.exports = defaults;
 */
 
 module.exports = {
-	parseParams: __webpack_require__(73)
+    parseParams: __webpack_require__(73)
 };
 
 /***/ }),
@@ -37355,9 +37397,9 @@ module.exports = function (type, config, getSetType) {
 */
 
 module.exports = {
-	parseParams: __webpack_require__(75),
-	mapPrams: __webpack_require__(76),
-	callbackMapper: __webpack_require__(77)
+    parseParams: __webpack_require__(75),
+    mapPrams: __webpack_require__(76),
+    callbackMapper: __webpack_require__(77)
 };
 
 /***/ }),
@@ -41241,10 +41283,10 @@ module.exports = {
 */
 
 module.exports = {
-	android: __webpack_require__(74),
-	ios: __webpack_require__(350),
-	web: __webpack_require__(72),
-	common: __webpack_require__(354)
+    android: __webpack_require__(74),
+    ios: __webpack_require__(350),
+    web: __webpack_require__(72),
+    common: __webpack_require__(354)
 };
 
 /***/ }),
@@ -42402,13 +42444,13 @@ module.exports = Cancel;
 */
 
 module.exports = {
-	doms: __webpack_require__(5),
-	handler: __webpack_require__(134),
-	helpers: __webpack_require__(135),
-	views: __webpack_require__(355),
-	baseView: __webpack_require__(4),
-	init: __webpack_require__(372),
-	animations: __webpack_require__(138)
+    doms: __webpack_require__(5),
+    handler: __webpack_require__(134),
+    helpers: __webpack_require__(135),
+    views: __webpack_require__(355),
+    baseView: __webpack_require__(4),
+    init: __webpack_require__(372),
+    animations: __webpack_require__(138)
 };
 
 /***/ }),
@@ -50719,7 +50761,7 @@ var zipWith = /*#__PURE__*/Object(__WEBPACK_IMPORTED_MODULE_0__internal_curry3__
 */
 
 module.exports = {
-	parseParams: __webpack_require__(48)
+    parseParams: __webpack_require__(48)
 };
 
 /***/ }),
@@ -50841,24 +50883,24 @@ module.exports = function flattenObject(ob) {
 */
 
 module.exports.map = function (fn) {
-	if (typeof window.__FN_INDEX !== 'undefined' && window.__FN_INDEX !== null) {
-		var proxyFnName = 'F' + window.__FN_INDEX;
-		window.__PROXY_FN[proxyFnName] = fn;
-		window.__FN_INDEX++;
-		return proxyFnName;
-	} else {
-		throw new Error("Please initialise window.__FN_INDEX = 0 in index.js of your project.");
-	}
+    if (typeof window.__FN_INDEX !== 'undefined' && window.__FN_INDEX !== null) {
+        var proxyFnName = 'F' + window.__FN_INDEX;
+        window.__PROXY_FN[proxyFnName] = fn;
+        window.__FN_INDEX++;
+        return proxyFnName;
+    } else {
+        throw new Error("Please initialise window.__FN_INDEX = 0 in index.js of your project.");
+    }
 };
 
 module.exports.callJSCallback = function () {
-	for (var _len = arguments.length, params = Array(_len), _key = 0; _key < _len; _key++) {
-		params[_key] = arguments[_key];
-	}
+    for (var _len = arguments.length, params = Array(_len), _key = 0; _key < _len; _key++) {
+        params[_key] = arguments[_key];
+    }
 
-	var fName = params[0];
-	var functionArgs = params.slice(1);
-	window.__PROXY_FN[fName].call(null, functionArgs);
+    var fName = params[0];
+    var functionArgs = params.slice(1);
+    window.__PROXY_FN[fName].call(null, functionArgs);
 };
 
 /***/ }),
@@ -50993,22 +51035,22 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var Button = function (_View) {
-	_inherits(Button, _View);
+    _inherits(Button, _View);
 
-	function Button(props, children) {
-		_classCallCheck(this, Button);
+    function Button(props, children) {
+        _classCallCheck(this, Button);
 
-		return _possibleConstructorReturn(this, (Button.__proto__ || Object.getPrototypeOf(Button)).call(this, props, children));
-	}
+        return _possibleConstructorReturn(this, (Button.__proto__ || Object.getPrototypeOf(Button)).call(this, props, children));
+    }
 
-	_createClass(Button, [{
-		key: 'render',
-		value: function render() {
-			return dom('button', this.props);
-		}
-	}]);
+    _createClass(Button, [{
+        key: 'render',
+        value: function render() {
+            return dom('button', this.props);
+        }
+    }]);
 
-	return Button;
+    return Button;
 }(View);
 
 module.exports = Button;
@@ -51057,22 +51099,22 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var Calendar = function (_View) {
-	_inherits(Calendar, _View);
+    _inherits(Calendar, _View);
 
-	function Calendar(props, children) {
-		_classCallCheck(this, Calendar);
+    function Calendar(props, children) {
+        _classCallCheck(this, Calendar);
 
-		return _possibleConstructorReturn(this, (Calendar.__proto__ || Object.getPrototypeOf(Calendar)).call(this, props, children));
-	}
+        return _possibleConstructorReturn(this, (Calendar.__proto__ || Object.getPrototypeOf(Calendar)).call(this, props, children));
+    }
 
-	_createClass(Calendar, [{
-		key: 'render',
-		value: function render() {
-			return dom('calendarView', this.props);
-		}
-	}]);
+    _createClass(Calendar, [{
+        key: 'render',
+        value: function render() {
+            return dom('calendarView', this.props);
+        }
+    }]);
 
-	return Calendar;
+    return Calendar;
 }(View);
 
 module.exports = Calendar;
@@ -51121,22 +51163,22 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var CheckBox = function (_View) {
-	_inherits(CheckBox, _View);
+    _inherits(CheckBox, _View);
 
-	function CheckBox(props, children) {
-		_classCallCheck(this, CheckBox);
+    function CheckBox(props, children) {
+        _classCallCheck(this, CheckBox);
 
-		return _possibleConstructorReturn(this, (CheckBox.__proto__ || Object.getPrototypeOf(CheckBox)).call(this, props, children));
-	}
+        return _possibleConstructorReturn(this, (CheckBox.__proto__ || Object.getPrototypeOf(CheckBox)).call(this, props, children));
+    }
 
-	_createClass(CheckBox, [{
-		key: 'render',
-		value: function render() {
-			return dom('checkBox', this.props);
-		}
-	}]);
+    _createClass(CheckBox, [{
+        key: 'render',
+        value: function render() {
+            return dom('checkBox', this.props);
+        }
+    }]);
 
-	return CheckBox;
+    return CheckBox;
 }(View);
 
 module.exports = CheckBox;
@@ -51249,27 +51291,27 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var FrameLayout = function (_View) {
-	_inherits(FrameLayout, _View);
+    _inherits(FrameLayout, _View);
 
-	function FrameLayout(props, children) {
-		_classCallCheck(this, FrameLayout);
+    function FrameLayout(props, children) {
+        _classCallCheck(this, FrameLayout);
 
-		return _possibleConstructorReturn(this, (FrameLayout.__proto__ || Object.getPrototypeOf(FrameLayout)).call(this, props, children));
-	}
+        return _possibleConstructorReturn(this, (FrameLayout.__proto__ || Object.getPrototypeOf(FrameLayout)).call(this, props, children));
+    }
 
-	_createClass(FrameLayout, [{
-		key: 'render',
-		value: function render() {
-			var children = this.resolveChildren();
-			return dom(
-				'frameLayout',
-				this.props,
-				children
-			);
-		}
-	}]);
+    _createClass(FrameLayout, [{
+        key: 'render',
+        value: function render() {
+            var children = this.resolveChildren();
+            return dom(
+                'frameLayout',
+                this.props,
+                children
+            );
+        }
+    }]);
 
-	return FrameLayout;
+    return FrameLayout;
 }(View);
 
 module.exports = FrameLayout;
@@ -51393,24 +51435,24 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var ImageView = function (_View) {
-	_inherits(ImageView, _View);
+    _inherits(ImageView, _View);
 
-	function ImageView(props, children) {
-		_classCallCheck(this, ImageView);
+    function ImageView(props, children) {
+        _classCallCheck(this, ImageView);
 
-		return _possibleConstructorReturn(this, (ImageView.__proto__ || Object.getPrototypeOf(ImageView)).call(this, props, children));
-	}
+        return _possibleConstructorReturn(this, (ImageView.__proto__ || Object.getPrototypeOf(ImageView)).call(this, props, children));
+    }
 
-	_createClass(ImageView, [{
-		key: 'render',
-		value: function render() {
-			var params = this.props;
+    _createClass(ImageView, [{
+        key: 'render',
+        value: function render() {
+            var params = this.props;
 
-			return dom('imageView', params);
-		}
-	}]);
+            return dom('imageView', params);
+        }
+    }]);
 
-	return ImageView;
+    return ImageView;
 }(View);
 
 module.exports = ImageView;
@@ -51554,23 +51596,23 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var ProgressBar = function (_View) {
-	_inherits(ProgressBar, _View);
+    _inherits(ProgressBar, _View);
 
-	function ProgressBar(props, children) {
-		_classCallCheck(this, ProgressBar);
+    function ProgressBar(props, children) {
+        _classCallCheck(this, ProgressBar);
 
-		return _possibleConstructorReturn(this, (ProgressBar.__proto__ || Object.getPrototypeOf(ProgressBar)).call(this, props, children));
-	}
+        return _possibleConstructorReturn(this, (ProgressBar.__proto__ || Object.getPrototypeOf(ProgressBar)).call(this, props, children));
+    }
 
-	_createClass(ProgressBar, [{
-		key: 'render',
-		value: function render() {
-			var params = this.props;
-			return dom('progressBar', params);
-		}
-	}]);
+    _createClass(ProgressBar, [{
+        key: 'render',
+        value: function render() {
+            var params = this.props;
+            return dom('progressBar', params);
+        }
+    }]);
 
-	return ProgressBar;
+    return ProgressBar;
 }(View);
 
 module.exports = ProgressBar;
@@ -51690,27 +51732,27 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var ShimmerFrameLayout = function (_View) {
-	_inherits(ShimmerFrameLayout, _View);
+    _inherits(ShimmerFrameLayout, _View);
 
-	function ShimmerFrameLayout(props, children) {
-		_classCallCheck(this, ShimmerFrameLayout);
+    function ShimmerFrameLayout(props, children) {
+        _classCallCheck(this, ShimmerFrameLayout);
 
-		return _possibleConstructorReturn(this, (ShimmerFrameLayout.__proto__ || Object.getPrototypeOf(ShimmerFrameLayout)).call(this, props, children));
-	}
+        return _possibleConstructorReturn(this, (ShimmerFrameLayout.__proto__ || Object.getPrototypeOf(ShimmerFrameLayout)).call(this, props, children));
+    }
 
-	_createClass(ShimmerFrameLayout, [{
-		key: 'render',
-		value: function render() {
-			var children = this.resolveChildren();
-			return dom(
-				'shimmerFrameLayout',
-				this.props,
-				children
-			);
-		}
-	}]);
+    _createClass(ShimmerFrameLayout, [{
+        key: 'render',
+        value: function render() {
+            var children = this.resolveChildren();
+            return dom(
+                'shimmerFrameLayout',
+                this.props,
+                children
+            );
+        }
+    }]);
 
-	return ShimmerFrameLayout;
+    return ShimmerFrameLayout;
 }(View);
 
 module.exports = ShimmerFrameLayout;
@@ -51759,22 +51801,22 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var Switch = function (_View) {
-	_inherits(Switch, _View);
+    _inherits(Switch, _View);
 
-	function Switch(props, children) {
-		_classCallCheck(this, Switch);
+    function Switch(props, children) {
+        _classCallCheck(this, Switch);
 
-		return _possibleConstructorReturn(this, (Switch.__proto__ || Object.getPrototypeOf(Switch)).call(this, props, children));
-	}
+        return _possibleConstructorReturn(this, (Switch.__proto__ || Object.getPrototypeOf(Switch)).call(this, props, children));
+    }
 
-	_createClass(Switch, [{
-		key: 'render',
-		value: function render() {
-			return dom('switch', this.props);
-		}
-	}]);
+    _createClass(Switch, [{
+        key: 'render',
+        value: function render() {
+            return dom('switch', this.props);
+        }
+    }]);
 
-	return Switch;
+    return Switch;
 }(View);
 
 module.exports = Switch;
@@ -51823,22 +51865,22 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var TabLayout = function (_View) {
-	_inherits(TabLayout, _View);
+    _inherits(TabLayout, _View);
 
-	function TabLayout(props, children) {
-		_classCallCheck(this, TabLayout);
+    function TabLayout(props, children) {
+        _classCallCheck(this, TabLayout);
 
-		return _possibleConstructorReturn(this, (TabLayout.__proto__ || Object.getPrototypeOf(TabLayout)).call(this, props, children));
-	}
+        return _possibleConstructorReturn(this, (TabLayout.__proto__ || Object.getPrototypeOf(TabLayout)).call(this, props, children));
+    }
 
-	_createClass(TabLayout, [{
-		key: 'render',
-		value: function render() {
-			return dom('tabLayout', this.props);
-		}
-	}]);
+    _createClass(TabLayout, [{
+        key: 'render',
+        value: function render() {
+            return dom('tabLayout', this.props);
+        }
+    }]);
 
-	return TabLayout;
+    return TabLayout;
 }(View);
 
 module.exports = TabLayout;
@@ -52047,22 +52089,22 @@ var dom = __webpack_require__(5);
 var View = __webpack_require__(4);
 
 var WebView = function (_View) {
-	_inherits(WebView, _View);
+    _inherits(WebView, _View);
 
-	function WebView(props, children) {
-		_classCallCheck(this, WebView);
+    function WebView(props, children) {
+        _classCallCheck(this, WebView);
 
-		return _possibleConstructorReturn(this, (WebView.__proto__ || Object.getPrototypeOf(WebView)).call(this, props, children));
-	}
+        return _possibleConstructorReturn(this, (WebView.__proto__ || Object.getPrototypeOf(WebView)).call(this, props, children));
+    }
 
-	_createClass(WebView, [{
-		key: 'render',
-		value: function render() {
-			return dom('webView', this.props);
-		}
-	}]);
+    _createClass(WebView, [{
+        key: 'render',
+        value: function render() {
+            return dom('webView', this.props);
+        }
+    }]);
 
-	return WebView;
+    return WebView;
 }(View);
 
 module.exports = WebView;
@@ -63242,15 +63284,13 @@ exports.jsUndefined = void 0;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+// Generated by purs version 0.11.7
 
 
 var DOM_Event_Types = __webpack_require__(123);
 var Data_Maybe = __webpack_require__(9);
 var Halogen_VDom_DOM_Prop = __webpack_require__(160);
 var PrestoDOM_Core = __webpack_require__(80);
-
-// domName :: AttrValue -> Prop
-// domName st = Tuple "domName" st
 var onClick = function (some) {
     return new Halogen_VDom_DOM_Prop.Handler("onClick", function (v) {
         return Data_Maybe.Nothing.value;
