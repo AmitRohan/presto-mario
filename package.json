@@ -2,7 +2,8 @@
   "scripts": {
     "buildJS": "pulp build",
     "buildJS-watch": "pulp --watch build",
-    "start": "webpack-dev-server --content-base dist/ --host 0.0.0.0"
+    "start": "webpack-dev-server --content-base dist/ --host 0.0.0.0",
+    "compile" : "webpack"
   },
   "dependencies": {
     "babel": "^6.23.0",
