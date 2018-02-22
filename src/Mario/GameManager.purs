@@ -1,15 +1,15 @@
 module Mario.GameManager where
 
-import Prelude 
+import Prelude
+
+import Control.Monad.Eff (Eff)
 import Data.Number.Format (toString)
 import Ester as Ester
 import Mario.Types (Direction(..), Keys(..), Model(..))
-  
-import Control.Monad.Eff (Eff)
 
 -- GAME LOGIC TO MOFICY GAME OBCECTS 
 step :: Number -> Keys -> Model -> Model
-step dt keys mario = do
+step dt keys mario =
 		mario
 			# walk keys
 			# jump keys
@@ -17,8 +17,11 @@ step dt keys mario = do
 			# fixCollision collision
 			# physics dt
 			  
-		where			
+		where	
+
 			-- newSpeed = getSpeed dt keys mario
+			collision = Ester.detectCollision newMario objectName
+
 			newMario = mario
 					# walk keys
 					# jump keys
@@ -26,8 +29,7 @@ step dt keys mario = do
 					# physics dt
 
 			objectName = Ester.SvgName "Mario"
-			collision = Ester.detectCollision newMario objectName
-			
+						
 gravity :: Number -> Model -> Model
 gravity dt (Model mario) =
 		Model { 
@@ -41,12 +43,12 @@ gravity dt (Model mario) =
 jump :: Keys -> Model -> Model
 jump (Keys keys) (Model mario)
     | keys.y == 1.0 && mario.vy == 0.0 = Model { 
-							    			x : mario.x
-							    			, y : mario.y
-							    			, vx : mario.vx
-							    			, vy : negate 6.0 
-							    			, dir : mario.dir
-									    }
+								    			x : mario.x
+								    			, y : mario.y
+								    			, vx : mario.vx
+								    			, vy : negate 6.0 
+								    			, dir : mario.dir
+										    }
    	| otherwise = (Model mario)
 
 -- fixCollision :: Ester.Collision -> Model -> Model 
@@ -59,43 +61,39 @@ fixCollision :: forall t128.
   }                
   -> Model -> Model
 fixCollision collider (Model mario) = do
-	let _vy | collider.yP == "None" && collider.yM == "None" = mario.vy
-			| collider.yP /= "None" && mario.vy > 0.0 = 0.0
-			| collider.yM /= "None" && mario.vy < 0.0 = 0.0
-			| otherwise = 0.0
-
-	let _vx | collider.xP == "None" && collider.xM == "None" = mario.vx
-			| collider.xP /= "None" && mario.vx > 0.0 = 0.0
-			| collider.xM /= "None" && mario.vx < 0.0 = 0.0
-			| otherwise = 0.0
-
+	let p22 = Ester.logAny collider	
 	Model { 
 		x : mario.x,
 		y : mario.y,
 		vx : _vx ,
 		vy : _vy,
 		dir : mario.dir
-	}				    	
+	} where
+		_vy | collider.yP == "None" && collider.yM == "None" = mario.vy
+			| otherwise = 0.0
+		_vx | collider.xP == "None" && collider.xM == "None"= mario.vx
+			| otherwise = 0.0
+
+
 	
 
 
 walk :: Keys -> Model -> Model
-walk (Keys keys) (Model mario) = do
-		let _newSpeed 	| keys.x == 2.0 		= negate 5.0 
-					 	| keys.x == 1.0 		= 5.0 
-					 	| keys.x == 3.0 		= 0.0 
-					 	| otherwise 			= mario.vx 
-		
-		let newDirection| keys.x == 2.0 		= Left
-					 	| keys.x == 1.0 		= Right
-					 	| otherwise 			= mario.dir 
+walk (Keys keys) (Model mario) = 
 		Model { 
 			x : mario.x
 			, y : mario.y
 			, vx :	_newSpeed
 			, vy : mario.vy
 			, dir : newDirection
-	    }    
+	    } where
+    		newDirection	| keys.x == 2.0 		= Left
+					 		| keys.x == 1.0 		= Right
+					 		| otherwise 			= mario.dir     
+    		_newSpeed	| keys.x == 2.0 		= negate 5.0 
+					 	| keys.x == 1.0 		= 5.0 
+					 	| keys.x == 3.0 		= 0.0 
+					 	| otherwise 			= mario.vx 
 
 physics :: Number -> Model -> Model
 physics dt (Model mario) =
@@ -108,20 +106,16 @@ physics dt (Model mario) =
 
 -- Update The Game UI here
 patchBoard:: forall t . Model -> Eff t Unit
-patchBoard (Model mario) = do
-	-- let verb = if mario.y > 0.0 then "jump" else if mario.vx /= 0.0 then "walk" else "stand"
-	-- let dir = case mario.dir of
-	-- 				Left -> "left"
-	-- 				Right -> "right"
-	-- 				_ -> "right"
-	-- let src  = "/mario/" <> verb <> "/" <> dir <> ".gif"GameConfig.startY
-	let newY = toString ( mario.y )
-	let newX = toString ( mario.x )   
-  	let propList = [
-	    Ester.getProp "x" newX,
-	    Ester.getProp "y" newY
-	  ]
+patchBoard (Model mario) = 
 	Ester.modifyGameObject (Ester.SvgName "Mario") (Ester.PropertyList propList) 
+		where
+			propList = [
+					    Ester.getProp "x" newX ,
+					    Ester.getProp "y" newY
+					  ]
+			newY = toString ( mario.y )
+			newX = toString ( mario.x )   					  
+
 
 
 -- Helper Functions to Modify 

@@ -30,7 +30,6 @@ import PrestoDOM.Util as U
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE)
 
-foreign import logAny :: forall eff  a. a -> Eff eff Unit
 foreign import openUrl :: forall eff  a. a -> Eff eff Unit
 
 

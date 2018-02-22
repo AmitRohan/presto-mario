@@ -29,7 +29,7 @@ marioWidth :: Number
 marioWidth = 50.0
 
 startX :: Number
-startX = 22.0
+startX = 50.0
 
 startY :: Number
 startY = boardHeight - groundHeight - marioHeight

@@ -12,6 +12,8 @@ import Data.Generic.Rep.Show (genericShow)
 
 import FRP.Event (Event)
 
+foreign import logAny :: forall a. a -> Unit
+
 data SvgName = SvgName String
 derive instance genericSvgName :: Generic (SvgName) _
 instance showSvgName :: Show SvgName where show = genericShow

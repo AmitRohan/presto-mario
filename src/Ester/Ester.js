@@ -20,6 +20,10 @@ exports.initGameBoard = function(gameBoard) {
   	}
 }
 
+exports["logAny"]  = function(a) {
+  console.log(a);
+}
+
 exports.clearGameBoard = function() {
     return function() {
     	if(DRAW)
@@ -147,22 +151,23 @@ exports.removeGameObject = function(name) {
 
 // { x, y , vx , vy } and Y axis is inversed
 var collDet = function (obj,name,r1,r2) {
-  // if ( (r1.y + r1.h > r2.y ) && (r1.x + r1.w > r2.x ) &&(r1.x < r2.x + r2.w ) && (r1.y < r2.y + r2.h) ) { 
-
   if (  (  r1.x  <  r2.x + r2.w  )  &&  ( r1.x + r1.w  >  r2.x  )  && (  r1.y  <  r2.y + r2.h  )  && (  r1.y + r1.h  >  r2.y  )  )
-      {
-          var dx = (r1.x + r1.w/2 ) + (r2.x + r2.w/2 )
-          var dy = (r1.y + r1.h/2 ) + (r2.h + r2.h/2 )
-          if( Math.max(dx,-dx) > Math.max(dy,-dy) ){
-            if ( r1.vy >= 0.0 && ( r1.y + r1.h ) >= r2.y && obj.yPColide !== "None")
-                obj.yPColide  = name
-            if ( r1.vy <= 0.0 && r1.y >= ( r2.y + r2.h ) && obj.yMColide !== "None")
-                obj.yMColide  = name
-          }else{
-            if ( r1.vx >= 0.0 && ( r1.x + r1.w ) >= r2.x && obj.xPColide !== "None")
-                obj.xPColide  = name
-            if ( r1.vx <= 0.0 && r1.x >= ( r2.x + r2.w ) && obj.xMColide !== "None")
-                obj.xMColide  = name
+      {   
+
+        
+
+          if( r1.vy != 0.0 ){
+            if ( ( r1.y + r1.h ) >= r2.y && obj.yP === "None")
+                obj.yP  = name
+            if ( r1.y >= ( r2.y + r2.h ) && obj.yM === "None")
+                obj.yM  = name
+          }
+
+          if(r1.vx != 0.0 ){
+            if (  ( r1.x + r1.w ) >= r2.x && obj.xP === "None")
+                obj.xP  = name
+            if (  r1.x >= ( r2.x + r2.w ) && obj.xM === "None")
+                obj.xM  = name
           }
       }
       return obj;
@@ -175,9 +180,6 @@ exports.detectCollision = function(newObj) {
     return function (name) {
         newObj=newObj.value0
         name=name.value0
-        var xPColide, xMColide, yPColide, yMColide;
-        xPColide = xMColide = yMColide = yPColide = "None" ;
-
         var selectedObject = findInGameObjectCache(name) ;
         if(selectedObject){
           var selNode = selectedObject.elem.node
@@ -191,10 +193,10 @@ exports.detectCollision = function(newObj) {
           }  
 
           var collision =  { 
-            xP : xPColide,
-            xM : xMColide,
-            yP : yPColide,
-            yM : yMColide
+            xP : "None",
+            xM : "None",
+            yP : "None",
+            yM : "None"
           }
           GAME_OBJECT_LIST.map(function (gameObject) {
             if(gameObject.name!=name && gameObject.parent == "Obstacles" ){
@@ -210,7 +212,7 @@ exports.detectCollision = function(newObj) {
 
           // COLLIDABLE_PRP
         }
-        console.log(collision)
+        // console.log(collision)
         return collision;
     }
 }
