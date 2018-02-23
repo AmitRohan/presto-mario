@@ -51,11 +51,13 @@ main = do
 -- | Here we update the Key Press status 
 updateKeyPress ::  forall t . Int -> Eff t GameState
 updateKeyPress key
-  | key == 37 || key == 72 || key == 65 = U.updateState "keyLeft" true
-  | key == 38 || key == 75 || key == 87 = U.updateState "keyTop" true
+  | key == 37 || key == 74 || key == 65 = U.updateState "keyLeft" true
+  | key == 38 || key == 73 || key == 87 = U.updateState "keyTop" true
   | key == 39 || key == 76 || key == 68 = U.updateState "keyRight" true
-  | key == 40 || key == 74 || key == 83 = U.updateState "keyBottom" true
-  | key == 72 = U.updateState "keyHelp" true -- H 
+  | key == 40 || key == 75 || key == 83 = U.updateState "keyBottom" true
+  | key == 72 = do
+                _ <- U.updateState "gameStatus" E_Pause 
+                U.updateState "keyHelp" true -- H 
   | key == 81 = U.updateState "gameStatus" E_Stop -- Q
   | key == 82 = U.updateState "gameStatus" E_Restart -- R
   | key == 32 || key == 80 = do  -- Space or P
@@ -67,11 +69,13 @@ updateKeyPress key
 
 updateKeyRelease ::  forall t . Int -> Eff t GameState
 updateKeyRelease key
-  | key == 37 || key == 72 || key == 65 = U.updateState "keyLeft" false
-  | key == 38 || key == 75 || key == 87 = U.updateState "keyTop" false
+  | key == 37 || key == 74 || key == 65 = U.updateState "keyLeft" false
+  | key == 38 || key == 73 || key == 87 = U.updateState "keyTop" false
   | key == 39 || key == 76 || key == 68 = U.updateState "keyRight" false
-  | key == 40 || key == 74 || key == 83 = U.updateState "keyBottom" false
-  | key == 72 = U.updateState "keyHelp" false -- Help 
+  | key == 40 || key == 75 || key == 83 = U.updateState "keyBottom" false
+  | key == 72 = do
+                  _ <- U.updateState "gameStatus" E_Play 
+                  U.updateState "keyHelp" false -- Help 
   | otherwise = U.getState
  
 getDirection :: GameState -> Keys
@@ -92,7 +96,7 @@ listen = do
   -- Add Walls in GameBaord
   _ <- GameBoard.addWalls s.gameLevel
   -- Spawn Player && Enemy in GameBaord
-  _ <- GameBoard.spawnPlayer "Player1" s.mario 
+  _ <- GameBoard.spawnPlayer "Player1" s.player1 
   _ <- GameBoard.spawnEnemy "Nick" s.enemy1 
   _ <- GameBoard.spawnEnemy "Sam" s.enemy2
   _ <- GameBoard.spawnEnemy "Harry" s.enemy3
@@ -134,6 +138,7 @@ checkSquareTouch (Model mario) (Model enemy) range = not ( ( mario.x <= enemy.x 
 eval :: forall e. Number -> Eff (console :: CONSOLE | e) GameState
 eval _ = do
   s <- U.getState
+  let t=  Ester.logAny s
   if s.gameTime > 0.0 
       then do
         ns <- updateUI s.gameStatus
@@ -152,32 +157,34 @@ updateUI gameStatus = case gameStatus of
     -- E_GameOver -> U.updateState "gameStatus" E_GameOver
     E_Play -> do
                   s <- U.getState
-                  if checkTouch s.player1 s.enemy1 GameConfig.marioWidth GameConfig.marioHeight 
-                    && checkTouch s.player1 s.enemy2 GameConfig.marioWidth GameConfig.marioHeight 
-                    && checkTouch s.player1 s.enemy3 GameConfig.marioWidth GameConfig.marioHeight
+                  if checkTouch s.player1 s.enemy1 GameConfig.boxWidth GameConfig.boxHeight 
+                    && checkTouch s.player1 s.enemy2 GameConfig.boxWidth GameConfig.boxHeight 
+                    && checkTouch s.player1 s.enemy3 GameConfig.boxWidth GameConfig.boxHeight
                     then do
                       let timeLeft = s.gameTime - 1.0
                       let currDirection = getDirection s 
                       let newPlayer = BoxManager.updatePlayer "Player1" GameConfig.tickInterval currDirection s.player1
                       _ <- GameBoard.patchBoard "Player1" newPlayer
-                      let newEnemy1 = EnemyManager.updateEnemy "Enemy1" GameConfig.tickInterval newMario s.enemy1
-                      let newEnemy2 = EnemyManager.updateEnemy "Enemy2" GameConfig.tickInterval newMario s.enemy2
-                      let newEnemy3 = EnemyManager.updateEnemy "Enemy3" GameConfig.tickInterval newMario s.enemy3
-                      _ <- GameBoard.patchBoard "Enemy1" newEnemy1
-                      _ <- GameBoard.patchBoard "Enemy2" newEnemy2
-                      _ <- GameBoard.patchBoard "Enemy3" newEnemy3
+                      let newEnemy1 = EnemyManager.updateEnemy "Nick" GameConfig.tickInterval newPlayer s.enemy1
+                      let newEnemy2 = EnemyManager.updateEnemy "Sam" GameConfig.tickInterval newPlayer s.enemy2
+                      let newEnemy3 = EnemyManager.updateEnemy "Harry" GameConfig.tickInterval newPlayer s.enemy3
+                      _ <- GameBoard.patchBoard "Nick" newEnemy1
+                      _ <- GameBoard.patchBoard "Sam" newEnemy2
+                      _ <- GameBoard.patchBoard "Harry" newEnemy3
                       _ <- U.updateState "gameTime" timeLeft
                       _ <- U.updateState "enemy1" newEnemy1    
                       _ <- U.updateState "enemy2" newEnemy2    
                       _ <- U.updateState "enemy3" newEnemy3    
-                      U.updateState "mario" newPlayer
+                      U.updateState "player1" newPlayer
                     else
                       U.updateState "gameStatus" E_GameOver
     E_Stop -> do
         s <- resetState
         _ <- GameBoard.patchBoard "Player1" s.player1
-        _ <- GameBoard.patchBoard "Enemy1" s.enemy1
-        _ <- GameBoard.patchBoard "Enemy2" s.enemy2
-        _ <- GameBoard.patchBoard "Enemy3" s.enemy3
+        _ <- GameBoard.patchBoard "Nick" s.enemy1
+        _ <- GameBoard.patchBoard "Sam" s.enemy2
+        _ <- GameBoard.patchBoard "Harry" s.enemy3
         U.getState
     _ -> U.getState
+
+

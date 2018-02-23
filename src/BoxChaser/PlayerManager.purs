@@ -50,12 +50,12 @@ jump (Keys keys) (Model mario)
    	| otherwise = (Model mario)
 
 -- fixCollision :: Ester.Collision -> Model -> Model 
-fixCollision :: forall t128.       
+fixCollision :: forall a.       
   { yP :: String   
   , yM :: String   
   , xP :: String   
   , xM :: String   
-  | t128           
+  | a           
   }                
   -> Model -> Model
 fixCollision collider (Model mario) = do
@@ -70,10 +70,6 @@ fixCollision collider (Model mario) = do
 			| otherwise = 0.0
 		_vx | collider.xP == "None" && collider.xM == "None"= mario.vx
 			| otherwise = 0.0
-
-
-	
-
 
 walk :: Keys -> Model -> Model
 walk (Keys keys) (Model mario) = 

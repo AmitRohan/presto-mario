@@ -86,8 +86,8 @@ spawnEnemy enemyName (Model enemyObject) = Ester.addGameObject (Ester.SvgName "W
 
 spawnPlayer ::  forall t. String -> Model -> Eff t Unit
 spawnPlayer playerName (Model player) = Ester.addGameObject (Ester.SvgName "World") (Ester.Node { name : playerName, nodeType : "Rectangle" , props : [ 
-	  Ester.getProp "height" (toString GameConfig.playerHeight),
-	  Ester.getProp "width" (toString GameConfig.playerWidth),
+	  Ester.getProp "height" (toString GameConfig.boxHeight),
+	  Ester.getProp "width" (toString GameConfig.boxWidth),
 	  Ester.getProp "x" (toString player.x),
 	  Ester.getProp "y" (toString player.y),
 	  Ester.getProp "fill" "#ff0066",
