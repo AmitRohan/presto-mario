@@ -1,6 +1,6 @@
 module Main where
 
-import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (+), (-), (<$>), (<=), (==), (>), (||))
+import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (+), (-), (<$>), (<=), (==), (>), (||), (<))
 
 import Data.Maybe (Maybe(Nothing))
 import FRP.Event (subscribe)
@@ -92,15 +92,7 @@ listen :: forall e. Eff (console :: CONSOLE, frp :: FRP | e) (Eff (frp :: FRP, c
 listen = do
   s <- U.getState
   -- Add Init GameBaord
-  _ <- GameBoard.initBoard
-  -- Add Walls in GameBaord
-  _ <- GameBoard.addWalls s.gameLevel
-  -- Spawn Player && Enemy in GameBaord
-  _ <- GameBoard.spawnPlayer "Player1" s.player1 
-  _ <- GameBoard.spawnEnemy "Nick" s.enemy1 
-  _ <- GameBoard.spawnEnemy "Sam" s.enemy2
-  _ <- GameBoard.spawnEnemy "Harry" s.enemy3
-  
+  _ <- enableLevelUI s
   
   -- Subscribe to click events to toggle states
   playGame <- U.signal "playButton" "onClick" Nothing
@@ -138,14 +130,9 @@ checkSquareTouch (Model mario) (Model enemy) range = not ( ( mario.x <= enemy.x 
 eval :: forall e. Number -> Eff (console :: CONSOLE | e) GameState
 eval _ = do
   s <- U.getState
-  let t=  Ester.logAny s
-  if s.gameTime > 0.0 
-      then do
-        ns <- updateUI s.gameStatus
-        pure ns
-      else do
-        ns <- U.updateState "gameStatus" E_Win
-        pure ns
+  ns <- updateUI s.gameStatus
+  pure ns
+        
 
 -- | The updateUI function is the function that gets called whenever a the game is running. 
 updateUI:: GameStatus -> Eff _ GameState
@@ -153,31 +140,41 @@ updateUI gameStatus = case gameStatus of
     E_Restart -> do 
       _ <- resetState
       U.updateState "gameStatus" E_Play
-    -- E_Win -> 
+    E_Win -> do
+              s <- U.getState
+              if ( s.gameLevel > 0.0 && s.gameLevel < GameConfig.maxLevel ) 
+                then do
+                  _ <- resetState
+                  _ <- U.updateState "gameLevel" ( s.gameLevel + 1.0 )
+                  nlevel <- U.updateState "gameStatus" E_Play
+                  enableLevelUI nlevel
+                else U.getState
     -- E_GameOver -> U.updateState "gameStatus" E_GameOver
     E_Play -> do
                   s <- U.getState
-                  if checkTouch s.player1 s.enemy1 GameConfig.boxWidth GameConfig.boxHeight 
-                    && checkTouch s.player1 s.enemy2 GameConfig.boxWidth GameConfig.boxHeight 
-                    && checkTouch s.player1 s.enemy3 GameConfig.boxWidth GameConfig.boxHeight
-                    then do
-                      let timeLeft = s.gameTime - 1.0
-                      let currDirection = getDirection s 
-                      let newPlayer = BoxManager.updatePlayer "Player1" GameConfig.tickInterval currDirection s.player1
-                      _ <- GameBoard.patchBoard "Player1" newPlayer
-                      let newEnemy1 = EnemyManager.updateEnemy "Nick" GameConfig.tickInterval newPlayer s.enemy1
-                      let newEnemy2 = EnemyManager.updateEnemy "Sam" GameConfig.tickInterval newPlayer s.enemy2
-                      let newEnemy3 = EnemyManager.updateEnemy "Harry" GameConfig.tickInterval newPlayer s.enemy3
-                      _ <- GameBoard.patchBoard "Nick" newEnemy1
-                      _ <- GameBoard.patchBoard "Sam" newEnemy2
-                      _ <- GameBoard.patchBoard "Harry" newEnemy3
-                      _ <- U.updateState "gameTime" timeLeft
-                      _ <- U.updateState "enemy1" newEnemy1    
-                      _ <- U.updateState "enemy2" newEnemy2    
-                      _ <- U.updateState "enemy3" newEnemy3    
-                      U.updateState "player1" newPlayer
-                    else
-                      U.updateState "gameStatus" E_GameOver
+                  if s.gameTime <= 0.0 
+                    then U.updateState "gameStatus" E_Win  
+                    else if checkTouch s.player1 s.enemy1 GameConfig.boxWidth GameConfig.boxHeight 
+                      && checkTouch s.player1 s.enemy2 GameConfig.boxWidth GameConfig.boxHeight 
+                      && checkTouch s.player1 s.enemy3 GameConfig.boxWidth GameConfig.boxHeight
+                      then do
+                        let timeLeft = s.gameTime - 1.0
+                        let currDirection = getDirection s 
+                        let newPlayer = BoxManager.updatePlayer "Player1" GameConfig.tickInterval currDirection s.player1
+                        _ <- GameBoard.patchBoard "Player1" newPlayer
+                        let newEnemy1 = EnemyManager.updateEnemy "Nick" GameConfig.tickInterval newPlayer s.enemy1
+                        let newEnemy2 = EnemyManager.updateEnemy "Sam" GameConfig.tickInterval newPlayer s.enemy2
+                        let newEnemy3 = EnemyManager.updateEnemy "Harry" GameConfig.tickInterval newPlayer s.enemy3
+                        _ <- GameBoard.patchBoard "Nick" newEnemy1
+                        _ <- GameBoard.patchBoard "Sam" newEnemy2
+                        _ <- GameBoard.patchBoard "Harry" newEnemy3
+                        _ <- U.updateState "gameTime" timeLeft
+                        _ <- U.updateState "enemy1" newEnemy1    
+                        _ <- U.updateState "enemy2" newEnemy2    
+                        _ <- U.updateState "enemy3" newEnemy3    
+                        U.updateState "player1" newPlayer
+                      else
+                        U.updateState "gameStatus" E_GameOver
     E_Stop -> do
         s <- resetState
         _ <- GameBoard.patchBoard "Player1" s.player1
@@ -186,5 +183,22 @@ updateUI gameStatus = case gameStatus of
         _ <- GameBoard.patchBoard "Harry" s.enemy3
         U.getState
     _ -> U.getState
+
+enableLevelUI :: GameState -> Eff _ GameState
+enableLevelUI s = do
+  let p = Ester.logAny s
+  -- Add Init GameBoard
+  _ <- Ester.clearGameBoard
+  _ <- GameBoard.initBoard
+  -- Add Walls in GameBoard
+  _ <- GameBoard.addWalls s.gameLevel
+  -- Spawn Player && Enemy in GameBoard
+  _ <- GameBoard.spawnPlayer "Player1" s.player1 
+  _ <- GameBoard.spawnEnemy "Nick" s.enemy1 
+  _ <- GameBoard.spawnEnemy "Sam" s.enemy2
+  _ <- GameBoard.spawnEnemy "Harry" s.enemy3
+  U.getState
+
+
 
 

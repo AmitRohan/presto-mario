@@ -5,7 +5,7 @@ import BoxChaser.Types (Direction(..), GameInterval, GameTime, Keys(..), Model(.
 
 
 gameTime :: Number
-gameTime = 8.0 * 100.0
+gameTime = 3.0 * 100.0
 
 boardWidth :: Number
 boardWidth = 1000.0
@@ -42,6 +42,9 @@ startX = 50.0
 
 startLevel :: Number
 startLevel = 1.0
+
+maxLevel :: Number
+maxLevel = 3.0
 
 startY :: Number
 startY = boardHeight - groundHeight - boxHeight - 25.0

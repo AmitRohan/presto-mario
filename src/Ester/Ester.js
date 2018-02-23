@@ -28,6 +28,8 @@ exports.clearGameBoard = function() {
     return function() {
     	if(DRAW)
     		DRAW.clear()
+    GAME_OBJECT_TAG_LIST=[];
+    GAME_OBJECT_LIST = [];  
     }
 }
 

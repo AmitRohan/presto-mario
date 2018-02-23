@@ -47,12 +47,28 @@ addWalls level = do
 	let groundY = boardHeight - groundHeight
 	let marioX = GameConfig.startX
 
-	_ <- addBarier 1.0 "Wall1" marioX groundY
-	_ <- addVerticalBarier 2.0 "Wall2" marioX groundY
-	_ <- addBarier 3.0 "Wall3" marioX groundY
-	_ <- addVerticalBarier 4.0 "Wall4" marioX groundY
-	_ <- addBarier 5.0 "Wall5" marioX groundY
-	addBarier 6.0 "Wall6" marioX groundY
+	case level of
+		1.0 -> do
+				_ <- addBarier 1.0 "Wall1" marioX groundY
+				_ <- addVerticalBarier 2.0 "Wall2" marioX groundY
+				_ <- addBarier 3.0 "Wall3" marioX groundY
+				_ <- addVerticalBarier 4.0 "Wall4" marioX groundY
+				_ <- addBarier 5.0 "Wall5" marioX groundY
+				addBarier 6.0 "Wall6" marioX groundY
+		2.0 -> do
+				_ <- addBarier 1.0 "Wall1" marioX groundY
+				_ <- addVerticalBarier 2.0 "Wall2" marioX groundY
+				_ <- addVerticalBarier 4.0 "Wall3" marioX groundY
+				addBarier 5.0 "Wall4" marioX groundY
+		3.0 -> do
+				_ <- addBarier 1.0 "Wall1" marioX groundY
+				_ <- addBarier 2.0 "Wall2" marioX groundY
+				_ <- addBarier 3.0 "Wall3" marioX groundY
+				_ <- addBarier 4.0 "Wall4" marioX groundY
+				_ <- addBarier 5.0 "Wall5" marioX groundY
+				addBarier 6.0 "Wall6" marioX groundY
+						
+		_ -> addBarier 3.0 "Wall1" marioX groundY		
 
 
 addBarier ::  forall t. Number -> String -> Number -> Number -> Eff t Unit
@@ -60,7 +76,7 @@ addBarier barierCount barierType marioX groundY= Ester.addGameObject (Ester.SvgN
 	  Ester.getProp "height" (toString (barierCount/4.0 * 100.0) ),
 	  Ester.getProp "width" "50",
 	  Ester.getProp "x" (toString ( marioX + barierCount * 150.0) ),
-	  Ester.getProp "y" (toString (groundY-(barierCount/4.0 * 100.0)) ),
+	  Ester.getProp "y" (toString ( groundY - (barierCount/4.0 * 100.0) ) ),
 	  Ester.getProp "fill" "#00E676",
 	  Ester.getProp "path" "img/wall.png"
 	]}) 	
@@ -70,7 +86,7 @@ addVerticalBarier barierCount barierType marioX groundY= Ester.addGameObject (Es
 	  Ester.getProp "height" "50",
 	  Ester.getProp "width" "100",
 	  Ester.getProp "x" (toString ( marioX + barierCount * 150.0) ),
-	  Ester.getProp "y" (toString ( groundY - ( (barierCount/4.0) * 280.0 ) ) ) ,
+	  Ester.getProp "y" (toString ( groundY - 280.0 ) ) ,
 	  Ester.getProp "fill" "#00E676",
 	  Ester.getProp "path" "img/wall.png"
 	]})
