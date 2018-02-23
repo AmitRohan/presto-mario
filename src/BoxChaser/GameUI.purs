@@ -98,14 +98,13 @@ helpWindow state = linearLayout
                   linearLayout
                   [ height (V 500)
                     , width (V 500)
-                    , gravity "center"
                     , background "#AA000000"
-                    , weight "1"
                   ]
                   [
                     textView
-                    [ height (V 400) 
-                      , width (V 400) 
+                    [ height Match_Parent 
+                      , width Match_Parent
+                      , padding "50,50,50,50"
                       , text (msgTxt)
                       , fontStyle "Source Sans Pro-Regular"
                       , gravity "center"
@@ -114,9 +113,9 @@ helpWindow state = linearLayout
                   ]
               ] where
                 _isHelpPressed = if state.keyHelp then "visible" else "gone"
-                msgTxt = "LEFT : A or Left Arrow" 
+                msgTxt = "JUMP : W or Top Arrow to jump" 
                   <> "\n RIGHT : D or Right Arrow" 
-                  <> "\n JUMP : W or Top Arrow to jump" 
+                  <> "\n LEFT : A or Left Arrow" 
                   <> "\n\n" 
                   <> "\n Try to outsmart the chasers" 
 
