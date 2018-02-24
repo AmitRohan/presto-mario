@@ -12,143 +12,16 @@ import PrestoDOM.Types (Length(..), VDom)
 
 -- | The Primary Game Screen
 windowScreen :: forall r p. GameState -> VDom (Array (Prop p)) r
-windowScreen state = relativeLayout
-              [ id_ "windowScreen"
-              , height Match_Parent
-              , width Match_Parent
-              ]
-              [ gameScreen state,
-                popupWindow state,
-                helpWindow state
-              ]
-
-gameScreen :: forall r p. GameState -> VDom (Array (Prop p)) r
-gameScreen state = linearLayout
+windowScreen state = linearLayout
               [ id_ "gameScreen"
               , height Match_Parent
               , width Match_Parent
               , orientation "vertical"
               ]
               [   getTopPane state.gameTime state.gameLevel
-                , getGameBoardHolder
+                , getMidPane state
                 , getBottomPane
               ]              
-
--- | The Primary Game Screen
-popupWindow :: forall r p. GameState -> VDom (Array (Prop p)) r
-popupWindow state = linearLayout
-              [ id_ "popupWindow"
-              , height Match_Parent
-              , width Match_Parent
-              , gravity "center_horizontal"
-              , background "#99000000"
-              , visibility (_isGameOver)
-              , orientation "vertical"
-              ]
-              [   textView
-                  [ height (V 200) 
-                    , width (V 300) 
-                    , margin "0,30,0,0"
-                    , text ( "Can you survive "<> toString (GameConfig.gameTime / 100.0 )<> " seconds ?" )
-                    , textSize "26"
-                    , fontStyle "Source Sans Pro-Regular"
-                    , gravity "center_horizontal"
-                    , color "#FFFFFF"
-                    ]
-                  , 
-                  linearLayout
-                  [ height (V 0)
-                    , width Match_Parent
-                    , gravity "center"
-                    , weight "1"
-                  ]
-                  [
-                    textView
-                    [ height (V 20) 
-                      , width Match_Parent
-                      , text (_msgTxt)
-                      , fontStyle "Source Sans Pro-Regular"
-                      , gravity "center"
-                      , color "#FFFFFF"
-                    ]
-                  ]
-              ] where
-                _isGameOver = case state.gameStatus of
-                                    E_NewGame -> "visible"
-                                    E_Win -> "visible"
-                                    E_Stop -> "visible"
-                                    E_GameOver -> "visible"
-                                    _ -> "gone"
-                
-                _msgTxt = case state.gameStatus of
-                                    E_NewGame -> ( "Welcome to Level " <> toString state.gameLevel <> "\nPress Space To Start ")
-                                    E_Win -> "VICTORY"<>"\n\nPress Space To Play Again "
-                                    E_GameOver -> ( "Game Over"<> "\n\nYou had to survive " <> toString ( state.gameTime / 100.0 ) <> "seconds more" <> "\n\nPress R To Retry" )
-                                    E_Stop -> "Press Space To Start "
-                                    _ -> "BOX CHASER" 
-
--- | The Primary Game Screen
-helpWindow :: forall r p. GameState -> VDom (Array (Prop p)) r
-helpWindow state = linearLayout
-              [ id_ "helpWindow"
-              , height Match_Parent
-              , width Match_Parent
-              , gravity "center"
-              , visibility (_isHelpPressed)
-              ]
-              [    
-                  linearLayout
-                  [ height (V 500)
-                    , width (V 500)
-                    , background "#AA000000"
-                  ]
-                  [
-                    textView
-                    [ height Match_Parent 
-                      , width Match_Parent
-                      , padding "50,50,50,50"
-                      , text (msgTxt)
-                      , fontStyle "Source Sans Pro-Regular"
-                      , gravity "center"
-                      , color "#FFFFFF"
-                    ]
-                  ]
-              ] where
-                _isHelpPressed = if state.keyHelp then "visible" else "gone"
-                msgTxt = "JUMP : W or Top Arrow to jump" 
-                  <> "\n RIGHT : D or Right Arrow" 
-                  <> "\n LEFT : A or Left Arrow" 
-                  <> "\n\n" 
-                  <> "\n Try to outsmart the chasers" 
-
-getButtonUI :: forall t18 t19 t38.             
-  { name :: String              
-  , buttonColor :: String       
-  , text :: String              
-  | t38                         
-  }                             
-  -> VDom (Array (Prop t19)) t18
-getButtonUI state = linearLayout
-                            [
-                              name (state.name)
-                            , height (V 40)
-                            , width (V 140)
-                            , margin "20,0,0,0"
-                            , background (state.buttonColor)
-                            , gravity "center"
-                            , color "#fff000"
-                            , onClick "do"
-                            ]
-                            [
-                             textView
-                             [
-                                height (V 20)
-                              , width Match_Parent
-                              , text (state.text)
-                              , fontStyle "Source Sans Pro-Regular"
-                              , gravity "center"
-                             ]
-                            ]
 
 getTopPane::forall t2 t3. Number -> Number -> VDom (Array (Prop t3)) t2
 getTopPane timeLeft gameLevel = linearLayout
@@ -200,7 +73,33 @@ getTopPane timeLeft gameLevel = linearLayout
                             _gameLevel = "Level :" <> toString gameLevel
 
 
-getBottomPane :: forall t37 t38. VDom (Array (Prop t38)) t37
+getButtonUI :: forall v p a.             
+  { name :: String , buttonColor :: String , text :: String | a } 
+  -> VDom (Array (Prop p)) v
+getButtonUI bState = linearLayout
+                            [
+                              name (bState.name)
+                            , height (V 40)
+                            , width (V 140)
+                            , margin "20,0,0,0"
+                            , background (bState.buttonColor)
+                            , gravity "center"
+                            , color "#fff000"
+                            , onClick "do"
+                            ]
+                            [
+                             textView
+                             [
+                                height (V 20)
+                              , width Match_Parent
+                              , text (bState.text)
+                              , fontStyle "Source Sans Pro-Regular"
+                              , gravity "center"
+                             ]
+                            ]
+
+
+getBottomPane :: forall v p. VDom (Array (Prop p)) v
 getBottomPane = linearLayout
                         [ id_ "bottomPane"
                         , height (V 90)
@@ -234,10 +133,9 @@ getBottomPane = linearLayout
                             , getButtonUI { name : "restartButton"  , text : "RESTART (R)"  , buttonColor : "#ff0066" }
                         ]                        
 
--- getGameBoardHolder state { id_ : "svgContainer" , height : "300" , width : "300" , cubeState : state },
-getGameBoardHolder :: forall t1 t2. VDom (Array (Prop t2)) t1
-getGameBoardHolder = linearLayout
-                        [ id_ "gameBoardParent"
+getMidPane :: forall r p. GameState -> VDom (Array (Prop p)) r
+getMidPane state = linearLayout
+                        [ id_ "midPane"
                         , height (V 0)
                         , weight "1"
                         , width Match_Parent
@@ -245,13 +143,127 @@ getGameBoardHolder = linearLayout
                         , background "#ff1744"
                         ]
                         [
-                          linearLayout
-                          [ id_ "gameBoard"
+                          relativeLayout
+                          [ id_ "myBoards"
                           , height (V GameConfig.boardHeightInt )
                           , width (V GameConfig.boardWidthInt )
                           , margin "20,20,20,20"
-                          , background "#FFFFFF"
                           ]
-                          [
+                          [ gameBoardUI ,
+                            messageBoardUI state,
+                            helpBoardUI state
                           ]
                         ]
+
+gameBoardUI :: forall t1 t2. VDom (Array (Prop t2)) t1
+gameBoardUI = linearLayout
+              [ id_ "gameBoard"
+              , height Match_Parent
+              , width Match_Parent
+              , background "#FFFFFF"
+              ]
+              [
+              ]
+
+
+messageBoardUI :: forall r p. GameState -> VDom (Array (Prop p)) r
+messageBoardUI state = linearLayout
+                [ id_ "messageBoard"
+                , height Match_Parent
+                , width Match_Parent
+                , background "#CC000000"
+                , orientation "vertical"
+                , visibility (_hasMessage)
+                ]
+                [
+                  textView
+                  [ height (V 0) 
+                    , width Match_Parent 
+                    , weight "1"
+                    , margin "0,30,0,0"
+                    , text ( _headerText )
+                    , textSize "26"
+                    , fontStyle "Source Sans Pro-Regular"
+                    , gravity "center"
+                    , color "#FFFFFF"
+                    ]
+                  , 
+                  linearLayout
+                  [ height (V 0)
+                    , width Match_Parent
+                    , gravity "center"
+                    , weight "1"
+                    , orientation "vertical"
+                  ]
+                  [ textView
+                    [ height (V 35) 
+                      , width Match_Parent
+                      , text ( _primaryText )
+                      , textSize "28"
+                      , gravity "center"
+                      , margin "0,10,0,10"
+                      , fontStyle "Source Sans Pro-Regular"
+                      , color "#FFFFFF"
+                    ]
+                    , textView
+                    [ height (V 20) 
+                      , width Match_Parent
+                      , text (_msgTxt)
+                      , fontStyle "Source Sans Pro-Regular"
+                      , textSize "24"
+                      , margin "0,10,0,10"
+                      , gravity "center"
+                      , color "#FFFFFF"
+                    ]
+                  ]
+                ] where
+                _primaryText = "Try to survive "<> toString (GameConfig.gameTime / 100.0 )<> " seconds"
+                _hasMessage = case state.gameStatus of
+                                    E_NewGame -> "visible"
+                                    E_Win -> "visible"
+                                    E_Stop -> "visible"
+                                    E_GameOver -> "visible"
+                                    _ -> "gone"
+                
+                _headerText = case state.gameStatus of
+                                    E_NewGame -> "Welcome to Level " <> toString state.gameLevel
+                                    E_Win -> "VICTORY"
+                                    E_GameOver -> "Game Over"
+                                    _ -> "BOX CHASER"
+
+
+                _msgTxt = case state.gameStatus of
+                                    E_NewGame -> "Press Space To Start "
+                                    E_Win -> "Press Space To Play Again "
+                                    E_GameOver -> "You had to survive " <> toString ( state.gameTime / 100.0 ) <> " seconds more" <> "\n\nPress R To Retry" 
+                                    E_Stop -> "Press Space To Start "
+                                    _ -> "" 
+
+
+helpBoardUI :: forall r p. GameState -> VDom (Array (Prop p)) r
+helpBoardUI state = linearLayout
+              [ id_ "helpWindow"
+              , height Match_Parent
+              , width Match_Parent
+              , gravity "center"
+              , background "#CC000000"
+              , visibility (_isHelpPressed)
+              ]
+              [
+                textView
+                    [ height (V 250)
+                      , width Match_Parent
+                      , padding "50,50,50,50"
+                      , text (msgTxt)
+                      , textSize "24"
+                      , fontStyle "Source Sans Pro-Regular"
+                      , gravity "center"
+                      , color "#FFFFFF"
+                    ]
+              ] where
+                _isHelpPressed = if state.keyHelp then "visible" else "gone"
+                msgTxt = "JUMP : W or Top Arrow to jump" 
+                  <> "\n RIGHT : D or Right Arrow" 
+                  <> "\n LEFT : A or Left Arrow" 
+                  <> "\n\n" 
+                  <> "\n Try to outsmart the chasers" 
