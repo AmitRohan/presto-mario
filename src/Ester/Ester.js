@@ -7,15 +7,16 @@ var DRAW = undefined;
 exports.initGameBoard = function(gameBoard) {
   return function() {
   		gameBoard=gameBoard.value0
-  		GAME_OBJECT_TAG_LIST=[];
-  		GAME_OBJECT_LIST = [];
    		CANVAS_HEIGHT=parseInt(gameBoard.height)
   		CANVAS_WIDTH=parseInt(gameBoard.width)
 	    
-	    if(DRAW)
+      if(DRAW)
 	    	DRAW.clear();	
 	  	DRAW=SVG(gameBoard.id).size(CANVAS_WIDTH, CANVAS_HEIGHT)
+      
+      GAME_OBJECT_TAG_LIST=[];
       addInTagCache("World")
+      GAME_OBJECT_LIST = [];
       addInGameObjectCache("World",DRAW,"root")
   	}
 }
@@ -25,12 +26,14 @@ exports["logAny"]  = function(a) {
 }
 
 exports.clearGameBoard = function() {
-    return function() {
-    	if(DRAW)
+    console.log("clearGameBoard")  
+    	if(DRAW){
     		DRAW.clear()
+      }
     GAME_OBJECT_TAG_LIST=[];
     GAME_OBJECT_LIST = [];  
-    }
+    addInTagCache("World")
+    addInGameObjectCache("World",DRAW,"root")
 }
 
 exports.getSvgNameCache = function() {
