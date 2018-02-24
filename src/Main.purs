@@ -1,6 +1,6 @@
 module Main where
 
-import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (+), (-), (<$>), (<=), (==), (>), (||), (<))
+import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (+), (-), (<$>), (<=), (==), (>), (||), (<), (>=))
 
 import Data.Maybe (Maybe(Nothing))
 import FRP.Event (subscribe)
@@ -92,6 +92,7 @@ listen :: forall e. Eff (console :: CONSOLE, frp :: FRP | e) (Eff (frp :: FRP, c
 listen = do
   s <- U.getState
   -- Add Init GameBaord
+  _ <- GameBoard.initBoard
   _ <- enableLevelUI s
   
   -- Subscribe to click events to toggle states
@@ -135,18 +136,19 @@ eval _ = do
         
 
 -- | The updateUI function is the function that gets called whenever a the game is running. 
-updateUI:: GameStatus -> Eff _ GameState
+updateUI:: forall t. GameStatus -> Eff t GameState
 updateUI gameStatus = case gameStatus of
     E_Restart -> do 
       _ <- resetState
       U.updateState "gameStatus" E_Play
     E_Win -> do
               s <- U.getState
-              if ( s.gameLevel > 0.0 && s.gameLevel < GameConfig.maxLevel ) 
+              if ( s.gameLevel >= 1.0 && s.gameLevel <= GameConfig.maxLevel ) 
                 then do
                   _ <- resetState
                   _ <- U.updateState "gameLevel" ( s.gameLevel + 1.0 )
                   nlevel <- U.updateState "gameStatus" E_Play
+                  _ <- Ester.clearGameBoard
                   enableLevelUI nlevel
                 else U.getState
     -- E_GameOver -> U.updateState "gameStatus" E_GameOver
@@ -184,12 +186,11 @@ updateUI gameStatus = case gameStatus of
         U.getState
     _ -> U.getState
 
-enableLevelUI :: GameState -> Eff _ GameState
+enableLevelUI :: forall t. GameState -> Eff t GameState
 enableLevelUI s = do
   let p = Ester.logAny s
   -- Add Init GameBoard
-  _ <- Ester.clearGameBoard
-  _ <- GameBoard.initBoard
+  _ <- GameBoard.addBaseWorld
   -- Add Walls in GameBoard
   _ <- GameBoard.addWalls s.gameLevel
   -- Spawn Player && Enemy in GameBoard

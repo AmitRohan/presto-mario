@@ -1,6 +1,6 @@
 module BoxChaser.GameBoard where
 
-import Prelude (Unit, bind, (*), (+), (-), (/))
+import Prelude (Unit, bind, (*), (+), (-), (/), (<>))
 
 import Control.Monad.Eff (Eff)
 import Data.Number.Format (toString)
@@ -8,9 +8,11 @@ import Ester as Ester
 import BoxChaser.Types
 import BoxChaser.GameConfig as GameConfig
 
-
 initBoard :: forall t. Eff t Unit
-initBoard = do
+initBoard = Ester.initGameBoard ( Ester.GameBoard { id : "gameBoard", height : GameConfig.boardHeight, width : GameConfig.boardWidth } )
+
+addBaseWorld :: forall t. Eff t Unit
+addBaseWorld = do
 	let boardWidth = GameConfig.boardWidth
 	let boardHeight = GameConfig.boardHeight
 	let groundHeight = GameConfig.groundHeight
@@ -19,8 +21,6 @@ initBoard = do
 	--give a jump to mario at init
 	let marioY = GameConfig.startY - 200.0  
 	
-	_ <- Ester.initGameBoard (Ester.GameBoard { id : "gameBoard", height : boardHeight , width : boardWidth })
-
 	_ <- Ester.addGameObject (Ester.SvgName "World") (Ester.Node { name : "Sky", nodeType : "Rectangle" , props : [ 
 	  Ester.getProp "height" (toString boardHeight),
 	  Ester.getProp "width" (toString boardWidth),
@@ -41,12 +41,8 @@ initBoard = do
 
 addWalls :: forall t. Number ->  Eff t Unit
 addWalls level = do
-	let boardWidth = GameConfig.boardWidth
-	let boardHeight = GameConfig.boardHeight
-	let groundHeight = GameConfig.groundHeight
-	let groundY = boardHeight - groundHeight
-	let marioX = GameConfig.startX
-
+	let groundY = GameConfig.boardHeight - GameConfig.groundHeight
+	let marioX = GameConfig.startX			
 	case level of
 		1.0 -> do
 				_ <- addBarier 1.0 "Wall1" marioX groundY

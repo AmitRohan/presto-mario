@@ -29,7 +29,7 @@ gameScreen state = linearLayout
               , width Match_Parent
               , orientation "vertical"
               ]
-              [   getTopPane state.gameTime
+              [   getTopPane state.gameTime state.gameLevel
                 , getGameBoardHolder
                 , getBottomPane
               ]              
@@ -148,8 +148,8 @@ getButtonUI state = linearLayout
                              ]
                             ]
 
-getTopPane::forall t2 t3. Number -> VDom (Array (Prop t3)) t2
-getTopPane timeLeft = linearLayout
+getTopPane::forall t2 t3. Number -> Number -> VDom (Array (Prop t3)) t2
+getTopPane timeLeft gameLevel = linearLayout
                         [ id_ "topPane"
                         , height (V 70)
                         , width Match_Parent
@@ -169,6 +169,17 @@ getTopPane timeLeft = linearLayout
                               , gravity "center"
                               , color "#FFFFFF"
                              ]
+                          , textView
+                             [
+                                id_ "gameLevel"
+                              , height (V 30)
+                              , width (V 200)
+                              , text (_gameLevel)
+                              , fontStyle "Source Sans Pro-Regular"
+                              , textSize "25"
+                              , gravity "center"
+                              , color "#FFFFFF"
+                             ]
                           , linearLayout [ height Match_Parent, width (V 0), weight "1"] []   
                           , textView
                              [
@@ -183,6 +194,8 @@ getTopPane timeLeft = linearLayout
                              ]  
                         ] where 
                             _timeLeft = "Time Left : " <> toString ( timeLeft / 100.0 )
+
+                            _gameLevel = "Level :" <> toString gameLevel
 
 
 getBottomPane :: forall t37 t38. VDom (Array (Prop t38)) t37
