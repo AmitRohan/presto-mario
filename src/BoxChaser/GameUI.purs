@@ -74,15 +74,17 @@ popupWindow state = linearLayout
                   ]
               ] where
                 _isGameOver = case state.gameStatus of
-                                    E_GameOver -> "visible"
-                                    E_Stop -> "visible"
+                                    E_NewGame -> "visible"
                                     E_Win -> "visible"
+                                    E_Stop -> "visible"
+                                    E_GameOver -> "visible"
                                     _ -> "gone"
                 
                 _msgTxt = case state.gameStatus of
+                                    E_NewGame -> ( "Welcome to Level " <> toString state.gameLevel <> "\nPress Space To Start ")
+                                    E_Win -> "VICTORY"<>"\n\nPress Space To Play Again "
                                     E_GameOver -> ( "Game Over"<> "\n\nYou had to survive " <> toString ( state.gameTime / 100.0 ) <> "seconds more" <> "\n\nPress R To Retry" )
                                     E_Stop -> "Press Space To Start "
-                                    E_Win -> "VICTORY"<>"\n\nPress Space To Play Again "
                                     _ -> "BOX CHASER" 
 
 -- | The Primary Game Screen

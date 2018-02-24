@@ -28,7 +28,8 @@ data Keys = Keys { x :: Number , y :: Number }
 type GameTime = Number
 type GameInterval = Number
 
-data GameStatus = E_Pause | E_Play | E_Stop | E_Over | E_Restart | E_GameOver | E_Win
+data GameStatus = E_NewGame | E_Win | E_GameOver 
+  | E_Play | E_Pause | E_Stop | E_Restart 
 
 -- | A type for the game state. Consists all the data in the game
 type GameState =

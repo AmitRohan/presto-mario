@@ -42,7 +42,7 @@ main = do
   --- Init State {} empty record--
   U.initializeState
   --- Update State ----
-  _ <- U.updateState "gameStatus" E_Stop
+  _ <- U.updateState "gameStatus" E_NewGame
   state <- resetState
   ---- Render Widget ---
   U.render (GameUI.windowScreen state) listen
@@ -139,7 +139,8 @@ eval _ = do
 updateUI:: forall t. GameStatus -> Eff t GameState
 updateUI gameStatus = case gameStatus of
     E_Restart -> do 
-      _ <- resetState
+      ns <- resetState
+      _ <- enableLevelUI ns
       U.updateState "gameStatus" E_Play
     E_Win -> do
               s <- U.getState
@@ -147,8 +148,7 @@ updateUI gameStatus = case gameStatus of
                 then do
                   _ <- resetState
                   _ <- U.updateState "gameLevel" ( s.gameLevel + 1.0 )
-                  nlevel <- U.updateState "gameStatus" E_Play
-                  _ <- Ester.clearGameBoard
+                  nlevel <- U.updateState "gameStatus" E_NewGame
                   enableLevelUI nlevel
                 else U.getState
     -- E_GameOver -> U.updateState "gameStatus" E_GameOver
@@ -186,9 +186,13 @@ updateUI gameStatus = case gameStatus of
         U.getState
     _ -> U.getState
 
+
+-- | The enableLevelUI function handels adding GameObjects to world based on levels
 enableLevelUI :: forall t. GameState -> Eff t GameState
 enableLevelUI s = do
   let p = Ester.logAny s
+  -- Clear the GameBoard of previous contents
+  _ <- Ester.clearGameBoard
   -- Add Init GameBoard
   _ <- GameBoard.addBaseWorld
   -- Add Walls in GameBoard
