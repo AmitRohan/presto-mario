@@ -8,10 +8,10 @@ gameTime :: Number
 gameTime = 3.0 * 100.0
 
 boardWidth :: Number
-boardWidth = 1000.0
+boardWidth = 900.0
 
 boardWidthInt :: Int
-boardWidthInt = 1000
+boardWidthInt = 900
 
 boardHeight :: Number
 boardHeight = 500.0

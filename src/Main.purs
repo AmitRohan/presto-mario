@@ -131,6 +131,7 @@ checkSquareTouch (Model mario) (Model enemy) range = not ( ( mario.x <= enemy.x 
 eval :: forall e. Number -> Eff (console :: CONSOLE | e) GameState
 eval _ = do
   s <- U.getState
+  -- let p = Ester.logAny s
   ns <- updateUI s.gameStatus
   pure ns
         
@@ -144,7 +145,7 @@ updateUI gameStatus = case gameStatus of
       U.updateState "gameStatus" E_Play
     E_Win -> do
               s <- U.getState
-              if ( s.gameLevel >= 1.0 && s.gameLevel <= GameConfig.maxLevel ) 
+              if ( s.gameLevel >= GameConfig.startLevel && s.gameLevel < GameConfig.maxLevel ) 
                 then do
                   _ <- resetState
                   _ <- U.updateState "gameLevel" ( s.gameLevel + 1.0 )
@@ -190,7 +191,6 @@ updateUI gameStatus = case gameStatus of
 -- | The enableLevelUI function handels adding GameObjects to world based on levels
 enableLevelUI :: forall t. GameState -> Eff t GameState
 enableLevelUI s = do
-  let p = Ester.logAny s
   -- Clear the GameBoard of previous contents
   _ <- Ester.clearGameBoard
   -- Add Init GameBoard

@@ -141,13 +141,13 @@ getMidPane state = linearLayout
                         , width Match_Parent
                         , gravity "center"
                         , background "#ff1744"
+                        , padding "20,20,20,20"
                         ]
                         [
                           relativeLayout
                           [ id_ "myBoards"
                           , height (V GameConfig.boardHeightInt )
                           , width (V GameConfig.boardWidthInt )
-                          , margin "20,20,20,20"
                           ]
                           [ gameBoardUI ,
                             messageBoardUI state,
@@ -177,27 +177,20 @@ messageBoardUI state = linearLayout
                 ]
                 [
                   textView
-                  [ height (V 0) 
+                    [ height (V 0) 
                     , width Match_Parent 
                     , weight "1"
-                    , margin "0,30,0,0"
+                    , margin "0,50,0,0"
                     , text ( _headerText )
                     , textSize "26"
                     , fontStyle "Source Sans Pro-Regular"
                     , gravity "center"
                     , color "#FFFFFF"
                     ]
-                  , 
-                  linearLayout
-                  [ height (V 0)
-                    , width Match_Parent
-                    , gravity "center"
-                    , weight "1"
-                    , orientation "vertical"
-                  ]
-                  [ textView
-                    [ height (V 35) 
+                  , textView
+                    [ height (V 0) 
                       , width Match_Parent
+                      , weight "2"
                       , text ( _primaryText )
                       , textSize "28"
                       , gravity "center"
@@ -205,19 +198,21 @@ messageBoardUI state = linearLayout
                       , fontStyle "Source Sans Pro-Regular"
                       , color "#FFFFFF"
                     ]
-                    , textView
-                    [ height (V 20) 
+                  , textView
+                    [ height (V 25) 
                       , width Match_Parent
                       , text (_msgTxt)
                       , fontStyle "Source Sans Pro-Regular"
-                      , textSize "24"
-                      , margin "0,10,0,10"
+                      , textSize "22"
+                      , margin "0,10,0,20"
                       , gravity "center"
                       , color "#FFFFFF"
                     ]
-                  ]
                 ] where
-                _primaryText = "Try to survive "<> toString (GameConfig.gameTime / 100.0 )<> " seconds"
+                _primaryText = case state.gameStatus of
+                                  E_GameOver -> "You had to survive " <> toString ( state.gameTime / 100.0 ) <> " seconds more"
+                                  _ -> "Try to survive " <> toString (GameConfig.gameTime / 100.0 )<> " seconds"
+                
                 _hasMessage = case state.gameStatus of
                                     E_NewGame -> "visible"
                                     E_Win -> "visible"
@@ -235,7 +230,7 @@ messageBoardUI state = linearLayout
                 _msgTxt = case state.gameStatus of
                                     E_NewGame -> "Press Space To Start "
                                     E_Win -> "Press Space To Play Again "
-                                    E_GameOver -> "You had to survive " <> toString ( state.gameTime / 100.0 ) <> " seconds more" <> "\n\nPress R To Retry" 
+                                    E_GameOver -> "Press R To Retry" 
                                     E_Stop -> "Press Space To Start "
                                     _ -> "" 
 
