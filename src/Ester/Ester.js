@@ -26,10 +26,9 @@ exports["logAny"]  = function(a) {
 }
 
 exports.clearGameBoard = function() {
-    console.log("clearGameBoard")  
-    	if(DRAW){
-    		DRAW.clear()
-      }
+  	if(DRAW){
+  		DRAW.clear()
+    }
     GAME_OBJECT_TAG_LIST=[];
     GAME_OBJECT_LIST = [];  
     addInTagCache("World")
