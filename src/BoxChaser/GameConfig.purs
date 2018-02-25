@@ -40,14 +40,20 @@ enemyWidth = 25.0
 startX :: Number
 startX = 50.0
 
+startY :: Number
+startY = boardHeight - groundHeight - boxHeight - 200.0
+
+enemyX :: Number
+enemyX = 250.0
+
+enemyY :: Number
+enemyY = boardHeight - groundHeight - boxHeight - 25.0
+
 startLevel :: Number
 startLevel = 1.0
 
 maxLevel :: Number
-maxLevel = 3.0
-
-startY :: Number
-startY = boardHeight - groundHeight - boxHeight - 25.0
+maxLevel = 5.0
 
 framesPerSercondInt :: Int
 framesPerSercondInt = 1000
@@ -82,8 +88,8 @@ basePlayer =
 
 baseEnemy :: Model
 baseEnemy =
-		Model { x : (startX + 150.0)
-	    , y : startY 
+		Model { x : enemyX
+	    , y : enemyY 
 	    , vx : 0.0
 	    , vy : 0.0
 	    , dir : Right
@@ -92,7 +98,7 @@ baseEnemy =
 enemyAt :: Number -> Model
 enemyAt index =
 		Model { x : ( startX +  ( 200.0 * index ) )
-	    , y : startY 
+	    , y : ( enemyY -  ( 20.0 * index ) )
 	    , vx : 0.0
 	    , vy : 0.0
 	    , dir : Right

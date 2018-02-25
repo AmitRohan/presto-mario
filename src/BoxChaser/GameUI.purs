@@ -41,7 +41,6 @@ getTopPane timeLeft gameLevel = linearLayout
                               , text "Box Chaser"
                               , fontStyle "Source Sans Pro-Regular"
                               , textSize "25"
-                              , gravity "center"
                               , color "#FFFFFF"
                              ]
                           , textView
@@ -60,11 +59,11 @@ getTopPane timeLeft gameLevel = linearLayout
                              [
                                 id_ "gameName2"
                               , height (V 30)
-                              , width (V 300)
+                              , width (V 200)
                               , text _timeLeft
                               , fontStyle "Source Sans Pro-Regular"
                               , textSize "22"
-                              , gravity "center"
+                              , gravity "end"
                               , color "#FFFFFF"
                              ]  
                         ] where 
@@ -211,6 +210,7 @@ messageBoardUI state = linearLayout
                 ] where
                 _primaryText = case state.gameStatus of
                                   E_GameOver -> "You had to survive " <> toString ( state.gameTime / 100.0 ) <> " seconds more"
+                                  E_Win -> "YOU WON"
                                   _ -> "Try to survive " <> toString (GameConfig.gameTime / 100.0 )<> " seconds"
                 
                 _hasMessage = case state.gameStatus of

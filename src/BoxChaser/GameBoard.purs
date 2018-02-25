@@ -39,54 +39,6 @@ addBaseWorld = do
 	  Ester.getProp "path" "img/ground.png"
 	]}) 
 
-addWalls :: forall t. Number ->  Eff t Unit
-addWalls level = do
-	let groundY = GameConfig.boardHeight - GameConfig.groundHeight
-	let marioX = GameConfig.startX			
-	case level of
-		1.0 -> do
-				_ <- addBarier 1.0 "Wall1" marioX groundY
-				_ <- addVerticalBarier 2.0 "Wall2" marioX groundY
-				_ <- addBarier 3.0 "Wall3" marioX groundY
-				_ <- addVerticalBarier 4.0 "Wall4" marioX groundY
-				_ <- addBarier 5.0 "Wall5" marioX groundY
-				addBarier 6.0 "Wall6" marioX groundY
-		2.0 -> do
-				_ <- addBarier 1.0 "Wall1" marioX groundY
-				_ <- addVerticalBarier 2.0 "Wall2" marioX groundY
-				_ <- addVerticalBarier 4.0 "Wall3" marioX groundY
-				addBarier 5.0 "Wall4" marioX groundY
-		3.0 -> do
-				_ <- addBarier 1.0 "Wall1" marioX groundY
-				_ <- addBarier 2.0 "Wall2" marioX groundY
-				_ <- addBarier 3.0 "Wall3" marioX groundY
-				_ <- addBarier 4.0 "Wall4" marioX groundY
-				_ <- addBarier 5.0 "Wall5" marioX groundY
-				addBarier 6.0 "Wall6" marioX groundY
-						
-		_ -> addBarier 3.0 "Wall1" marioX groundY		
-
-
-addBarier ::  forall t. Number -> String -> Number -> Number -> Eff t Unit
-addBarier barierCount barierType marioX groundY= Ester.addGameObject (Ester.SvgName "Obstacles") (Ester.Node { name : barierType, nodeType : "Rectangle" , props : [ 
-	  Ester.getProp "height" (toString (barierCount/4.0 * 100.0) ),
-	  Ester.getProp "width" "50",
-	  Ester.getProp "x" (toString ( marioX + barierCount * 150.0) ),
-	  Ester.getProp "y" (toString ( groundY - (barierCount/4.0 * 100.0) ) ),
-	  Ester.getProp "fill" "#00E676",
-	  Ester.getProp "path" "img/wall.png"
-	]}) 	
-
-addVerticalBarier ::  forall t. Number -> String -> Number -> Number -> Eff t Unit
-addVerticalBarier barierCount barierType marioX groundY= Ester.addGameObject (Ester.SvgName "Obstacles") (Ester.Node { name : barierType, nodeType : "Rectangle" , props : [ 
-	  Ester.getProp "height" "50",
-	  Ester.getProp "width" "100",
-	  Ester.getProp "x" (toString ( marioX + barierCount * 150.0) ),
-	  Ester.getProp "y" (toString ( groundY - 280.0 ) ) ,
-	  Ester.getProp "fill" "#00E676",
-	  Ester.getProp "path" "img/wall.png"
-	]})
-
 spawnEnemy ::  forall t. String -> Model -> Eff t Unit
 spawnEnemy enemyName (Model enemyObject) = Ester.addGameObject (Ester.SvgName "World") (Ester.Node { name : enemyName , nodeType : "Rectangle" , props : [ 
 	  Ester.getProp "height" (toString GameConfig.enemyHeight),
@@ -117,3 +69,80 @@ patchBoard objectName (Model objectModel) =
 					  ]
 			newY = toString ( objectModel.y )
 			newX = toString ( objectModel.x )   					  
+
+addWalls :: forall t. Number ->  Eff t Unit
+addWalls level = do
+	let groundY = GameConfig.boardHeight - GameConfig.groundHeight
+	let marioX = GameConfig.startX			
+	case level of
+		1.0 -> do
+				let wallStart = marioX + 50.0
+				_ <- addBarier "W1" ( wallStart + 50.0 ) ( groundY - 150.0 ) 50.0 150.0
+				_ <- addBarier "W2" ( wallStart + 280.0 ) ( groundY - 150.0 ) 50.0 150.0
+				addBarier "W3" ( wallStart + 450.0 ) ( groundY - 150.0 ) 50.0 150.0
+		2.0 -> do
+				let wallStart = marioX + 50.0
+				_ <- addBarier "Wall1" wallStart ( groundY - 50.0 ) 50.0 50.0
+				_ <- addVBarierLow 1.0 marioX groundY
+				_ <- addVBarierLow 2.0 marioX groundY
+				_ <- addVBarierLow 3.0 marioX groundY
+				addBarier "Wall1" ( wallStart + 250.0 ) ( groundY - 50.0 ) 50.0 50.0
+		3.0 -> do
+				_ <- addHBarier 2.0 marioX groundY
+				_ <- addHBarier 3.0 marioX groundY
+				_ <- addVBarier 4.0 marioX groundY
+				_ <- addHBarier 5.0 marioX groundY
+				addHBarier 6.0 marioX groundY
+		4.0 -> do
+				_ <- addHBarier 1.0 marioX groundY
+				_ <- addVBarier 2.0 marioX groundY
+				_ <- addVBarier 4.0 marioX groundY
+				addHBarier 5.0 marioX groundY
+		5.0 -> do
+				_ <- addVBarierLow 0.0 marioX groundY
+				_ <- addHBarier 2.0 marioX groundY
+				_ <- addHBarier 3.0 marioX groundY
+				_ <- addVBarier 5.0 marioX groundY
+				addVBarier 3.0 marioX groundY
+		_ -> addHBarier 3.0 marioX groundY		
+
+
+addBarier ::  forall t. String -> Number -> Number -> Number -> Number -> Eff t Unit
+addBarier barierName xPos yPos width height = Ester.addGameObject (Ester.SvgName "Obstacles") (Ester.Node { name : barierName, nodeType : "Rectangle" , props : [ 
+	  Ester.getProp "height" (toString height ),
+	  Ester.getProp "width" (toString width ),
+	  Ester.getProp "x" (toString xPos),
+	  Ester.getProp "y" (toString yPos),
+	  Ester.getProp "fill" "#00E676"
+	]})
+
+
+addHBarier ::  forall t. Number -> Number -> Number -> Eff t Unit
+addHBarier barierCount marioX groundY = Ester.addGameObject (Ester.SvgName "Obstacles") (Ester.Node { name : _barierName, nodeType : "Rectangle" , props : [ 
+	  Ester.getProp "height" (toString (barierCount/4.0 * 100.0) ),
+	  Ester.getProp "width" "50",
+	  Ester.getProp "x" (toString ( marioX + barierCount * 150.0) ),
+	  Ester.getProp "y" (toString ( groundY - (barierCount/4.0 * 100.0) ) ),
+	  Ester.getProp "fill" "#00E676",
+	  Ester.getProp "path" "img/wall.png"
+	]}) where _barierName = "HWall" <> toString barierCount
+
+addVBarier ::  forall t. Number -> Number -> Number -> Eff t Unit
+addVBarier barierCount marioX groundY= Ester.addGameObject (Ester.SvgName "Obstacles") (Ester.Node { name : _barierName, nodeType : "Rectangle" , props : [ 
+	  Ester.getProp "height" "50",
+	  Ester.getProp "width" "100",
+	  Ester.getProp "x" (toString ( marioX + barierCount * 150.0) ),
+	  Ester.getProp "y" (toString ( groundY - 280.0 ) ) ,
+	  Ester.getProp "fill" "#00E676",
+	  Ester.getProp "path" "img/wall.png"
+	]}) where _barierName = "VWall" <> toString barierCount 	
+
+addVBarierLow ::  forall t. Number -> Number -> Number -> Eff t Unit
+addVBarierLow barierCount marioX groundY= Ester.addGameObject (Ester.SvgName "Obstacles") (Ester.Node { name : _barierName, nodeType : "Rectangle" , props : [ 
+	  Ester.getProp "height" "50",
+	  Ester.getProp "width" "100",
+	  Ester.getProp "x" (toString ( marioX + barierCount * 150.0) ),
+	  Ester.getProp "y" (toString ( groundY - 180.0 ) ) ,
+	  Ester.getProp "fill" "#00E676",
+	  Ester.getProp "path" "img/wall.png"
+	]}) where _barierName = "VLWall" <> toString barierCount 

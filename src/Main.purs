@@ -145,13 +145,15 @@ updateUI gameStatus = case gameStatus of
       U.updateState "gameStatus" E_Play
     E_Win -> do
               s <- U.getState
-              if ( s.gameLevel >= GameConfig.startLevel && s.gameLevel < GameConfig.maxLevel ) 
+              let gameLevel = s.gameLevel
+              let nextLevel = gameLevel + 1.0
+              _ <- resetState
+              if ( nextLevel >= GameConfig.startLevel && nextLevel <= GameConfig.maxLevel ) 
                 then do
-                  _ <- resetState
-                  _ <- U.updateState "gameLevel" ( s.gameLevel + 1.0 )
+                  _ <- U.updateState "gameLevel" nextLevel
                   nlevel <- U.updateState "gameStatus" E_NewGame
                   enableLevelUI nlevel
-                else U.getState
+                else U.updateState "gameLevel" gameLevel
     -- E_GameOver -> U.updateState "gameStatus" E_GameOver
     E_Play -> do
                   s <- U.getState
