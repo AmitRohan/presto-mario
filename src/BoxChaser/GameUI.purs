@@ -70,7 +70,7 @@ getTopPane timeLeft gameLevel = linearLayout
                         ] where 
                             _timeLeft = "Time Left : " <> toString ( timeLeft / 100.0 )
 
-                            _gameLevel = "Level :" <> toString gameLevel
+                            _gameLevel = "Level " <> toString gameLevel
 
 
 getButtonUI :: forall v p a.             
@@ -119,10 +119,10 @@ getBottomPane = linearLayout
                                 textView 
                                 [ height (V 40)
                                 , width (V 350)
-                                , text "Use arrow keys or A/W/D to move"
+                                , text "Press H for help"
                                 , fontStyle "Source Sans Pro-Regular"
                                 , textSize "22"
-                                , gravity "center"
+                                , gravity "center_vertical"
                                 , color "#FFFFFF"
                                 , padding "50,0,0,0" 
                                 ] 
@@ -245,25 +245,50 @@ helpBoardUI state = linearLayout
               [ id_ "helpWindow"
               , height Match_Parent
               , width Match_Parent
-              , gravity "center"
               , background "#CC000000"
               , visibility (_isHelpPressed)
+              , orientation "vertical"
+              , gravity "center_vertical"
               ]
               [
                 textView
-                    [ height (V 250)
+                    [   height (V 0)
                       , width Match_Parent
-                      , padding "50,50,50,50"
-                      , text (msgTxt)
+                      , weight "1"
+                      , margin "40,40,40,40"
+                      , text (storyTxt)
                       , textSize "24"
                       , fontStyle "Source Sans Pro-Regular"
                       , gravity "center"
                       , color "#FFFFFF"
                     ]
+                , textView
+                    [ height (V 24)
+                      , width Match_Parent
+                      , margin "20,20,20,5"
+                      , text "How to move?"
+                      , textSize "20"
+                      , fontStyle "Source Sans Pro-Regular"
+                      , color "#FFFFFF"
+                    ]
+                , textView
+                    [ height (V 90)
+                      , width Match_Parent
+                      , margin "20,0,20,20"
+                      , text (controlsTxt)
+                      , textSize "24"
+                      , fontStyle "Source Sans Pro-Regular"
+                      , color "#FFFFFF"
+                    ]    
               ] where
                 _isHelpPressed = if state.keyHelp then "visible" else "gone"
-                msgTxt = "JUMP : W or Top Arrow to jump" 
-                  <> "\n RIGHT : D or Right Arrow" 
-                  <> "\n LEFT : A or Left Arrow" 
-                  <> "\n\n" 
-                  <> "\n Try to outsmart the chasers" 
+                
+                storyTxt = "Hi Box" 
+                  <> "\nBlue Boxes are chasing you." 
+                  <> "\nTry not to get caught by them."
+                
+                controlsTxt ="JUMP  : W / I / Top Arrow"
+                  <> "\nRIGHT : D / L / Right Arrow" 
+                  <> "\nLEFT  : A / J / Left Arrow" 
+               
+                  
