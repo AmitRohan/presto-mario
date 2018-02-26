@@ -1,16 +1,31 @@
 {
+  "name": "box-chaser",
+  "version": "1.0.0",
+  "description": "A Box Chaser arcade game to show the capabilities of PrestoDOM library",
   "scripts": {
-    "compile-js": "webpack",
-    "compile-ps": "pulp --watch build",
-    "start": "webpack-dev-server --content-base dist/ --host 0.0.0.0"
+    "compile-ps": "pulp build",
+    "compile-js": "webpack --progress --colors --optimize-minimize",
+    "start-psc": "pulp -w build",
+    "start-wds": "webpack-dev-server --content-base 'dist'",
+    "start": "concurrently --kill-others 'npm run start-psc' 'npm run start-wds'"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmitRohan/presto-mario.git"
+  },
+  "author": "Sri Harsha Chilakapati",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AmitRohan/presto-mario/issues"
+  },
+  "homepage": "https://github.com/AmitRohan/presto-mario#readme",
   "dependencies": {
-    "babel": "^6.23.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "presto-ui": "^0.3.3",
-    "webpack": "^3.5.5",
-    "webpack-dev-server": "2.9.7",
+    "presto-ui": "^0.3.4",
     "ramda": "^0.25.0"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "webpack": "^3.11.0",
+    "webpack-dev-server": "^2.11.1"
   }
 }
