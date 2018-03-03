@@ -70,12 +70,15 @@ flip::Vi -> Vi -> Ti -> SVGObject -> SVGObject
 flip v1 v2 t s = transform (Transformation "flip") v1 v2 s
 
 rotate::Vi -> Ti -> SVGObject -> SVGObject
-rotate v t (SVGObject s) = rotateAt v (Cx fixX ) (Cy fixY) t (SVGObject s)
+rotate v t (SVGObject s) = rotateAt v (Cx 0.0 ) (Cy 0.0) t (SVGObject s)
+	
+rotateAtCenter::Vi -> Ti -> SVGObject -> SVGObject
+rotateAtCenter v t (SVGObject s) = rotateAt v (Cx fixX ) (Cy fixY) t (SVGObject s)
 	where
 		fixY = ( getValue $ getBaseValues $ s.y ) + heightFix
 		fixX = ( getValue $ getBaseValues $ s.x ) + widthFix
 		heightFix = ( getValue $ getBaseValues $ s.height ) / 2.0
-		widthFix = ( getValue $ getBaseValues $ s.width ) / 2.0
+		widthFix = ( getValue $ getBaseValues $ s.width ) / 2.0		
 	
 
 
