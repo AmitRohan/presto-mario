@@ -3,14 +3,13 @@ module Ester.Animation where
 {- helper functions to render animate svg game objects -}
 
 import Prelude 
-import Control.Monad.Eff (Eff)
 
 import Data.Foreign.Class (class Decode, class Encode)
-import Data.Foreign.NullOrUndefined 
+-- import Data.Foreign.NullOrUndefined 
 import Data.Foreign.Generic (defaultOptions, genericDecode, genericEncode)
 import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Show (genericShow)
-import Data.Newtype
+import Data.Newtype (class Newtype)
 
 
 -- BASE TYPES 
@@ -50,10 +49,10 @@ foreign import logAny :: forall a. a -> Unit
 
 
 -- HELPER FUNCTIONS TO EXTRACT VALUES
-getBaseValues::forall sal sl. SVGAnimatedLength -> SVGLength 
+getBaseValues::SVGAnimatedLength -> SVGLength 
 getBaseValues (SVGAnimatedLength v) = v.baseVal
 
-getAnimValues::forall sal sl. SVGAnimatedLength -> SVGLength 
+getAnimValues::SVGAnimatedLength -> SVGLength 
 getAnimValues (SVGAnimatedLength v) = v.animValue
 
 getValue:: SVGLength -> Number 
@@ -67,17 +66,16 @@ getValueAsString (SVGLength sl) = sl.valueAsString
 
 
 -- TRANSFORMATION FUNCTIONS
-flip::forall s. Vi -> Vi -> Ti -> SVGObject -> SVGObject
+flip::Vi -> Vi -> Ti -> SVGObject -> SVGObject
 flip v1 v2 t s = transform (Transformation "flip") v1 v2 s
 
-rotate::forall s. Vi -> Ti -> SVGObject -> SVGObject
+rotate::Vi -> Ti -> SVGObject -> SVGObject
 rotate v t (SVGObject s) = rotateAt v (Cx fixX ) (Cy fixY) t (SVGObject s)
 	where
-		fixY = ( getValue $ getBaseValues $ s.height ) / 2.0
-		fixX = ( getValue $ getBaseValues $ s.width ) / 2.0
-		th = logAny fixY
-		tw = logAny fixX
-		tl = logAny s
+		fixY = ( getValue $ getBaseValues $ s.y ) + heightFix
+		fixX = ( getValue $ getBaseValues $ s.x ) + widthFix
+		heightFix = ( getValue $ getBaseValues $ s.height ) / 2.0
+		widthFix = ( getValue $ getBaseValues $ s.width ) / 2.0
 	
 
 
