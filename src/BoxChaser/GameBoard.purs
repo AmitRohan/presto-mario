@@ -30,14 +30,17 @@ addBaseWorld = do
 	]}) 
 
 	_ <- Ester.addGameObject (Ester.SvgName "World") (Ester.Node { name : "Obstacles", nodeType : "Group" , props : [ Ester.getProp "x" "0", Ester.getProp "y" "0" ]}) 
- 	Ester.addGameObject (Ester.SvgName "Obstacles") (Ester.Node { name : "Ground", nodeType : "Rectangle" , props :[ 
+ 	_ <- Ester.addGameObject (Ester.SvgName "Obstacles") (Ester.Node { name : "Ground", nodeType : "Rectangle" , props :[ 
 	  Ester.getProp "height" (toString groundHeight),
 	  Ester.getProp "width" (toString boardWidth),
 	  Ester.getProp "x" "0",
 	  Ester.getProp "y" (toString groundY),
 	  Ester.getProp "fill" "#4E342E",
 	  Ester.getProp "path" "img/ground.png"
-	]}) 
+	]})
+	_ <- addRectangle "LeftBound" "-10" "0" "10" (toString boardHeight) "#4E342E" 
+	_ <- addRectangle "RightBound" (toString boardWidth) "0" "10" (toString boardHeight) "#4E342E" 
+	addRectangle "TopBound" "0" "-10" (toString boardWidth) "10" "#4E342E" 
 
 spawnEnemy ::  forall t. String -> Model -> Eff t Unit
 spawnEnemy enemyName (Model enemyObject) = Ester.addGameObject (Ester.SvgName "World") (Ester.Node { name : enemyName , nodeType : "Rectangle" , props : [ 
@@ -147,3 +150,12 @@ addVBarierLow barierCount marioX groundY= Ester.addGameObject (Ester.SvgName "Ob
 	  Ester.getProp "fill" "#00E676",
 	  Ester.getProp "path" "img/wall.png"
 	]}) where _barierName = "VLWall" <> toString barierCount 
+
+addRectangle ::  forall t. String -> String -> String -> String -> String -> String -> Eff t Unit
+addRectangle _name x y width height color = Ester.addGameObject (Ester.SvgName "Obstacles") (Ester.Node { name : _name, nodeType : "Rectangle" , props : [ 
+	  Ester.getProp "height" height,
+	  Ester.getProp "width" width,
+	  Ester.getProp "x" x,
+	  Ester.getProp "y" y ,
+	  Ester.getProp "fill" color
+	]})

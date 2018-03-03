@@ -1,4 +1,4 @@
-module Main where
+module BoxChaser.Main where
 
 import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (+), (-), (<$>), (<=), (==), (>), (||), (<), (>=), (#))
 
