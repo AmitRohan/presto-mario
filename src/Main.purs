@@ -1,6 +1,6 @@
 module Main where
 
-import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (+), (-), (<$>), (<=), (==), (>), (||), (<), (>=))
+import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (+), (-), (<$>), (<=), (==), (>), (||), (<), (>=), (#))
 
 import Data.Maybe (Maybe(Nothing))
 import FRP.Event (subscribe)
@@ -13,6 +13,7 @@ import DOM (DOM)
 import FRP (FRP)
 
 import Ester as Ester
+import Ester.Animation as Animation
 
 import BoxChaser.Types 
 import BoxChaser.GameUI as GameUI
@@ -95,6 +96,9 @@ listen = do
   _ <- GameBoard.initBoard
   _ <- enableLevelUI s
   
+  let t = Animation.getById (Animation.IDi "MyID101")
+  let p = Animation.rotate (Animation.Vi 45.0) (Animation.Ti 5.0) t
+
   -- Subscribe to click events to toggle states
   playGame <- U.signal "playButton" "onClick" Nothing
   _ <- playGame.event `subscribe` (\_ -> U.updateState "gameStatus" E_Play )
