@@ -1,6 +1,6 @@
 module BoxChaser.Main where
 
-import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (+), (-), (<$>), (<=), (==), (>), (||), (<), (>=), (#))
+import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (+), (-), (<$>), (<=), (==), (>), (||), (<), (>=), (#), negate)
 
 import Data.Maybe (Maybe(Nothing))
 import FRP.Event (subscribe)
@@ -97,7 +97,7 @@ listen = do
   _ <- enableLevelUI s
   
   let t = Animation.getById (Animation.IDi "MyID101")
-  let p = Animation.rotate (Animation.Vi 45.0) (Animation.Ti 5.0) t
+  let p = Animation.svgTransform Animation.SkewX (Animation.Vi 50.0) t
 
   -- Subscribe to click events to toggle states
   playGame <- U.signal "playButton" "onClick" Nothing
