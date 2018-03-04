@@ -1,6 +1,6 @@
 module BoxChaser.Main where
 
-import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (+), (-), (<$>), (<=), (==), (>), (||), (<), (>=), (#), negate)
+import Prelude (Unit, bind, discard, not, otherwise, pure, unit, void, ($), (&&), (+), (-), (<$>), (<=), (==), (>=), (||))
 
 import Data.Maybe (Maybe(Nothing))
 import FRP.Event (subscribe)
@@ -29,6 +29,7 @@ import Control.Monad.Eff.Console (CONSOLE)
 
 foreign import openUrl :: forall eff  a. a -> Eff eff Unit
 
+resetState:: forall t135 t164. Eff t135 { | t164 }
 resetState = do
   _ <- U.updateState "enemy1" (GameConfig.enemyAt 1.0)
   _ <- U.updateState "enemy2" (GameConfig.enemyAt 2.0)
@@ -96,8 +97,9 @@ listen = do
   _ <- GameBoard.initBoard
   _ <- enableLevelUI s
   
-  let t = Animation.getById (Animation.IDi "MyID101")
-  let p = Animation.svgTransform Animation.SkewX (Animation.Vi 50.0) t
+  -- let t = 
+  let svgObject = Animation.getById (Animation.IDi "MyID101")
+  let anim1 = Animation.svgTransform Animation.SkewX (Animation.Vi 50.0) svgObject
 
   -- Subscribe to click events to toggle states
   playGame <- U.signal "playButton" "onClick" Nothing
