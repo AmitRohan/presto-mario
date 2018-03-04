@@ -12,11 +12,12 @@ import Data.Generic.Rep.Show (genericShow)
 import Data.Newtype (class Newtype)
 
 
--- BASE TYPES 
+-- | Base types for SVG Transformations
 data IDi = IDi String 	-- ID
-data Ti = Ti Number 	-- TIME
 data Vi = Vi Number 	-- VALUE
+data Ti = Ti Number 	-- TIME
 
+-- | Supported SVG Transformations
 data Transformation = Rotate 
 	| Scale 
 	| ScaleX 
@@ -26,6 +27,7 @@ data Transformation = Rotate
 	-- | TranslateX
 	-- | TranslateY
 
+-- | Base structure of an SVG
 newtype SVGObject = SVGObject { 
 		x :: SVGAnimatedLength
 		, y :: SVGAnimatedLength
@@ -33,11 +35,13 @@ newtype SVGObject = SVGObject {
 		, width :: SVGAnimatedLength
 	}
 
+-- | Base structure of any parameter of SVG
 newtype SVGAnimatedLength = SVGAnimatedLength { 
 		animValue :: SVGLength
 		, baseVal :: SVGLength
 	}
 
+-- | Base structure of any value in SVG
 newtype SVGLength = SVGLength { 
 		unitType :: Number
 		, value :: Number
@@ -46,31 +50,37 @@ newtype SVGLength = SVGLength {
 	}
 
 
--- JS Functions to perfrom transformation on SVG
+-- | Returns SVGObject from DOM based on ID.
 foreign import getById :: IDi -> SVGObject
+
+-- | Applies transformation on SVGObject based on Param and Value
 foreign import transform :: String -> Vi -> SVGObject -> SVGObject
+
+-- | Rotate SVGObject on a pivot point with an Angle
 foreign import rotateAt :: Vi -> Number -> Number -> Ti -> SVGObject -> SVGObject
+
+-- | Function to log any data
 foreign import logAny :: forall a. a -> Unit
 
 
--- HELPER FUNCTIONS TO EXTRACT VALUES
+-- | Returns BaseValue of an SVGAnimatedLength Object
 getBaseValues::SVGAnimatedLength -> SVGLength 
 getBaseValues (SVGAnimatedLength v) = v.baseVal
 
+-- | Returns AnimValue of an SVGAnimatedLength Object
 getAnimValues::SVGAnimatedLength -> SVGLength 
 getAnimValues (SVGAnimatedLength v) = v.animValue
 
+
+-- | Returns the value of an SVGLength Object in NUMBER
 getValue:: SVGLength -> Number 
 getValue (SVGLength sl) = sl.value
 
+-- | Returns the value of an SVGLength Object in STRING
 getValueAsString:: SVGLength -> String 
 getValueAsString (SVGLength sl) = sl.valueAsString
 
--- rotate::forall s. Vi -> Vi -> Ti -> SVGObject -> SVGObject
--- rotate v1 v2 t (s::SVGObject) = transform (Transformation "rotate") v1 v2 s
-
-
---Map Transformation To Params
+-- | Map Transformation To Params
 mapParam :: Transformation -> String
 mapParam Rotate  	= "rotate"
 mapParam Scale  	= "scale"
@@ -82,17 +92,11 @@ mapParam _			= "rotate"
 -- mapParam TranslateX	= "dx"
 -- mapParam TranslateY	= "dy"
 
--- TRANSFORMATION FUNCTIONS
+-- | Applies a Transformation with a Value over and SVGObject and returns and instance of modified object.
 svgTransform :: Transformation -> Vi -> SVGObject -> SVGObject
-svgTransform transformation v (SVGObject s) = do  
-	transform ( mapParam transformation) v (SVGObject s)
+svgTransform t v (SVGObject s) =  transform ( mapParam t) v (SVGObject s)
 
--- flip::Vi -> Ti -> SVGObject -> SVGObject
--- flip v t (SVGObject s) = svgTransform Flip v (SVGObject s)
-
-rotate::Vi -> Ti -> SVGObject -> SVGObject
-rotate v t (SVGObject s) = svgTransform Rotate v (SVGObject s)
-	
+-- | Applies a Rotation Transformation ( pivot = center ) with a Value over and SVGObject and returns and instance of modified object.
 rotateAtCenter::Vi -> Ti -> SVGObject -> SVGObject
 rotateAtCenter v t (SVGObject s) = rotateAt v fixX fixY t (SVGObject s)
 	where
@@ -101,13 +105,12 @@ rotateAtCenter v t (SVGObject s) = rotateAt v fixX fixY t (SVGObject s)
 		heightFix = ( getValue $ getBaseValues $ s.height ) / 2.0
 		widthFix = ( getValue $ getBaseValues $ s.width ) / 2.0		
 	
-
-
--- instances for JS parsing
+-- | Helper functions for JS comunication
 derive instance genericIdi :: Generic (IDi) _
 derive instance genericVi :: Generic (Vi) _
 derive instance genericTi :: Generic (Ti) _
 derive instance genericTransformation :: Generic (Transformation) _
+
 derive instance genericSVGObject :: Newtype SVGObject _
 derive instance genericSVGAnimatedLength :: Newtype SVGAnimatedLength _
 derive instance genericSVGLength :: Newtype SVGLength _
