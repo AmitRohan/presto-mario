@@ -24,8 +24,8 @@ data Transformation = Rotate
 	| ScaleY 
 	| SkewX
 	| SkewY
-	-- | TranslateX
-	-- | TranslateY
+	| TranslateX
+	| TranslateY
 
 -- | Base structure of an SVG
 newtype SVGObject = SVGObject { 
@@ -59,6 +59,9 @@ foreign import transform :: String -> Vi -> SVGObject -> SVGObject
 -- | Rotate SVGObject on a pivot point with an Angle
 foreign import rotateAt :: Vi -> Number -> Number -> Ti -> SVGObject -> SVGObject
 
+-- | Starts Stroke Animation on Path
+foreign import startPathAnimation :: SVGObject -> SVGObject
+
 -- | Function to log any data
 foreign import logAny :: forall a. a -> Unit
 
@@ -88,9 +91,9 @@ mapParam ScaleX 	= "scaleX "
 mapParam ScaleY 	= "scaleY "
 mapParam SkewX		= "skewX"
 mapParam SkewY		= "skewY"
-mapParam _			= "rotate"
--- mapParam TranslateX	= "dx"
--- mapParam TranslateY	= "dy"
+-- mapParam _			= "rotate"
+mapParam TranslateX	= "dx"
+mapParam TranslateY	= "dy"
 
 -- | Applies a Transformation with a Value over and SVGObject and returns and instance of modified object.
 svgTransform :: Transformation -> Vi -> SVGObject -> SVGObject

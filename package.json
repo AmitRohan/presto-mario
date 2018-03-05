@@ -1,5 +1,5 @@
 {
-  "name": "box-chaser",
+  "name": "svg-clock",
   "version": "1.0.0",
   "description": "A Box Chaser arcade game to show the capabilities of PrestoDOM library",
   "scripts": {

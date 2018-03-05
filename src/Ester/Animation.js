@@ -31,3 +31,19 @@ exports.rotateAt = function(value) {
     }
   }
 }
+
+exports.startPathAnimation = function(path) {
+  console.log(path)
+  var lenght = path.getTotalLength();
+  path.style.transition = path.style.WebkitTransition = 'none';
+
+  path.style.strokeDasharray = length + ' ' + length
+  path.style.strokeDashoffset = length
+  console.log(path)
+  path.getBoundingClientRect();
+
+  path.style.transition = path.style.WebkitTransition = 'stroke-dashoffset 2s ease-in-out';
+  path.style.strokeDashoffset = '0';
+  console.log(path)
+  return path
+}

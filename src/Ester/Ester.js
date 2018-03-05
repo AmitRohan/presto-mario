@@ -227,7 +227,7 @@ var drawGameObject = function (svg,node) {
   } else if(type == "TextArea") {
     elem = svg.text(props.text).attr(props).font(props);
   } else if(type == "Path") {
-    // TODO : FIX ME
+    elem = svg.path(props.d).attr(props)
   } else if(type == "Oval") {
     elem = svg.ellipse().attr(props)
   } else if(type == "Image") {
